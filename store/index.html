@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M1ND.Store · v0.1 · The box is the cart</title>
+<style>
+:root {
+  --paper:        #14130F;
+  --paper-shade:  #1F1D18;
+  --paper-edge:   #2E2B25;
+  --ink:          #F2EFE6;
+  --ink-soft:     #C8C2B5;
+  --ink-faint:    #8A8580;
+  --hanko:        #E8745C;
+  --hanko-soft:   rgba(232, 116, 92, 0.12);
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --serif:   'Inter', system-ui, sans-serif;
+  --mono:    'IBM Plex Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 1.5;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== HEADER ===== */
+.header {
+  border-bottom: 1px solid var(--paper-edge);
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  background: var(--paper);
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-mark {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--hanko);
+  position: relative;
+}
+
+.brand-mark::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  background: var(--hanko);
+  opacity: 0.3;
+}
+
+.brand-name {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--ink);
+}
+
+.brand-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.header-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+/* ===== LAYOUT ===== */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 0;
+  min-height: calc(100vh - 65px);
+}
+
+.catalogue {
+  padding: 32px 40px;
+  border-right: 1px solid var(--paper-edge);
+}
+
+.box {
+  padding: 24px 28px;
+  background: var(--paper-shade);
+  position: sticky;
+  top: 65px;
+  height: calc(100vh - 65px);
+  overflow-y: auto;
+}
+
+/* ===== INTRO / EXPLAINER ===== */
+.intro {
+  margin-bottom: 40px;
+  max-width: 720px;
+}
+
+.intro-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.intro-headline {
+  font-family: var(--display);
+  font-size: 44px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.intro-headline em {
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.intro-lede {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 56ch;
+}
+
+/* ===== BOX-SIZE PICKER ===== */
+.box-picker {
+  margin-bottom: 32px;
+}
+
+.box-picker-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.box-picker-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.box-option {
+  border: 1px solid var(--paper-edge);
+  padding: 16px 14px;
+  cursor: pointer;
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  text-align: left;
+  transition: all 0.15s;
+}
+
+.box-option:hover {
+  border-color: var(--ink-soft);
+}
+
+.box-option.active {
+  border-color: var(--hanko);
+  background: var(--hanko-soft);
+}
+
+.box-option-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--hanko);
+  margin-bottom: 6px;
+}
+
+.box-option-cells {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 2px;
+  line-height: 1;
+}
+
+.box-option-cells-label {
+  font-family: var(--serif);
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+.box-option-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+/* ===== FILTERS ===== */
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  background: transparent;
+  border: 1px solid var(--paper-edge);
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding: 6px 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+
+.filter-btn:hover {
+  border-color: var(--ink-soft);
+  color: var(--ink);
+}
+
+.filter-btn.active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+/* ===== CATALOGUE GRID ===== */
+.catalogue-section {
+  margin-bottom: 40px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--paper-edge);
+}
+
+.section-title {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.section-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.product {
+  border: 1px solid var(--paper-edge);
+  padding: 18px;
+  background: var(--paper-shade);
+  position: relative;
+  transition: all 0.15s;
+}
+
+.product:hover {
+  border-color: var(--ink-faint);
+}
+
+.product-eyebrow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.product-code {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+
+.product-mode {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  padding: 2px 6px;
+  text-transform: uppercase;
+}
+
+.product-mode.rent {
+  background: var(--hanko-soft);
+  color: var(--hanko);
+}
+
+.product-mode.buy {
+  background: rgba(200, 194, 181, 0.15);
+  color: var(--ink-soft);
+}
+
+.product-mode.referral {
+  background: rgba(138, 133, 128, 0.15);
+  color: var(--ink-faint);
+}
+
+.product-name {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.product-desc {
+  font-family: var(--serif);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+  min-height: 35px;
+}
+
+.product-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--paper-edge);
+}
+
+.product-volume {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+.product-volume strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.product-price {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.product-price-sub {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink-faint);
+  letter-spacing: 0.05em;
+}
+
+.product-add {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--ink-soft);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 9px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.15s;
+}
+
+.product-add:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.product-add.referral {
+  border-color: var(--ink-faint);
+  color: var(--ink-soft);
+}
+
+.product-add.referral::after {
+  content: ' ↗';
+}
+
+.product.in-box {
+  border-color: var(--hanko);
+  background: var(--paper);
+}
+
+.product.in-box .product-add {
+  background: var(--hanko);
+  border-color: var(--hanko);
+  color: var(--paper);
+}
+
+/* ===== BOX (right rail / cart) ===== */
+.box-headline {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.box-current {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.box-postage {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--hanko);
+  margin-bottom: 18px;
+  letter-spacing: 0.04em;
+}
+
+/* Volume meter — physical box visualization */
+.box-visual {
+  border: 2px solid var(--paper-edge);
+  height: 180px;
+  position: relative;
+  margin-bottom: 12px;
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.box-visual-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  padding: 8px;
+  gap: 2px;
+}
+
+.box-visual-grid.cells-4 {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+.box-visual-grid.cells-12 {
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.box-visual-grid.cells-24 {
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+}
+
+.box-cell {
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-edge);
+  position: relative;
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--ink-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.box-cell.filled {
+  background: var(--hanko);
+  border-color: var(--hanko);
+  color: var(--paper);
+  font-weight: 500;
+}
+
+.box-cell.filled.rent {
+  background: var(--hanko);
+}
+
+.box-cell.filled.buy {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.box-visual-label {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+.box-volume-meter {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  letter-spacing: 0.05em;
+}
+
+.box-volume-meter strong {
+  color: var(--ink);
+}
+
+/* Items in box */
+.box-items {
+  border-top: 1px solid var(--paper-edge);
+  padding-top: 18px;
+  margin-bottom: 18px;
+}
+
+.box-items-empty {
+  font-family: var(--serif);
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-style: italic;
+  text-align: center;
+  padding: 24px 0;
+}
+
+.box-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--paper-edge);
+}
+
+.box-item:last-child {
+  border-bottom: none;
+}
+
+.box-item-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.box-item-name {
+  font-family: var(--serif);
+  font-size: 13px;
+  color: var(--ink);
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.box-item-meta {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+.box-item-meta .rent {
+  color: var(--hanko);
+}
+
+.box-item-remove {
+  background: transparent;
+  border: none;
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0 4px;
+  margin-left: 8px;
+  line-height: 1;
+}
+
+.box-item-remove:hover {
+  color: var(--hanko);
+}
+
+/* Totals + CTA */
+.box-totals {
+  border-top: 1px solid var(--ink-soft);
+  padding-top: 16px;
+  margin-bottom: 16px;
+}
+
+.box-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+  letter-spacing: 0.04em;
+}
+
+.box-total-row.grand {
+  font-size: 14px;
+  color: var(--ink);
+  font-weight: 500;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--paper-edge);
+}
+
+.box-cta {
+  width: 100%;
+  background: var(--hanko);
+  border: none;
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  padding: 14px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.15s;
+  margin-bottom: 8px;
+}
+
+.box-cta:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.box-cta:disabled {
+  background: var(--paper-edge);
+  color: var(--ink-faint);
+  cursor: not-allowed;
+}
+
+.box-gift-toggle {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--paper-edge);
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  transition: all 0.15s;
+}
+
+.box-gift-toggle:hover {
+  border-color: var(--ink-soft);
+  color: var(--ink);
+}
+
+.box-gift-toggle.active {
+  background: var(--hanko-soft);
+  border-color: var(--hanko);
+  color: var(--hanko);
+}
+
+.box-gift-note {
+  font-family: var(--serif);
+  font-size: 11px;
+  color: var(--ink-faint);
+  line-height: 1.5;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-left: 2px solid var(--hanko);
+  background: var(--hanko-soft);
+  display: none;
+}
+
+.box-gift-toggle.active + .box-gift-note {
+  display: block;
+}
+
+/* Footer note */
+.fineprint {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink-faint);
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--paper-edge);
+}
+
+/* ===== ANNOTATIONS (mockup-only) ===== */
+.annotation {
+  background: var(--hanko-soft);
+  border-left: 3px solid var(--hanko);
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.annotation-label {
+  font-size: 9px;
+  color: var(--hanko);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 10px 16px;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+  .box {
+    position: relative;
+    top: 0;
+    height: auto;
+  }
+  .intro-headline {
+    font-size: 32px;
+  }
+}
+</style>
+</head>
+<body>
+
+<a href="/index.html" style="position: fixed; top: 16px; right: 16px; z-index: 1000; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); text-decoration: none; padding: 6px 12px; background: var(--paper-shade); border: 1px solid var(--paper-edge); border-radius: 2px;">← M1ND.studio</a>
+
+
+
+<header class="header">
+  <div class="brand">
+    <div class="brand-mark"></div>
+    <div>
+      <div class="brand-name">M1ND.STORE</div>
+      <div class="brand-sub">The box is the cart · v0.1</div>
+    </div>
+  </div>
+  <div class="header-meta">Wireframe · 2026-05-16</div>
+</header>
+
+<div class="layout">
+
+  <!-- CATALOGUE -->
+  <main class="catalogue">
+
+    <section class="intro">
+      <div class="intro-eyebrow">§ M1ND.STORE · MOCKUP</div>
+      <h1 class="intro-headline">
+        Fill <em>a Canada Post box</em>.<br>
+        We pack it. We ship it.
+      </h1>
+      <p class="intro-lede">
+        Pick a box size. Fill it from the catalogue. Some items you keep. Some you rent and mail back. The checkout is the box. Fixed shipping, anywhere in Canada.
+      </p>
+    </section>
+
+    <div class="annotation">
+      <span class="annotation-label">Mockup note · the move</span>
+      Customer picks a Canada Post Flat Rate Box (Small / Medium / Large) before browsing. The box volume is the cart constraint. Live capacity meter visible at all times. Mixed buy + rent items. Referral links for commodity items (the case itself, the shed kits) — studio earns a small fee, doesn't compete with Amazon logistics. Studio-designed inserts, kits, and curated cells are the real margin.
+    </div>
+
+    <!-- BOX-SIZE PICKER -->
+    <div class="box-picker">
+      <div class="box-picker-label">§ 01 · Pick your envelope</div>
+      <div class="box-picker-options">
+        <button class="box-option" data-size="small" data-cells="4" data-price="19">
+          <div class="box-option-name">SMALL</div>
+          <div class="box-option-cells">4</div>
+          <div class="box-option-cells-label">cell capacity</div>
+          <div class="box-option-meta">35×26×5cm · $19</div>
+        </button>
+        <button class="box-option active" data-size="medium" data-cells="12" data-price="22">
+          <div class="box-option-name">MEDIUM</div>
+          <div class="box-option-cells">12</div>
+          <div class="box-option-cells-label">cell capacity</div>
+          <div class="box-option-meta">38×26×12cm · $22</div>
+        </button>
+        <button class="box-option" data-size="large" data-cells="24" data-price="30">
+          <div class="box-option-name">LARGE</div>
+          <div class="box-option-cells">24</div>
+          <div class="box-option-cells-label">cell capacity</div>
+          <div class="box-option-meta">40×30×19cm · $30</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="keep">KEEP Cells</button>
+      <button class="filter-btn" data-filter="kit">Studio Kits</button>
+      <button class="filter-btn" data-filter="supply">Supplies</button>
+      <button class="filter-btn" data-filter="commodity">Commodity (referral)</button>
+    </div>
+
+    <!-- STUDIO KITS -->
+    <section class="catalogue-section">
+      <header class="section-head">
+        <h2 class="section-title">Studio kits · designed by M1ND</h2>
+        <span class="section-meta">12 ITEMS · MARGIN MARGIN</span>
+      </header>
+      <div class="product-grid">
+
+        <article class="product" data-cells="1" data-price="42" data-mode="buy" data-cat="kit">
+          <div class="product-eyebrow">
+            <span class="product-code">M1ND-K01</span>
+            <span class="product-mode buy">BUY · KEEP IT</span>
+          </div>
+          <h3 class="product-name">Seed Saver · 1 Cell</h3>
+          <p class="product-desc">Curated seed-saving kit. 12 paper envelopes, hygrometer card, labelling sheet, planting log card.</p>
+          <div class="product-meta-row">
+            <span class="product-volume"><strong>1</strong> cell</span>
+            <span class="product-price">$42 <span class="product-price-sub">CAD</span></span>
+          </div>
+          <button class="product-add">Add to box</button>
+        </article>
+
+        <article class="product" data-cells="1" data-price="36" data-mode="buy" data-cat="kit">
+          <div class="product-eyebrow">
+            <span class="product-code">M1ND-K02</span>
+            <span class="product-mode buy">BUY · KEEP IT</span>
+          </div>
+          <h3 class="product-name">Child's Year · 1 Cell</h3>
+          <p class="product-desc">Archive kit for one year of a child's life. Tabbed dividers, milestone cards, photo sleeves, labels.</p>
+          <div class="product-meta-row">
+            <span class="product-volume"><strong>1</strong> cell</span>
+            <span class="product-price">$36 <span class="product-price-sub">CAD</span></span>
+          </div>
+          <button class="product-add">Add to box</button>
+        </article>
+
+        <article class="product" data-cells="1" data-price="48" data-mode="buy" data-cat="kit">
+          <div class="product-eyebrow">
+            <span class="product-code">M1ND-K03</span>
+            <span class="product-mode buy">BUY · KEEP IT</span>
+          </div>
+          <h3 class="product-name">EDC Pocket Kit · 1 Cell</h3>
+          <p class="product-desc">Compact everyday-carry in one 1646 cell. Modular pouch, mini tools, light, cordage, ID card slot.</p>
+          <div class="product-meta-row">
+            <span class="product-volume"><strong>1</strong> cell</span>
+            <span class="product-price">$48 <span class="product-price-sub">CAD</span></span>
+          </div>
+          <button class="product-add">Add to box</button>
+        </article>
+
+        <article class="product" data-cells="2" data-price="58" data-mode="buy" data-cat="kit">
+          <div class="product-eyebrow">
+            <span class="product-code">M1ND-K04</span>
+            <span class="product-mode buy">BUY · KEEP IT</span>
+          </div>
+          <h3 class="product-name">First-Aid Travel · 2 Cells</h3>
+          <p class="product-desc">Travel-grade first-aid in two density-packed cells. Trauma-aware kit. Studio-curated, not generic.</p>
+          <div class="product-meta-row">
+            <span class="product-volume"><strong>2</strong> cells</span>
+            <span class="product-price">$58 <span class="product-price-sub">CAD</span></span>
+          </div>
+          <button class="product-add">Add to box</button>
+        </article>
+
+        <article class="product" data-cells="1" data-price="32" data-mode="buy" data-cat="kit">
+          <div class="product-eyebrow">
+            <span class="product-code">M1ND-K05</span>
+            <span class="product-mode buy">BUY · KEEP IT</span>
+          </div>
+          <h3 class="product-name">Recipe Archive · 1 Cell</h3>
+          <p class="product-desc">Hand-written recipe-card archive. 100 archival cards, dividers, family-cuisine tabs.</p>
+          <div class="product-meta-row">
+            <span class="product-volume"><strong>1</strong> cell</span>
+            <span class="product-price">$32 <span class="product-price-sub">CAD</span></span>
+          </div>
+          <button class="product-add">Add to box</button>
+        </article>
+
+        <article class="product" data-cells="3" data-price="95" data-mode="buy" data-cat="kit">
+          <div class="product-eyebrow">
+            <span class="product-code">M1ND-K06</span>
+            <span class="product-mode buy">BUY · KEEP IT</span>
+          </div>
+          <h3 class="product-name">Onboarding Pack · 3 Cells</h3>
+          <p class="product-desc">Welcome kit for a new KEEP subscriber. Empty cells, labels, indexing guide, first-archive worksheet.</p>
+          <div class="product-meta-row">
+            <span class="product-volume"><strong>3</strong> cells</span>
+            <span class="product-price">$95 <span class="product-price-sub">CAD</span></span>
+          </div>
+          <button class="product-add">Add to box</button>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- KEEP CELLS (rentals from archive) -->
+    <section class="catalogue-section">
+      <header class="section-head">
+        <h2 class="section-title">Your KEEP archive · cells in rotation</h2>
+        <span class="section-meta">SUBSCRIBER ONLY · NETFLIX-STYLE</span>
+      </header>
+      <div class="product-grid">
+
+        <article class="product" data-cells="1" data-price="0" data-mode="rent" data-cat="keep">
+          <div class="product-eyebrow">
+            <span class="product-code">KEEP·0042</span>
+            <span class="product-mode rent">RENT · MAIL BACK</span>
+          </div>
+          <h3 class="product-name">Childhood photos · 1995-1998</h3>
+          <p class="product-desc">From your archive. 96 photos, 4 envelopes, kindergarten certificates. Last requested Jan 2024.</p>
+          <div class="product-meta-row">
+            <span class="product-volume"><strong>1</strong> cell</span>
+            <span class="product-price">incl <span class="product-price-sub">subscription</span></span>
+          </div>
+          <button class="product-add">Add to box</button>
+        </article>
+
+        <article class="product" data-cells="1" data-price="0" data-mode="rent" data-cat="keep">
+          <div class="product-eyebrow">
+            <span class="product-code">KEEP·0058</span>
+            <span class="product-mode rent">RENT · MAIL BACK</span>
+          </div>
+          <h3 class="product-name">Mom's letters · 2003-2007</h3>
+          <p class="product-desc">From your archive. Handwritten correspondence. 32 letters, 4 cards. Climate-controlled.</p>
+          <div class="product-meta-row">
+            <span class="product-volume"><strong>1</strong> cell</span>
+            <span class="product-price">incl <span class="product-price-sub">subscription</span></span>
+          </div>
+          <button class="product-add">Add to box</button>
+        </article>
+
+        <article class="product" data-cells="2" data-price="0" data-mode="rent" data-cat="keep">
+          <div class="product-eyebrow">
+            <span class="product-code">KEEP·0103</span>
+            <span class="product-mode rent">RENT · MAIL BACK</span>
+          </div>
+          <h3 class="product-name">Portfolio · 2019 campaign work</h3>
+          <p class="product-desc">From your archive. Physical samples, contact sheets, client briefs. For new pitch reference.</p>
+          <div class="product-meta-row">
+            <span class="product-volume"><strong>2</strong> cells</span>
+            <span class="product-price">incl <span class="product-price-sub">subscription</span></span>
+          </div>
+          <button class="product-add">Add to box</button>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- SUPPLIES -->
+    <section class="catalogue-section">
+      <header class="section-head">
+        <h2 class="section-title">Supplies · curated commodity</h2>
+        <span class="section-meta">SMALL MARGIN · USEFUL TO HAVE</span>
+      </header>
+      <div class="product-grid">
+
+        <article class="product" data-cells="0.25" data-price="14" data-mode="buy" data-cat="supply">
+          <div class="product-eyebrow">
+            <span class="product-code">SUP-001</span>
+            <span class="product-mode buy">BUY · KEEP IT</span>
+          </div>
+          <h3 class="product-name">Archival pen · pack of 3</h3>
+          <p class="product-desc">Acid-free, fade-proof, archival-rated. Black, blue, red. For labelling cells and indexing cards.</p>
+          <div class="product-meta-row">
+            <span class="product-volume"><strong>¼</strong> cell</span>
+            <span class="product-price">$14 <span class="product-price-sub">CAD</span></span>
+          </div>
+          <button class="product-add">Add to box</button>
+        </article>
+
+        <article class="product" data-cells="0.5" data-price="22" data-mode="buy" data-cat="supply">
+          <div class="product-eyebrow">
+            <span class="product-code">SUP-002</span>
+            <span class="product-mode buy">BUY · KEEP IT</span>
+          </div>
+          <h3 class="product-name">Cell label set · 48 labels</h3>
+          <p class="product-desc">Pre-cut adhesive labels sized to the 1646 cell label slot. Acid-free, archival, dishwasher-safe.</p>
+          <div class="product-meta-row">
+            <span class="product-volume"><strong>½</strong> cell</span>
+            <span class="product-price">$22 <span class="product-price-sub">CAD</span></span>
+          </div>
+          <button class="product-add">Add to box</button>
+        </article>
+
+        <article class="product" data-cells="1" data-price="38" data-mode="buy" data-cat="supply">
+          <div class="product-eyebrow">
+            <span class="product-code">SUP-003</span>
+            <span class="product-mode buy">BUY · KEEP IT</span>
+          </div>
+          <h3 class="product-name">Photo sleeve pack · 100 sleeves</h3>
+          <p class="product-desc">Archival 4×6 polypropylene sleeves. Two-pocket, side-loading. Fits one cell tightly.</p>
+          <div class="product-meta-row">
+            <span class="product-volume"><strong>1</strong> cell</span>
+            <span class="product-price">$38 <span class="product-price-sub">CAD</span></span>
+          </div>
+          <button class="product-add">Add to box</button>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- COMMODITY · REFERRAL -->
+    <section class="catalogue-section">
+      <header class="section-head">
+        <h2 class="section-title">Commodity infrastructure · referral</h2>
+        <span class="section-meta">NOT IN BOX · BUY FROM SOURCE</span>
+      </header>
+      <div class="annotation" style="margin-bottom: 18px;">
+        <span class="annotation-label">§ Note · the supplier model</span>
+        The studio doesn't compete with Amazon on commodity items like the 1646 case itself. Link out, customer buys from source, studio earns referral. The studio's margin is in <strong>kits, custom inserts, plans, and curated supplies</strong> — the design work.
+      </div>
+      <div class="product-grid">
+
+        <article class="product" data-mode="referral" data-cat="commodity">
+          <div class="product-eyebrow">
+            <span class="product-code">EXT · NOVELINKS</span>
+            <span class="product-mode referral">REFERRAL ↗</span>
+          </div>
+          <h3 class="product-name">The 1646 case · clear</h3>
+          <p class="product-desc">The 16-case 4×6 keeper. Amazon · $31.88 CAD · 30,000+ reviews. The standard KEEP envelope.</p>
+          <div class="product-meta-row">
+            <span class="product-volume">14.9 × 12 × 5"</span>
+            <span class="product-price">$31.88</span>
+          </div>
+          <button class="product-add referral">Buy on Amazon</button>
+        </article>
+
+        <article class="product" data-mode="referral" data-cat="commodity">
+          <div class="product-eyebrow">
+            <span class="product-code">EXT · SIMPLY TIDY</span>
+            <span class="product-mode referral">REFERRAL ↗</span>
+          </div>
+          <h3 class="product-name">The 1646 case · acid-free</h3>
+          <p class="product-desc">Michaels house brand. In-store · $25 CAD · acid-free, archival-grade for photos & docs.</p>
+          <div class="product-meta-row">
+            <span class="product-volume">14.9 × 12 × 5"</span>
+            <span class="product-price">$25.00</span>
+          </div>
+          <button class="product-add referral">Buy at Michaels</button>
+        </article>
+
+        <article class="product" data-mode="referral" data-cat="commodity">
+          <div class="product-eyebrow">
+            <span class="product-code">EXT · GOPLUS</span>
+            <span class="product-mode referral">REFERRAL ↗</span>
+          </div>
+          <h3 class="product-name">Garden shed · 4×6 footprint</h3>
+          <p class="product-desc">Commodity backyard shed. Amazon delivery. Pair with M1ND.industries fit-out plan.</p>
+          <div class="product-meta-row">
+            <span class="product-volume">EXT FACILITY</span>
+            <span class="product-price">$640</span>
+          </div>
+          <button class="product-add referral">Buy on Amazon</button>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- THE BOX (right rail / cart) -->
+  <aside class="box">
+    <div class="box-headline">§ Your box</div>
+    <div class="box-current" id="box-current">Medium Flat Rate</div>
+    <div class="box-postage" id="box-postage">$22 shipping · anywhere in Canada · 1–9 days</div>
+
+    <!-- Physical box visualization -->
+    <div class="box-visual">
+      <div class="box-visual-grid cells-12" id="box-grid"></div>
+      <div class="box-visual-label" id="box-label">12 cells</div>
+    </div>
+
+    <div class="box-volume-meter">
+      <span>FILLED · <strong id="cells-used">0</strong> cells</span>
+      <span>REMAINING · <strong id="cells-left">12</strong> cells</span>
+    </div>
+
+    <!-- Items -->
+    <div class="box-items" id="box-items">
+      <div class="box-items-empty">Empty. Add items from the catalogue.</div>
+    </div>
+
+    <!-- Totals -->
+    <div class="box-totals">
+      <div class="box-total-row">
+        <span>Items</span>
+        <span>$<span id="items-total">0.00</span></span>
+      </div>
+      <div class="box-total-row">
+        <span>Shipping (flat rate)</span>
+        <span>$<span id="shipping-total">22.00</span></span>
+      </div>
+      <div class="box-total-row grand">
+        <span>Total</span>
+        <span>$<span id="grand-total">22.00</span></span>
+      </div>
+    </div>
+
+    <button class="box-cta" id="checkout-btn" disabled>Pack &amp; Ship</button>
+
+    <button class="box-gift-toggle" id="gift-toggle">↑ Send this as a gift</button>
+    <div class="box-gift-note">
+      Sender pays. Recipient gets a real Canada Post box of curated items. Inside the box: an invitation card with a code to access their own KEEP account on M1ND.Store. <strong>The box is the onboarding flow.</strong>
+    </div>
+
+    <div class="fineprint">
+      Mockup · v0.1 · no real checkout · no real payment · cells = standard 1646 cell unit (4.7 × 6.6 × 1.2 in) · postage = Canada Post Flat Rate Box · capacity = manufacturer specifications
+    </div>
+  </aside>
+</div>
+
+<div class="toast" id="toast">Added to box</div>
+
+<script>
+const state = {
+  boxSize: 'medium',
+  boxCapacity: 12,
+  boxPrice: 22,
+  items: [],
+  gift: false,
+};
+
+const grid = document.getElementById('box-grid');
+const boxCurrent = document.getElementById('box-current');
+const boxPostage = document.getElementById('box-postage');
+const boxLabel = document.getElementById('box-label');
+const cellsUsed = document.getElementById('cells-used');
+const cellsLeft = document.getElementById('cells-left');
+const boxItems = document.getElementById('box-items');
+const itemsTotal = document.getElementById('items-total');
+const shippingTotal = document.getElementById('shipping-total');
+const grandTotal = document.getElementById('grand-total');
+const checkoutBtn = document.getElementById('checkout-btn');
+const toast = document.getElementById('toast');
+
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+function renderBox() {
+  // Update box-size labels
+  const sizeNames = { small: 'Small Flat Rate', medium: 'Medium Flat Rate', large: 'Large Flat Rate' };
+  boxCurrent.textContent = sizeNames[state.boxSize];
+  boxPostage.textContent = `$${state.boxPrice} shipping · anywhere in Canada · 1–9 days`;
+  boxLabel.textContent = `${state.boxCapacity} cells`;
+
+  // Render visual grid
+  grid.className = `box-visual-grid cells-${state.boxCapacity}`;
+  grid.innerHTML = '';
+
+  // Compute filled cells from items
+  let filledCount = 0;
+  const filledIndices = [];
+  for (const item of state.items) {
+    const cells = Math.ceil(item.cells);
+    for (let i = 0; i < cells; i++) {
+      filledIndices.push({ idx: filledCount + i, mode: item.mode, name: item.name });
+    }
+    filledCount += cells;
+  }
+
+  for (let i = 0; i < state.boxCapacity; i++) {
+    const cell = document.createElement('div');
+    cell.className = 'box-cell';
+    const filled = filledIndices.find(f => f.idx === i);
+    if (filled) {
+      cell.classList.add('filled');
+      cell.classList.add(filled.mode);
+      cell.textContent = filled.name.split(' ')[0].slice(0, 8);
+    }
+    grid.appendChild(cell);
+  }
+
+  // Update meters
+  const used = filledCount;
+  cellsUsed.textContent = used;
+  cellsLeft.textContent = state.boxCapacity - used;
+
+  // Render items list
+  if (state.items.length === 0) {
+    boxItems.innerHTML = '<div class="box-items-empty">Empty. Add items from the catalogue.</div>';
+  } else {
+    boxItems.innerHTML = state.items.map((item, idx) => `
+      <div class="box-item">
+        <div class="box-item-left">
+          <div class="box-item-name">${item.name}</div>
+          <div class="box-item-meta">
+            <span class="${item.mode === 'rent' ? 'rent' : ''}">${item.mode === 'rent' ? 'RENT · in queue' : 'BUY · ' + (item.cells === 0.25 ? '¼' : item.cells === 0.5 ? '½' : item.cells) + ' cell'}</span>
+            ${item.mode === 'rent' ? '' : ` · $${item.price}`}
+          </div>
+        </div>
+        <button class="box-item-remove" data-idx="${idx}" title="Remove">×</button>
+      </div>
+    `).join('');
+    // Wire remove handlers
+    boxItems.querySelectorAll('.box-item-remove').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(btn.dataset.idx);
+        state.items.splice(idx, 1);
+        renderBox();
+        renderProductStates();
+      });
+    });
+  }
+
+  // Totals
+  const itemsSum = state.items.reduce((s, i) => s + (i.price || 0), 0);
+  itemsTotal.textContent = itemsSum.toFixed(2);
+  shippingTotal.textContent = state.boxPrice.toFixed(2);
+  grandTotal.textContent = (itemsSum + state.boxPrice).toFixed(2);
+  checkoutBtn.disabled = state.items.length === 0;
+}
+
+function renderProductStates() {
+  // Mark products that are "in the box"
+  const itemNames = new Set(state.items.map(i => i.name));
+  document.querySelectorAll('.product').forEach(p => {
+    const name = p.querySelector('.product-name')?.textContent;
+    const isReferral = p.dataset.mode === 'referral';
+    const btn = p.querySelector('.product-add');
+    if (isReferral) return;
+    if (itemNames.has(name)) {
+      p.classList.add('in-box');
+      btn.textContent = 'In your box ✓';
+    } else {
+      p.classList.remove('in-box');
+      btn.textContent = 'Add to box';
+    }
+  });
+}
+
+// Box size picker
+document.querySelectorAll('.box-option').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.box-option').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.boxSize = btn.dataset.size;
+    state.boxCapacity = parseInt(btn.dataset.cells);
+    state.boxPrice = parseInt(btn.dataset.price);
+    // Check for overflow
+    const used = state.items.reduce((s, i) => s + Math.ceil(i.cells), 0);
+    if (used > state.boxCapacity) {
+      showToast('Items removed — new box is smaller');
+      while (state.items.length > 0 && state.items.reduce((s, i) => s + Math.ceil(i.cells), 0) > state.boxCapacity) {
+        state.items.pop();
+      }
+    }
+    renderBox();
+    renderProductStates();
+  });
+});
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.product').forEach(p => {
+      p.style.display = (filter === 'all' || p.dataset.cat === filter) ? '' : 'none';
+    });
+    document.querySelectorAll('.catalogue-section').forEach(s => {
+      const anyVisible = Array.from(s.querySelectorAll('.product')).some(p => p.style.display !== 'none');
+      s.style.display = anyVisible ? '' : 'none';
+    });
+  });
+});
+
+// Add to box
+document.querySelectorAll('.product-add').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const product = btn.closest('.product');
+    if (product.dataset.mode === 'referral') {
+      showToast('Opens Amazon / source · referral link');
+      return;
+    }
+    const cells = parseFloat(product.dataset.cells);
+    const price = parseFloat(product.dataset.price);
+    const mode = product.dataset.mode;
+    const name = product.querySelector('.product-name').textContent;
+
+    // Already in box? remove it.
+    const existingIdx = state.items.findIndex(i => i.name === name);
+    if (existingIdx > -1) {
+      state.items.splice(existingIdx, 1);
+      renderBox();
+      renderProductStates();
+      showToast('Removed from box');
+      return;
+    }
+
+    // Capacity check
+    const used = state.items.reduce((s, i) => s + Math.ceil(i.cells), 0);
+    if (used + Math.ceil(cells) > state.boxCapacity) {
+      showToast(`Won't fit · need ${Math.ceil(cells)} cells, ${state.boxCapacity - used} left`);
+      return;
+    }
+
+    state.items.push({ name, cells, price: mode === 'rent' ? 0 : price, mode });
+    renderBox();
+    renderProductStates();
+    showToast(mode === 'rent' ? 'Queued from your archive' : 'Added to box');
+  });
+});
+
+// Gift toggle
+document.getElementById('gift-toggle').addEventListener('click', (e) => {
+  state.gift = !state.gift;
+  e.target.classList.toggle('active');
+  e.target.textContent = state.gift ? '✓ Sending as a gift' : '↑ Send this as a gift';
+});
+
+// Checkout (mockup)
+checkoutBtn.addEventListener('click', () => {
+  showToast(`Mockup · would pack ${state.items.length} items into a ${state.boxSize} Flat Rate Box`);
+});
+
+// Initial render
+renderBox();
+</script>
+
+</body>
+</html>

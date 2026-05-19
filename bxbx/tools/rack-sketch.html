@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rack Sketch · STD-08 layout tool · BXBX Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #FAFAF7;
+  --paper-shade: #F2F1EC;
+  --paper-edge: #E8E6DF;
+  --ink: #1A1A1A;
+  --ink-soft: #4A4A48;
+  --ink-faint: #8B8A85;
+  --hanko: #C8472D;
+  --hanko-shade: rgba(200, 71, 45, 0.08);
+  --svg-fill-soft: rgba(26, 26, 26, 0.06);
+  --svg-stroke-faint: rgba(26, 26, 26, 0.18);
+  --display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --rack-shelf: #C8B89A;
+  --rack-closet: #93A4B5;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14130F;
+    --paper-shade: #1C1B17;
+    --paper-edge: #2A2925;
+    --ink: #F2EFE6;
+    --ink-soft: #BDB8AB;
+    --ink-faint: #807B6E;
+    --hanko: #E8745C;
+    --hanko-shade: rgba(232, 116, 92, 0.12);
+    --svg-fill-soft: rgba(242, 239, 230, 0.06);
+    --svg-stroke-faint: rgba(242, 239, 230, 0.20);
+    --rack-shelf: #8A7A5C;
+    --rack-closet: #5E6F80;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #14130F;
+  --paper-shade: #1C1B17;
+  --paper-edge: #2A2925;
+  --ink: #F2EFE6;
+  --ink-soft: #BDB8AB;
+  --ink-faint: #807B6E;
+  --hanko: #E8745C;
+  --hanko-shade: rgba(232, 116, 92, 0.12);
+  --svg-fill-soft: rgba(242, 239, 230, 0.06);
+  --svg-stroke-faint: rgba(242, 239, 230, 0.20);
+  --rack-shelf: #8A7A5C;
+  --rack-closet: #5E6F80;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--body);
+  font-size: 14px;
+  line-height: 1.5;
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.shell {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 3vw, 32px);
+}
+
+/* Header */
+header {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--paper-edge);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.brand-mark-svg { display: block; flex-shrink: 0; }
+.tool-title {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink-soft);
+}
+.tool-title strong { color: var(--ink); font-weight: 600; }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-actions a {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--paper-edge);
+  border-radius: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.header-actions a:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+#theme-toggle {
+  background: transparent;
+  border: 1px solid var(--paper-edge);
+  color: var(--ink-soft);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+#theme-toggle:hover { color: var(--ink); border-color: var(--ink); }
+.theme-icon-sun { display: none; }
+.theme-icon-moon { display: block; }
+:root[data-theme="dark"] .theme-icon-sun { display: block; }
+:root[data-theme="dark"] .theme-icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-icon-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-icon-moon { display: none; }
+}
+
+/* Intro */
+.intro {
+  padding: 28px 0 20px;
+}
+.intro h1 {
+  font-family: var(--display);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.intro h1 em { font-style: italic; color: var(--ink-soft); }
+.intro p {
+  font-family: var(--display);
+  font-size: 15px;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  line-height: 1.5;
+}
+
+/* Layout grid */
+.work-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 32px;
+  padding: 24px 0 48px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .work-grid { grid-template-columns: 1fr; }
+}
+
+/* Sidebar */
+.sidebar > section {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--paper-edge);
+}
+.sidebar > section:last-child { border-bottom: none; }
+
+.sidebar h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+/* Preset buttons */
+.preset-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+}
+.preset-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 12px;
+  border: 1px solid var(--paper-edge);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.preset-btn:hover {
+  border-color: var(--ink-soft);
+  background: var(--paper-shade);
+}
+.preset-btn .preset-dim {
+  color: var(--ink-faint);
+  font-size: 10px;
+}
+
+/* Dimension inputs */
+.dim-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.dim-inputs label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 4px;
+}
+.dim-inputs input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--paper-edge);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 500;
+}
+.dim-inputs input:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+
+/* Palette */
+.palette {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.palette-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px 10px;
+  border: 1px solid var(--paper-edge);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  text-align: left;
+  gap: 4px;
+}
+.palette-btn:hover { border-color: var(--ink); background: var(--paper-shade); }
+.palette-btn.active { border-color: var(--hanko); background: var(--hanko-shade); }
+.palette-swatch {
+  width: 100%;
+  height: 18px;
+  border: 1px solid var(--ink);
+  margin-bottom: 4px;
+}
+.palette-swatch.shelf { background: var(--rack-shelf); }
+.palette-swatch.closet { background: var(--rack-closet); }
+.palette-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+.palette-cost {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+/* Hint */
+.hint {
+  font-family: var(--display);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-top: 12px;
+  max-width: 32ch;
+}
+.hint strong { color: var(--ink); font-style: normal; font-weight: 500; }
+
+/* BOM panel */
+.bom-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.bom-stat {
+  padding: 10px 12px;
+  background: var(--paper-shade);
+  border-left: 2px solid var(--ink);
+}
+.bom-stat-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 4px;
+}
+.bom-stat-value {
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.bom-stat-value .unit {
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-left: 4px;
+  font-weight: 400;
+}
+.bom-stat.cost {
+  border-left-color: var(--hanko);
+}
+
+.bom-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.action-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 9px 14px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.action-btn:hover { opacity: 0.85; }
+.action-btn.secondary {
+  background: transparent;
+  color: var(--ink);
+}
+.action-btn.secondary:hover { background: var(--paper-shade); opacity: 1; }
+
+/* Main canvas area */
+.canvas-area > section {
+  margin-bottom: 28px;
+}
+.canvas-area h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.canvas-area .view-tagline {
+  font-family: var(--display);
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+
+.canvas-wrap {
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-edge);
+  padding: 24px;
+  overflow: hidden;
+  position: relative;
+}
+.canvas-wrap svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--ink-faint);
+  font-family: var(--display);
+  font-size: 14px;
+}
+.empty-state strong { color: var(--ink-soft); }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform 0.3s;
+  z-index: 100;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--paper-edge);
+  padding: 24px 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+footer a { color: var(--ink-soft); text-decoration: none; }
+footer a:hover { color: var(--ink); text-decoration: underline; }
+
+/* SVG-specific styles */
+.rack-shape { cursor: pointer; transition: opacity 0.15s; }
+.rack-shape:hover { opacity: 0.75; }
+.rack-shape.dragging { cursor: grabbing; opacity: 0.6; }
+</style>
+</head>
+<body>
+
+<a href="/index.html" style="position: fixed; top: 16px; right: 16px; z-index: 1000; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #4A4640; text-decoration: none; padding: 6px 12px; background: rgba(255,255,255,0.85); border: 1px solid #C8C2B5; border-radius: 2px;">← M1ND.studio</a>
+
+
+<script>
+  // Theme init - prevent flash
+  (function() {
+    try {
+      const saved = localStorage.getItem('bxbx-theme');
+      if (saved === 'dark' || saved === 'light') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    } catch(e) {}
+  })();
+</script>
+
+<div class="shell">
+
+<header>
+  <a href="#" class="brand">
+    <svg class="brand-mark-svg" width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="1" y="1" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <rect x="5" y="5" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <rect x="9" y="9" width="4" height="4" fill="var(--hanko)"/>
+    </svg>
+    <span>BXBX</span>
+  </a>
+  <div class="tool-title"><strong>Rack Sketch</strong> · STD-08 layout tool</div>
+  <div class="header-actions">
+    <a href="bxbx-site-v0.20.html" target="_blank" rel="noopener">↩ BXBX Studio</a>
+    <a href="bxbx-site-v0.20.html#portfolio/PF-08" target="_blank" rel="noopener">PF-08 docs</a>
+    <button id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg class="theme-icon theme-icon-sun" width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="7" cy="7" r="3" fill="currentColor"/>
+        <g stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+          <line x1="7" y1="1" x2="7" y2="2.5"/><line x1="7" y1="11.5" x2="7" y2="13"/>
+          <line x1="1" y1="7" x2="2.5" y2="7"/><line x1="11.5" y1="7" x2="13" y2="7"/>
+          <line x1="2.6" y1="2.6" x2="3.7" y2="3.7"/><line x1="10.3" y1="10.3" x2="11.4" y2="11.4"/>
+          <line x1="11.4" y1="2.6" x2="10.3" y2="3.7"/><line x1="3.7" y1="10.3" x2="2.6" y2="11.4"/>
+        </g>
+      </svg>
+      <svg class="theme-icon theme-icon-moon" width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M11 8.5a4.5 4.5 0 0 1-5.5-5.5 4.5 4.5 0 1 0 5.5 5.5z" fill="currentColor"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div class="intro">
+  <h1>Sketch a <em>rack layout</em>.</h1>
+  <p>Block out an STD-08 layout in 2D using Isotype-style pictograms. Enter your footprint, pick a preset or roll your own dimensions, click in the plan view to drop in 2R or 3R racks. Click an existing rack to cycle modes (shelf · closet) or remove. Drag to reposition. Live BOM updates as you go.</p>
+</div>
+
+<div class="work-grid">
+
+  <aside class="sidebar">
+    <section>
+      <h4>Presets · click to load</h4>
+      <div class="preset-grid">
+        <button class="preset-btn" data-w="60" data-d="24"><span>Bedroom closet</span><span class="preset-dim">60 × 24 in</span></button>
+        <button class="preset-btn" data-w="96" data-d="24"><span>Garage wall</span><span class="preset-dim">96 × 24 in</span></button>
+        <button class="preset-btn" data-w="48" data-d="24"><span>Studio nook</span><span class="preset-dim">48 × 24 in</span></button>
+        <button class="preset-btn" data-w="120" data-d="36"><span>Pantry / mudroom</span><span class="preset-dim">120 × 36 in</span></button>
+      </div>
+    </section>
+
+    <section>
+      <h4>Footprint · custom</h4>
+      <div class="dim-inputs">
+        <div>
+          <label for="footprint-w">Width (in)</label>
+          <input id="footprint-w" type="number" min="24" max="240" value="60" step="6">
+        </div>
+        <div>
+          <label for="footprint-d">Depth (in)</label>
+          <input id="footprint-d" type="number" min="12" max="60" value="24" step="6">
+        </div>
+      </div>
+      <div class="hint">Dimensions snap to 6" grid. Rack depth is fixed at 12".</div>
+    </section>
+
+    <section>
+      <h4>Palette · click to select, then click in plan</h4>
+      <div class="palette">
+        <button class="palette-btn active" data-w="2" data-mode="shelf">
+          <div class="palette-swatch shelf"></div>
+          <div class="palette-label">2R Shelf</div>
+          <div class="palette-cost">$35 · 18U</div>
+        </button>
+        <button class="palette-btn" data-w="3" data-mode="shelf">
+          <div class="palette-swatch shelf"></div>
+          <div class="palette-label">3R Shelf</div>
+          <div class="palette-cost">$45 · 27U</div>
+        </button>
+        <button class="palette-btn" data-w="2" data-mode="closet">
+          <div class="palette-swatch closet"></div>
+          <div class="palette-label">2R Closet</div>
+          <div class="palette-cost">$35 · 2 rods</div>
+        </button>
+        <button class="palette-btn" data-w="3" data-mode="closet">
+          <div class="palette-swatch closet"></div>
+          <div class="palette-label">3R Closet</div>
+          <div class="palette-cost">$45 · 3 rods</div>
+        </button>
+      </div>
+      <div class="hint">Closet mode = bottom 3 shelves + hanger rod above. <strong>Click an existing rack</strong> to cycle through configurations and delete.</div>
+    </section>
+
+    <section>
+      <h4>Bill of materials · live</h4>
+      <div class="bom-stats">
+        <div class="bom-stat"><div class="bom-stat-label">Racks</div><div class="bom-stat-value" id="bom-racks">0</div></div>
+        <div class="bom-stat cost"><div class="bom-stat-label">Total cost</div><div class="bom-stat-value">$<span id="bom-cost">0</span> <span class="unit">CAD</span></div></div>
+        <div class="bom-stat"><div class="bom-stat-label">Shelf · 1U</div><div class="bom-stat-value" id="bom-tiers">0<span class="unit">U</span></div></div>
+        <div class="bom-stat"><div class="bom-stat-label">Hanger rod</div><div class="bom-stat-value" id="bom-rods">0<span class="unit">positions</span></div></div>
+      </div>
+      <div class="bom-actions">
+        <button class="action-btn" id="copy-bom">Copy BOM</button>
+        <button class="action-btn secondary" id="reset-all">Reset</button>
+      </div>
+    </section>
+  </aside>
+
+  <main class="canvas-area">
+    <section>
+      <h4>Plan view · top-down</h4>
+      <div class="view-tagline">Looking down at the floor · 1 px = 0.5 inch · click empty space to drop a rack · click rack to cycle / delete · drag to move</div>
+      <div class="canvas-wrap">
+        <svg id="plan-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+    </section>
+
+    <section>
+      <h4>Elevation view · front</h4>
+      <div class="view-tagline">Looking at the racks from the front · all visible racks rendered side by side · 1 px ≈ 0.4 inch · shelf tiers shown as horizontal lines · closet rods shown as thicker horizontal bars</div>
+      <div class="canvas-wrap">
+        <svg id="elevation-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+    </section>
+  </main>
+
+</div>
+
+<footer>
+  <div>BXBX Studio · Rack Sketch v0.1 · a free STD-08 sizing tool</div>
+  <div><a href="bxbx-site-v0.20.html" target="_blank" rel="noopener">bxbx.studio →</a></div>
+</footer>
+
+</div>
+
+<div class="toast" id="toast">BOM copied to clipboard</div>
+
+<script>
+'use strict';
+
+// ===== STATE =====
+const state = {
+  footprint: { w: 60, d: 24 },  // inches
+  racks: [],                    // {id, x, y, width: 2|3, mode: 'shelf'|'closet'}
+  paletteSelected: { width: 2, mode: 'shelf' },
+  draggingRackId: null,
+  dragOffset: { x: 0, y: 0 },
+  dragMoved: false,
+  nextRackId: 1,
+};
+
+const RACK_DEPTH = 12;           // inches, constant
+const TIER_HEIGHT = 8;           // inches
+const RACK_HEIGHT_TIERS = 9;     // 9 tiers per rack
+const RACK_HEIGHT_INCHES = TIER_HEIGHT * RACK_HEIGHT_TIERS;  // 72"
+const GRID_SNAP = 6;             // inches
+
+const PRICE = { 2: 35, 3: 45 };  // CAD by row count
+
+// ===== INIT =====
+function init() {
+  // Theme toggle
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const root = document.documentElement;
+    const current = root.getAttribute('data-theme');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    let next;
+    if (current === 'dark') next = 'light';
+    else if (current === 'light') next = 'dark';
+    else next = systemDark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('bxbx-theme', next); } catch(e) {}
+  });
+
+  // Presets
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const w = parseInt(btn.dataset.w, 10);
+      const d = parseInt(btn.dataset.d, 10);
+      state.footprint = { w, d };
+      document.getElementById('footprint-w').value = w;
+      document.getElementById('footprint-d').value = d;
+      state.racks = [];
+      render();
+    });
+  });
+
+  // Dimension inputs
+  document.getElementById('footprint-w').addEventListener('input', (e) => {
+    const v = Math.max(24, Math.min(240, parseInt(e.target.value, 10) || 24));
+    state.footprint.w = snapDim(v);
+    pruneOutOfBoundsRacks();
+    render();
+  });
+  document.getElementById('footprint-d').addEventListener('input', (e) => {
+    const v = Math.max(12, Math.min(60, parseInt(e.target.value, 10) || 12));
+    state.footprint.d = snapDim(v);
+    pruneOutOfBoundsRacks();
+    render();
+  });
+
+  // Palette
+  document.querySelectorAll('.palette-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.palette-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.paletteSelected.width = parseInt(btn.dataset.w, 10);
+      state.paletteSelected.mode = btn.dataset.mode;
+    });
+  });
+
+  // BOM actions
+  document.getElementById('copy-bom').addEventListener('click', copyBOM);
+  document.getElementById('reset-all').addEventListener('click', () => {
+    state.racks = [];
+    render();
+  });
+
+  // Initial render
+  render();
+}
+
+function snapDim(v) {
+  return Math.round(v / GRID_SNAP) * GRID_SNAP;
+}
+
+function pruneOutOfBoundsRacks() {
+  const { w, d } = state.footprint;
+  state.racks = state.racks.filter(r => {
+    const rackW = r.width === 3 ? 36 : 24;
+    return r.x + rackW <= w && r.y + RACK_DEPTH <= d;
+  });
+}
+
+// ===== RENDER =====
+function render() {
+  renderPlanSvg();
+  renderElevationSvg();
+  renderBOM();
+}
+
+// ----- PLAN VIEW (top-down) -----
+function renderPlanSvg() {
+  const svg = document.getElementById('plan-svg');
+  const { w: footW, d: footD } = state.footprint;
+  const scale = 6;  // px per inch (so 60" wide = 360px wide). Reasonable for desktop.
+  const padding = 40;
+
+  const svgW = footW * scale + padding * 2;
+  const svgH = footD * scale + padding * 2 + 60;  // extra for dim labels
+
+  svg.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
+  svg.setAttribute('width', svgW);
+  svg.setAttribute('height', svgH);
+
+  let html = '';
+
+  // Footprint room outline
+  const roomX = padding;
+  const roomY = padding;
+  const roomW = footW * scale;
+  const roomH = footD * scale;
+  html += `<rect x="${roomX}" y="${roomY}" width="${roomW}" height="${roomH}" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.5"/>`;
+
+  // Grid lines (6" snap)
+  for (let i = GRID_SNAP; i < footW; i += GRID_SNAP) {
+    const x = roomX + i * scale;
+    html += `<line x1="${x}" y1="${roomY}" x2="${x}" y2="${roomY + roomH}" stroke="var(--svg-stroke-faint)" stroke-width="0.4"/>`;
+  }
+  for (let i = GRID_SNAP; i < footD; i += GRID_SNAP) {
+    const y = roomY + i * scale;
+    html += `<line x1="${roomX}" y1="${y}" x2="${roomX + roomW}" y2="${y}" stroke="var(--svg-stroke-faint)" stroke-width="0.4"/>`;
+  }
+
+  // Dimension labels
+  // Top: width
+  html += `<line x1="${roomX}" y1="${roomY - 16}" x2="${roomX + roomW}" y2="${roomY - 16}" stroke="var(--ink-faint)" stroke-width="0.8"/>`;
+  html += `<line x1="${roomX}" y1="${roomY - 12}" x2="${roomX}" y2="${roomY - 20}" stroke="var(--ink-faint)" stroke-width="0.8"/>`;
+  html += `<line x1="${roomX + roomW}" y1="${roomY - 12}" x2="${roomX + roomW}" y2="${roomY - 20}" stroke="var(--ink-faint)" stroke-width="0.8"/>`;
+  html += `<text x="${roomX + roomW / 2}" y="${roomY - 22}" font-family="var(--mono)" font-size="11" fill="var(--ink)" text-anchor="middle">${footW}"</text>`;
+
+  // Left: depth
+  html += `<line x1="${roomX - 16}" y1="${roomY}" x2="${roomX - 16}" y2="${roomY + roomH}" stroke="var(--ink-faint)" stroke-width="0.8"/>`;
+  html += `<line x1="${roomX - 12}" y1="${roomY}" x2="${roomX - 20}" y2="${roomY}" stroke="var(--ink-faint)" stroke-width="0.8"/>`;
+  html += `<line x1="${roomX - 12}" y1="${roomY + roomH}" x2="${roomX - 20}" y2="${roomY + roomH}" stroke="var(--ink-faint)" stroke-width="0.8"/>`;
+  html += `<text x="${roomX - 22}" y="${roomY + roomH / 2 + 4}" font-family="var(--mono)" font-size="11" fill="var(--ink)" text-anchor="end">${footD}"</text>`;
+
+  // Racks
+  state.racks.forEach(rack => {
+    const rackW = rack.width === 3 ? 36 : 24;
+    const rx = roomX + rack.x * scale;
+    const ry = roomY + rack.y * scale;
+    const rw = rackW * scale;
+    const rh = RACK_DEPTH * scale;
+    const fill = rack.mode === 'closet' ? 'var(--rack-closet)' : 'var(--rack-shelf)';
+
+    html += `<g class="rack-shape" data-rack-id="${rack.id}">`;
+    html += `<rect x="${rx}" y="${ry}" width="${rw}" height="${rh}" fill="${fill}" stroke="var(--ink)" stroke-width="1.2"/>`;
+    // Row dividers (vertical lines inside footprint)
+    for (let i = 1; i < rack.width; i++) {
+      const dx = rx + (rackW / rack.width) * i * scale;
+      html += `<line x1="${dx}" y1="${ry}" x2="${dx}" y2="${ry + rh}" stroke="var(--ink)" stroke-width="0.6"/>`;
+    }
+    // Mode label
+    const labelText = `${rack.width}R · ${rack.mode === 'closet' ? 'closet' : 'shelf'}`;
+    html += `<text x="${rx + rw / 2}" y="${ry + rh / 2 + 3}" font-family="var(--mono)" font-size="9" fill="var(--ink)" text-anchor="middle" pointer-events="none">${labelText}</text>`;
+    html += `</g>`;
+  });
+
+  // Gap indicators (mono text in empty horizontal stretches > 12")
+  const gaps = detectFloorGaps();
+  gaps.forEach(g => {
+    const gx = roomX + g.x * scale;
+    const gy = roomY + g.y * scale;
+    const gw = g.w * scale;
+    const gh = g.h * scale;
+    html += `<text x="${gx + gw / 2}" y="${gy + gh / 2 + 3}" font-family="var(--mono)" font-size="9" fill="var(--ink-faint)" text-anchor="middle" pointer-events="none">${g.w}" gap</text>`;
+  });
+
+  // Empty state
+  if (state.racks.length === 0) {
+    html += `<text x="${roomX + roomW / 2}" y="${roomY + roomH / 2 - 6}" font-family="var(--display)" font-size="14" fill="var(--ink-faint)" text-anchor="middle" pointer-events="none">Empty footprint</text>`;
+    html += `<text x="${roomX + roomW / 2}" y="${roomY + roomH / 2 + 14}" font-family="var(--mono)" font-size="10" fill="var(--ink-faint)" text-anchor="middle" pointer-events="none">click anywhere to drop a rack</text>`;
+  }
+
+  // Footprint area total
+  const sqIn = footW * footD;
+  const sqFt = (sqIn / 144).toFixed(1);
+  html += `<text x="${roomX}" y="${roomY + roomH + 24}" font-family="var(--mono)" font-size="10" fill="var(--ink-faint)">Footprint · ${footW}" × ${footD}" · ${sqIn} sq in · ${sqFt} sq ft</text>`;
+
+  svg.innerHTML = html;
+
+  // Wire up click / drag handlers
+  svg.onclick = (e) => handlePlanClick(e, scale, roomX, roomY);
+  svg.onmousedown = (e) => handlePlanMouseDown(e, scale, roomX, roomY);
+  svg.onmousemove = (e) => handlePlanMouseMove(e, scale, roomX, roomY);
+  svg.onmouseup = (e) => handlePlanMouseUp(e, scale, roomX, roomY);
+  svg.onmouseleave = (e) => handlePlanMouseUp(e, scale, roomX, roomY);
+
+  // Touch handlers (basic)
+  svg.ontouchstart = (e) => {
+    const t = e.touches[0];
+    handlePlanMouseDown({ target: e.target, clientX: t.clientX, clientY: t.clientY, preventDefault: () => e.preventDefault() }, scale, roomX, roomY);
+  };
+  svg.ontouchmove = (e) => {
+    const t = e.touches[0];
+    handlePlanMouseMove({ clientX: t.clientX, clientY: t.clientY, preventDefault: () => e.preventDefault() }, scale, roomX, roomY);
+    e.preventDefault();
+  };
+  svg.ontouchend = (e) => {
+    handlePlanMouseUp({ target: e.target }, scale, roomX, roomY);
+  };
+}
+
+function detectFloorGaps() {
+  // For each row of the footprint (sliced at 6" grid in y), detect horizontal gaps wider than 12"
+  // Simplified: just check overall floor occupancy and report a single top-strip gap if there's >12" unbounded space
+  if (state.racks.length === 0) return [];
+  const { w: footW, d: footD } = state.footprint;
+  // Project all rack x-extents onto the x axis to find gaps in the wall-adjacent strip
+  const occupied = [];
+  state.racks.forEach(r => {
+    const rackW = r.width === 3 ? 36 : 24;
+    occupied.push({ start: r.x, end: r.x + rackW });
+  });
+  occupied.sort((a, b) => a.start - b.start);
+  // Find gaps along x axis (assumes racks are at y=0 wall — simplification ok for v0)
+  const gaps = [];
+  let cursor = 0;
+  occupied.forEach(o => {
+    if (o.start > cursor) {
+      const gapW = o.start - cursor;
+      if (gapW >= 12) gaps.push({ x: cursor, y: 0, w: gapW, h: RACK_DEPTH });
+    }
+    cursor = Math.max(cursor, o.end);
+  });
+  if (footW - cursor >= 12) {
+    gaps.push({ x: cursor, y: 0, w: footW - cursor, h: RACK_DEPTH });
+  }
+  return gaps;
+}
+
+// ----- ELEVATION VIEW (front) -----
+function renderElevationSvg() {
+  const svg = document.getElementById('elevation-svg');
+  const racks = state.racks;
+  const scale = 4;  // px per inch
+  const padding = 40;
+  const rackSpacing = 12;  // px between racks in elevation view
+
+  // Compute total elevation width: sum of rack widths plus spacing
+  let totalRackWidth = 0;
+  racks.forEach(r => { totalRackWidth += (r.width === 3 ? 36 : 24) * scale; });
+  totalRackWidth += rackSpacing * Math.max(0, racks.length - 1);
+
+  const svgW = Math.max(400, totalRackWidth + padding * 2);
+  const svgH = RACK_HEIGHT_INCHES * scale + padding * 2 + 40;
+
+  svg.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
+  svg.setAttribute('width', svgW);
+  svg.setAttribute('height', svgH);
+
+  let html = '';
+
+  if (racks.length === 0) {
+    html += `<text x="${svgW / 2}" y="${svgH / 2 - 6}" font-family="var(--display)" font-size="14" fill="var(--ink-faint)" text-anchor="middle">No racks yet</text>`;
+    html += `<text x="${svgW / 2}" y="${svgH / 2 + 14}" font-family="var(--mono)" font-size="10" fill="var(--ink-faint)" text-anchor="middle">add racks in the plan view above</text>`;
+  } else {
+    // Floor line
+    const floorY = padding + RACK_HEIGHT_INCHES * scale;
+    html += `<line x1="${padding - 12}" y1="${floorY}" x2="${svgW - padding + 12}" y2="${floorY}" stroke="var(--ink)" stroke-width="1.5"/>`;
+    html += `<text x="${padding - 16}" y="${floorY + 4}" font-family="var(--mono)" font-size="9" fill="var(--ink-faint)" text-anchor="end">floor</text>`;
+
+    // Total height label
+    html += `<text x="${padding - 28}" y="${padding + 4}" font-family="var(--mono)" font-size="9" fill="var(--ink-faint)">${RACK_HEIGHT_INCHES}"</text>`;
+    html += `<line x1="${padding - 24}" y1="${padding}" x2="${padding - 24}" y2="${floorY}" stroke="var(--ink-faint)" stroke-width="0.6"/>`;
+    html += `<line x1="${padding - 28}" y1="${padding}" x2="${padding - 20}" y2="${padding}" stroke="var(--ink-faint)" stroke-width="0.6"/>`;
+    html += `<line x1="${padding - 28}" y1="${floorY}" x2="${padding - 20}" y2="${floorY}" stroke="var(--ink-faint)" stroke-width="0.6"/>`;
+
+    let cursorX = padding;
+    racks.forEach(rack => {
+      const rackW = (rack.width === 3 ? 36 : 24) * scale;
+      const rackH = RACK_HEIGHT_INCHES * scale;
+      const rx = cursorX;
+      const ry = floorY - rackH;
+      const fill = rack.mode === 'closet' ? 'var(--rack-closet)' : 'var(--rack-shelf)';
+
+      // Rack frame
+      html += `<rect x="${rx}" y="${ry}" width="${rackW}" height="${rackH}" fill="${fill}" stroke="var(--ink)" stroke-width="1.2" opacity="0.5"/>`;
+
+      // Vertical row dividers
+      for (let i = 1; i < rack.width; i++) {
+        const dx = rx + (rackW / rack.width) * i;
+        html += `<line x1="${dx}" y1="${ry}" x2="${dx}" y2="${floorY}" stroke="var(--ink)" stroke-width="0.6"/>`;
+      }
+
+      // Vertical posts (corners + row dividers) drawn as thicker lines
+      html += `<line x1="${rx}" y1="${ry}" x2="${rx}" y2="${floorY}" stroke="var(--ink)" stroke-width="1.5"/>`;
+      html += `<line x1="${rx + rackW}" y1="${ry}" x2="${rx + rackW}" y2="${floorY}" stroke="var(--ink)" stroke-width="1.5"/>`;
+
+      if (rack.mode === 'shelf') {
+        // 9 tiers - horizontal shelf lines at each tier level
+        for (let t = 0; t <= RACK_HEIGHT_TIERS; t++) {
+          const ty = ry + (t / RACK_HEIGHT_TIERS) * rackH;
+          html += `<line x1="${rx}" y1="${ty}" x2="${rx + rackW}" y2="${ty}" stroke="var(--ink)" stroke-width="0.6"/>`;
+        }
+      } else {
+        // Closet mode: bottom 3 tiers as shelves, hanger rod above
+        const shelfTopTier = 3;  // shelves at tier 0, 1, 2, 3 (bottom 3 spaces)
+        for (let t = 0; t <= shelfTopTier; t++) {
+          const ty = floorY - (t / RACK_HEIGHT_TIERS) * rackH;
+          html += `<line x1="${rx}" y1="${ty}" x2="${rx + rackW}" y2="${ty}" stroke="var(--ink)" stroke-width="0.6"/>`;
+        }
+        // Hanger rod near top - thicker bar, hanko color
+        const rodY = ry + (1 / RACK_HEIGHT_TIERS) * rackH;
+        html += `<line x1="${rx + 2}" y1="${rodY}" x2="${rx + rackW - 2}" y2="${rodY}" stroke="var(--hanko)" stroke-width="3"/>`;
+        // Hanger pictograms below the rod (simple inverted triangles)
+        const hangerCount = rack.width;
+        const hangerSpacing = rackW / (hangerCount + 1);
+        for (let h = 1; h <= hangerCount; h++) {
+          const hx = rx + h * hangerSpacing;
+          const hy = rodY + 6;
+          html += `<line x1="${hx}" y1="${rodY}" x2="${hx}" y2="${hy}" stroke="var(--ink-soft)" stroke-width="0.6"/>`;
+          html += `<polygon points="${hx - 8},${hy + 14} ${hx + 8},${hy + 14} ${hx},${hy}" fill="none" stroke="var(--ink-soft)" stroke-width="0.6"/>`;
+        }
+      }
+
+      // Label below
+      const labelY = floorY + 16;
+      const modeLabel = rack.mode === 'closet' ? 'closet' : 'shelf';
+      html += `<text x="${rx + rackW / 2}" y="${labelY}" font-family="var(--mono)" font-size="9" fill="var(--ink)" text-anchor="middle">${rack.width}R · ${modeLabel}</text>`;
+
+      cursorX += rackW + rackSpacing;
+    });
+  }
+
+  svg.innerHTML = html;
+}
+
+// ----- INTERACTION -----
+function getSvgCoords(e, scale, roomX, roomY) {
+  const svg = document.getElementById('plan-svg');
+  const rect = svg.getBoundingClientRect();
+  const viewBox = svg.viewBox.baseVal;
+  const scaleX = viewBox.width / rect.width;
+  const scaleY = viewBox.height / rect.height;
+  const sx = (e.clientX - rect.left) * scaleX;
+  const sy = (e.clientY - rect.top) * scaleY;
+  // Convert SVG coords to inches in footprint space
+  const ix = (sx - roomX) / scale;
+  const iy = (sy - roomY) / scale;
+  return { ix, iy, sx, sy };
+}
+
+function findRackAtCoords(ix, iy) {
+  for (const r of state.racks) {
+    const rackW = r.width === 3 ? 36 : 24;
+    if (ix >= r.x && ix <= r.x + rackW && iy >= r.y && iy <= r.y + RACK_DEPTH) return r;
+  }
+  return null;
+}
+
+function cycleRackMode(rack) {
+  // Cycle: 2R-shelf → 3R-shelf → 2R-closet → 3R-closet → delete
+  if (rack.width === 2 && rack.mode === 'shelf') {
+    rack.width = 3;
+  } else if (rack.width === 3 && rack.mode === 'shelf') {
+    rack.width = 2; rack.mode = 'closet';
+  } else if (rack.width === 2 && rack.mode === 'closet') {
+    rack.width = 3;
+  } else if (rack.width === 3 && rack.mode === 'closet') {
+    // delete
+    state.racks = state.racks.filter(r => r.id !== rack.id);
+    return;
+  }
+  // After resizing, check it still fits, otherwise revert
+  if (rack.x + (rack.width === 3 ? 36 : 24) > state.footprint.w) {
+    rack.x = Math.max(0, snapDim(state.footprint.w - (rack.width === 3 ? 36 : 24)));
+  }
+}
+
+function handlePlanMouseDown(e, scale, roomX, roomY) {
+  const { ix, iy } = getSvgCoords(e, scale, roomX, roomY);
+  if (ix < 0 || iy < 0 || ix > state.footprint.w || iy > state.footprint.d) return;
+  const rack = findRackAtCoords(ix, iy);
+  if (rack) {
+    state.draggingRackId = rack.id;
+    state.dragOffset = { x: ix - rack.x, y: iy - rack.y };
+    state.dragMoved = false;
+  }
+}
+
+function handlePlanMouseMove(e, scale, roomX, roomY) {
+  if (state.draggingRackId === null) return;
+  const { ix, iy } = getSvgCoords(e, scale, roomX, roomY);
+  const rack = state.racks.find(r => r.id === state.draggingRackId);
+  if (!rack) return;
+  const rackW = rack.width === 3 ? 36 : 24;
+  let newX = snapDim(ix - state.dragOffset.x);
+  let newY = snapDim(iy - state.dragOffset.y);
+  newX = Math.max(0, Math.min(state.footprint.w - rackW, newX));
+  newY = Math.max(0, Math.min(state.footprint.d - RACK_DEPTH, newY));
+  if (newX !== rack.x || newY !== rack.y) {
+    rack.x = newX;
+    rack.y = newY;
+    state.dragMoved = true;
+    render();
+  }
+}
+
+function handlePlanMouseUp(e, scale, roomX, roomY) {
+  if (state.draggingRackId !== null) {
+    state.draggingRackId = null;
+  }
+}
+
+function handlePlanClick(e, scale, roomX, roomY) {
+  // Distinguish click on rack (cycle) vs click on empty space (add)
+  if (state.dragMoved) {
+    state.dragMoved = false;
+    return;  // Drag completed, not a click
+  }
+  const { ix, iy } = getSvgCoords(e, scale, roomX, roomY);
+  if (ix < 0 || iy < 0 || ix > state.footprint.w || iy > state.footprint.d) return;
+  const rack = findRackAtCoords(ix, iy);
+  if (rack) {
+    cycleRackMode(rack);
+    render();
+    return;
+  }
+  // Empty space - try to place a new rack
+  placeRackAt(ix, iy);
+}
+
+function placeRackAt(ix, iy) {
+  const { width, mode } = state.paletteSelected;
+  const rackW = width === 3 ? 36 : 24;
+  let nx = snapDim(ix - rackW / 2);
+  let ny = snapDim(iy - RACK_DEPTH / 2);
+  nx = Math.max(0, Math.min(state.footprint.w - rackW, nx));
+  ny = Math.max(0, Math.min(state.footprint.d - RACK_DEPTH, ny));
+  // Check overlap
+  for (const r of state.racks) {
+    const otherW = r.width === 3 ? 36 : 24;
+    const overlapX = nx < r.x + otherW && nx + rackW > r.x;
+    const overlapY = ny < r.y + RACK_DEPTH && ny + RACK_DEPTH > r.y;
+    if (overlapX && overlapY) {
+      showToast('Overlap · pick a different spot');
+      return;
+    }
+  }
+  state.racks.push({
+    id: state.nextRackId++,
+    x: nx,
+    y: ny,
+    width,
+    mode,
+  });
+  render();
+}
+
+// ----- BOM -----
+function renderBOM() {
+  let totalCost = 0;
+  let totalTiers = 0;
+  let totalRods = 0;
+  state.racks.forEach(r => {
+    totalCost += PRICE[r.width];
+    if (r.mode === 'shelf') {
+      totalTiers += r.width * RACK_HEIGHT_TIERS;  // 18 for 2R, 27 for 3R
+    } else {
+      totalTiers += r.width * 3;  // bottom 3 shelves kept = 3 per row
+      totalRods += r.width;       // one rod position per row
+    }
+  });
+  document.getElementById('bom-racks').textContent = state.racks.length;
+  document.getElementById('bom-cost').textContent = totalCost;
+  document.getElementById('bom-tiers').innerHTML = totalTiers + '<span class="unit">U</span>';
+  document.getElementById('bom-rods').innerHTML = totalRods + '<span class="unit">positions</span>';
+}
+
+function copyBOM() {
+  if (state.racks.length === 0) {
+    showToast('Empty layout · nothing to copy');
+    return;
+  }
+  const { w, d } = state.footprint;
+  const lines = [];
+  lines.push('BXBX RACK SKETCH · STD-08 LAYOUT');
+  lines.push('================================');
+  lines.push('');
+  lines.push(`Footprint: ${w}" × ${d}" (${(w*d/144).toFixed(1)} sq ft)`);
+  lines.push(`Total racks: ${state.racks.length}`);
+  lines.push('');
+  lines.push('LAYOUT:');
+  state.racks.forEach((r, i) => {
+    const rackW = r.width === 3 ? 36 : 24;
+    lines.push(`  ${i + 1}. ${r.width}R · ${r.mode.toUpperCase()} · ${rackW}" × ${RACK_DEPTH}" at (${r.x}", ${r.y}") · $${PRICE[r.width]} CAD`);
+  });
+  lines.push('');
+  // Group purchases by width
+  const counts = { 2: 0, 3: 0 };
+  state.racks.forEach(r => counts[r.width]++);
+  lines.push('PURCHASE LIST (Amazon Canada · WOWLIVE SSS3B9 family):');
+  if (counts[2]) lines.push(`  ${counts[2]}× WOWLIVE 2 Row × 9 Tier · ~$${PRICE[2]} CAD each = $${counts[2] * PRICE[2]}`);
+  if (counts[3]) lines.push(`  ${counts[3]}× WOWLIVE 3 Row × 9 Tier · ~$${PRICE[3]} CAD each = $${counts[3] * PRICE[3]}`);
+  const total = state.racks.reduce((s, r) => s + PRICE[r.width], 0);
+  lines.push(`  TOTAL: $${total} CAD`);
+  lines.push('');
+  let totalTiers = 0, totalRods = 0;
+  state.racks.forEach(r => {
+    if (r.mode === 'shelf') totalTiers += r.width * RACK_HEIGHT_TIERS;
+    else { totalTiers += r.width * 3; totalRods += r.width; }
+  });
+  lines.push(`Storage capacity: ${totalTiers}U shelf space · ${totalRods} hanger rod positions`);
+  lines.push('');
+  lines.push('Notes:');
+  lines.push('- Closet mode = bottom 3 shelves installed + frame above used for hangerspace');
+  lines.push('- Fabric shelves are optional; remove what you don\\'t need');
+  lines.push('- Equivalent products: KingRack, SimpleHouseware, AmazonBasics (±10% specs)');
+  lines.push('');
+  lines.push('Generated by BXBX Rack Sketch · See bxbx.studio/PF-08 for full documentation');
+
+  const text = lines.join('\\n');
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('BOM copied to clipboard');
+    }, () => {
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('BOM copied to clipboard');
+  } catch (e) {
+    showToast('Copy failed · select and copy manually');
+  }
+  document.body.removeChild(ta);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// Boot
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+
+</body>
+</html>
