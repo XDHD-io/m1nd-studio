@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920">
+<title>BXBX.Laneway · Toronto design + build</title>
+<style>
+/* ============================================================
+   BXBX Deck System · v0.1
+   Single source of truth for all BXBX presentation decks.
+   ============================================================
+   Inherits the BXBX visual vocabulary from the studio site:
+   - Paper + hanko palette
+   - Light/dark theme parity (default: dark for presentation use)
+   - Space Grotesk display / Inter body / IBM Plex Mono captions
+   - 1920×1080 frames, scaled responsively
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap');
+
+/* ===== THEME VARIABLES ===== */
+:root,
+[data-theme="dark"] {
+  /* Dark mode (default) — warm dark palette, same as bxbx.studio site */
+  --paper:        #14130F;
+  --paper-shade:  #1F1D18;
+  --paper-edge:   #2E2B25;
+  --ink:          #F2EFE6;
+  --ink-soft:     #C8C2B5;
+  --ink-faint:    #8A8580;
+  --hanko:        #E8745C;
+  --svg-fill-soft:#1F1D18;
+  --bg-gutter:    #0A0908;
+
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --serif:   'Inter', system-ui, sans-serif;
+  --mono:    'IBM Plex Mono', 'Courier New', monospace;
+}
+
+[data-theme="light"] {
+  --paper:        #F2EFE6;
+  --paper-shade:  #EAE6D9;
+  --paper-edge:   #C8C2B5;
+  --ink:          #1A1814;
+  --ink-soft:     #4A4640;
+  --ink-faint:    #8A8580;
+  --hanko:        #E8745C;
+  --svg-fill-soft:#EAE6D9;
+  --bg-gutter:    #1A1814;
+}
+
+/* ===== RESET ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg-gutter);
+  color: var(--ink);
+  font-family: var(--serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.25s ease;
+}
+
+/* ===== DECK LAYOUT ===== */
+.deck {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px 0;
+  align-items: center;
+}
+
+.frame-wrap {
+  position: relative;
+}
+
+.frame {
+  width: 1920px;
+  height: 1080px;
+  background: var(--paper);
+  position: relative;
+  overflow: hidden;
+  transform-origin: top center;
+  flex-shrink: 0;
+  transition: background 0.25s ease;
+}
+
+/* ===== UNIVERSAL FRAME CHROME ===== */
+.frame-number {
+  position: absolute;
+  top: 60px;
+  right: 80px;
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+}
+
+.frame-brand {
+  position: absolute;
+  top: 60px;
+  left: 80px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.hanko-mark {
+  width: 28px;
+  height: 28px;
+  background: var(--hanko);
+  position: relative;
+  flex-shrink: 0;
+}
+.hanko-mark::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1.4px solid var(--paper);
+  transition: border-color 0.25s ease;
+}
+.hanko-mark::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  background: var(--paper);
+  transition: background 0.25s ease;
+}
+
+.frame-caption {
+  position: absolute;
+  bottom: 60px;
+  left: 80px;
+  right: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.frame-content {
+  position: absolute;
+  top: 140px;
+  left: 80px;
+  right: 80px;
+  bottom: 140px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== TYPOGRAPHY ===== */
+.display { font-family: var(--display); font-weight: 500; letter-spacing: -0.035em; line-height: 0.95; color: var(--ink); }
+.display-xxl { font-size: 220px; }
+.display-xl  { font-size: 160px; }
+.display-lg  { font-size: 120px; }
+.display-md  { font-size: 88px; }
+.display-sm  { font-size: 56px; }
+
+.lede {
+  font-family: var(--serif);
+  font-size: 32px;
+  line-height: 1.35;
+  color: var(--ink-soft);
+  max-width: 28ch;
+  font-weight: 300;
+}
+
+.body {
+  font-family: var(--serif);
+  font-size: 22px;
+  line-height: 1.55;
+  color: var(--ink);
+  max-width: 60ch;
+  font-weight: 400;
+}
+
+.mono-label {
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.accent { color: var(--hanko); }
+em { font-style: italic; color: var(--ink-soft); }
+
+/* ===== LAYOUT HELPERS ===== */
+.center { align-items: center; justify-content: center; text-align: center; }
+.end { justify-content: flex-end; }
+
+.grid { display: grid; gap: 32px; }
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+.grid-5 { grid-template-columns: repeat(5, 1fr); }
+
+/* ===== CARD COMPONENTS ===== */
+.iso-card {
+  background: var(--paper-shade);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.iso-card .code { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--ink-faint); text-transform: uppercase; }
+.iso-card .name { font-family: var(--display); font-size: 22px; font-weight: 500; color: var(--ink); }
+.iso-card .desc { font-family: var(--serif); font-size: 13px; line-height: 1.5; color: var(--ink-soft); }
+.iso-card svg { width: 100%; height: 140px; }
+
+.engagement {
+  background: var(--paper-shade);
+  padding: 36px;
+  border-left: 4px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.engagement.hanko { border-color: var(--hanko); }
+.engagement.soft { border-color: var(--ink-soft); }
+.engagement.faint { border-color: var(--ink-faint); }
+.engagement .tier { font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; color: var(--ink-faint); text-transform: uppercase; }
+.engagement .tier.hanko { color: var(--hanko); }
+.engagement h3 { font-family: var(--display); font-size: 32px; font-weight: 500; line-height: 1.1; color: var(--ink); }
+.engagement p { font-family: var(--serif); font-size: 16px; line-height: 1.55; color: var(--ink-soft); }
+.engagement .meta { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); letter-spacing: 0.06em; margin-top: auto; }
+
+/* ===== FPO IMAGE PLACEHOLDER ===== */
+/* Use anywhere a real photo will eventually land — clean wireframe with corner ticks and "IMAGE · TBD" label */
+.fpo {
+  background: var(--paper-shade);
+  border: 1.5px solid var(--paper-edge);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+}
+.fpo::before,
+.fpo::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border: 1.5px solid var(--ink-faint);
+}
+.fpo::before {
+  top: 12px;
+  left: 12px;
+  border-right: none;
+  border-bottom: none;
+}
+.fpo::after {
+  bottom: 12px;
+  right: 12px;
+  border-left: none;
+  border-top: none;
+}
+.fpo-label {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  text-align: center;
+}
+.fpo-label::after {
+  content: " · IMAGE · TBD";
+}
+.fpo-label-bare {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  text-align: center;
+}
+.fpo-meta {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+}
+
+/* Diagonal line decoration across FPO — gives it visual "drawing in progress" feel */
+.fpo svg.fpo-x {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+}
+
+/* ===== THEME TOGGLE BUTTON ===== */
+.theme-toggle {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-edge);
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.theme-toggle:hover {
+  border-color: var(--hanko);
+}
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+[data-theme="dark"] .theme-icon-sun { display: block; }
+[data-theme="dark"] .theme-icon-moon { display: none; }
+[data-theme="light"] .theme-icon-sun { display: none; }
+[data-theme="light"] .theme-icon-moon { display: block; }
+
+/* ===== SVG-IN-DECK COLOR HOOKS ===== */
+/* SVGs inside decks should reference these variables via stroke="currentColor" or fill="currentColor"
+   on a parent <g> with color: var(--ink), or use CSS custom property syntax inside the SVG.
+   Helper class for inline SVGs: */
+.svg-ink { color: var(--ink); }
+.svg-ink-soft { color: var(--ink-soft); }
+.svg-ink-faint { color: var(--ink-faint); }
+.svg-hanko { color: var(--hanko); }
+
+</style>
+</head>
+<body>
+
+<a href="/index.html" style="position: fixed; top: 16px; right: 16px; z-index: 1000; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); text-decoration: none; padding: 6px 12px; background: var(--paper-shade); border: 1px solid var(--paper-edge); border-radius: 2px;">← M1ND.studio</a>
+
+<div style="position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 1000; font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); padding: 6px 14px; background: var(--paper-shade); border: 1px solid var(--paper-edge); border-radius: 2px; opacity: 0.7;">v0.1 · rebuilt 2026-05-19</div>
+
+
+
+<button class="theme-toggle" onclick="
+  const html = document.documentElement;
+  const current = html.getAttribute('data-theme') || 'dark';
+  html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+" title="Toggle light/dark">
+<svg class="theme-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+<svg class="theme-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+
+<div class="deck">
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content center" style="justify-content: center;">
+<div class="mono-label" style="margin-bottom: 48px; color: var(--hanko);">— BXBX.LANEWAY · DESIGN + BUILD —</div>
+<h1 class="display display-xxl" style="margin-bottom: 24px; line-height: 0.92;">
+<span style="display: inline-block;">Stealth.</span> <span style="display: inline-block; color: var(--hanko);">Service.</span> <span style="display: inline-block;">Toronto.</span>
+</h1>
+<div class="lede" style="margin-top: 36px; max-width: none; font-size: 36px; color: var(--ink-soft);">Stealth architecture for the laneways, backyards & quiet corners of the city.</div>
+</div>
+<div class="frame-caption">
+  <span>BXBX.Laneway · the studio&#x27;s service face</span>
+  <span>Toronto + GTA · v0.1 deck</span>
+</div>
+</div></div>
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content">
+<div class="mono-label" style="margin-bottom: 32px;">§ 01 The thesis</div>
+<h1 class="display display-lg" style="margin-bottom: 48px;">The <em>exterior</em><br>denies the<br><em>interior</em>.</h1>
+<div style="max-width: 70ch;">
+<p class="body" style="font-size: 22px; margin-bottom: 18px;">Cities are full of small, unused spaces — laneways, side yards, parking strips, dead corners — that could hold a sauna, a studio, a coffee bar, a quiet room to think. The reason they don't is that anything worth putting there <em>looks like it's worth putting there</em>, and that invites attention you don't want.</p>
+<p class="body" style="font-size: 22px; margin-bottom: 18px;">BXBX.Laneway builds the inverse. The exterior is a generic work trailer, an ordinary garage, a shed that reads as contractor storage. The interior is a piece of refined architecture, sized for one person and shaped by the Japanese tradition of unprepossessing exteriors hiding remarkable rooms.</p>
+<p class="body" style="font-size: 22px; margin-bottom: 18px;">Toronto and the GTA. <em>Intake-first.</em> Hands-on. The studio comes to your space.</p>
+</div>
+</div>
+<div class="frame-caption">
+  <span>The strongest interiors hide behind the most ordinary exteriors.</span>
+  <span>Tokyo tea-house tradition · BXBX urban application.</span>
+</div>
+</div></div>
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content">
+<div class="mono-label" style="margin-bottom: 32px;">§ 02 Who this is for</div>
+<h1 class="display display-lg" style="margin-bottom: 16px;">Five <em>customers</em><br>we know how to help.</h1>
+<p class="lede" style="margin-bottom: 32px;">Most laneway / garage / shed projects fall into one of five patterns. The studio recognizes them on intake and brings the relevant offering forward.</p>
+<div class="grid grid-3" style="gap: 24px;">
+<div class="iso-card">
+<div class="tier-label">01 · ATHLETE</div>
+<div class="name">The garage gym builder</div>
+<div class="desc">Has a 1-car garage, wants a serious training space. Boxing, BJJ, climbing, weightlifting, mobility. <em>→ AT-02 Dōjō.</em></div>
+
+</div>
+<div class="iso-card iso-card-hanko">
+<div class="tier-label">02 · QUIET-SEEKER</div>
+<div class="name">The micro-retreat owner</div>
+<div class="desc">Wants a quiet room. To read, write, meditate, cool down. Not for guests. For self. <em>→ AT-04 Ma.</em></div>
+
+</div>
+<div class="iso-card">
+<div class="tier-label">03 · OPERATOR</div>
+<div class="name">The van or trailer converter</div>
+<div class="desc">Has a cargo van or wants one. Wants it converted thoughtfully. <em>→ AT-01 Vehicle Intake.</em></div>
+
+</div>
+<div class="iso-card">
+<div class="tier-label">04 · LANEWAY OWNER</div>
+<div class="name">The dead-space realizer</div>
+<div class="desc">Has a Toronto laneway, side yard, or backyard. Doesn't know what to do with it. Wants advice first, build second. <em>→ AT-06 Laneway Intake.</em></div>
+
+</div>
+<div class="iso-card">
+<div class="tier-label">05 · ROCK-MOVER</div>
+<div class="name">The climbing wall asker</div>
+<div class="desc">Has kids who climb. Or climbs themselves. Wants a wall in the backyard or garage. <em>→ AT-05 Iwa.</em></div>
+
+</div>
+<div class="iso-card iso-card-soft">
+<div class="tier-label">06 · REFRESHER</div>
+<div class="name">The garage cleaner-upper</div>
+<div class="desc">Has a garage that's become storage chaos. Wants it to be a space again. Light touch. <em>→ AT-03 Sō.</em></div>
+
+</div>
+</div>
+</div>
+<div class="frame-caption">
+  <span>Six patterns, six offerings. Each starts with an intake.</span>
+  <span>If your project isn&#x27;t here, talk to us — we may build to fit.</span>
+</div>
+</div></div>
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content center" style="justify-content: center;">
+<div class="mono-label" style="margin-bottom: 32px;">§ 03 The Atelier · BXBX.Laneway service offerings</div>
+<h1 class="display" style="font-size: 200px; line-height: 0.94; margin-bottom: 32px; letter-spacing: -0.04em;">
+Six <span style="color: var(--hanko);">Atelier</span><br>offerings.
+</h1>
+<p class="lede" style="font-size: 32px; max-width: 50ch; text-align: center; margin-top: 32px;">Each tier has a clear scope, deliverable, timeline, and price range. Each starts with a paid intake. Each can stop at intake, or continue into design, or all the way through build.</p>
+</div>
+<div class="frame-caption">
+  <span>Intake → Design → Build · the three engagement tiers per offering.</span>
+  <span>Refund policy: 50% if you&#x27;re unsatisfied with the intake. No negotiation.</span>
+</div>
+</div></div>
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content">
+<div class="mono-label" style="margin-bottom: 32px;">§ 04 The six offerings</div>
+<h1 class="display display-lg" style="margin-bottom: 16px;">Atelier · <em>AT-01 through AT-06</em>.</h1>
+
+<div class="grid grid-3" style="gap: 24px;">
+<div class="iso-card">
+<div class="tier-label">AT-01 · assessment</div>
+<div class="name">Vehicle Intake</div>
+<div class="desc">On-site assessment of cargo vans, Sprinters, box trucks. Conversion feasibility report.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">INTAKE FROM $450 · DESIGN $1,200</div>
+</div>
+<div class="iso-card iso-card-hanko">
+<div class="tier-label">AT-02 · design+build</div>
+<div class="name">Dōjō Garage-to-Gym</div>
+<div class="desc">Convert standard 1-car garage into martial arts / boxing / functional fitness room.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">INTAKE $550 · DESIGN $1,950 · BUILD $12,500</div>
+</div>
+<div class="iso-card">
+<div class="tier-label">AT-03 · refresh</div>
+<div class="name">Sō Garage Refresh</div>
+<div class="desc">Light-touch garage transformation. Wall systems, lighting, floor finish.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">INTAKE $450 · DESIGN $850 · BUILD $6,500</div>
+</div>
+<div class="iso-card">
+<div class="tier-label">AT-04 · wellness</div>
+<div class="name">Ma Hidden Wellness</div>
+<div class="desc">Hidden sauna or cold plunge install. Stealth wellness in laneway or backyard.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">INTAKE $650 · DESIGN $1,650 · BUILD $18,500</div>
+</div>
+<div class="iso-card">
+<div class="tier-label">AT-05 · climbing</div>
+<div class="name">Iwa Climbing</div>
+<div class="desc">Backyard or garage climbing wall. Concept to install. Indoor + outdoor variants.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">INTAKE $550 · DESIGN $1,250 · BUILD $9,500</div>
+</div>
+<div class="iso-card">
+<div class="tier-label">AT-06 · assessment</div>
+<div class="name">Laneway Intake</div>
+<div class="desc">Assessment of underused laneway, side yard, backyard. What is possible here?</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">INTAKE FROM $550 · DESIGN $1,450</div>
+</div>
+</div>
+</div>
+<div class="frame-caption">
+  <span>Pricing CAD pre-tax · live in bxbx-pricing.xlsx</span>
+  <span>Six offerings · 18 tier options · one intake-first engagement model.</span>
+</div>
+</div></div>
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content">
+<div class="mono-label" style="margin-bottom: 28px;">§ 05 How an engagement runs</div>
+<h1 class="display" style="font-size: 88px; line-height: 0.98; letter-spacing: -0.035em; margin-bottom: 32px;">Intake → Design → <em>Build</em>.</h1>
+<p class="body" style="font-size: 21px; max-width: 90ch; margin-bottom: 48px;">
+Every Laneway engagement runs through the same four-stage workflow. You can stop at any stage. Most clients go through Intake and stop — they take the written report and execute themselves. Some continue to Design. A subset commission the studio for the full Build.
+</p>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; max-height: 360px;">
+
+<svg viewBox="0 0 1200 280" xmlns="http://www.w3.org/2000/svg" style="width: 100%; max-width: 1100px;">
+<g class="svg-ink" fill="none" stroke="currentColor">
+  <!-- 4 step circles -->
+  <circle cx="120" cy="140" r="60" stroke-width="2.5"/>
+  <text x="120" y="148" font-family="Space Grotesk, sans-serif" font-size="36" font-weight="500" fill="currentColor" text-anchor="middle">01</text>
+  
+  <circle cx="400" cy="140" r="60" stroke-width="2.5"/>
+  <text x="400" y="148" font-family="Space Grotesk, sans-serif" font-size="36" font-weight="500" fill="currentColor" text-anchor="middle">02</text>
+  
+  <circle cx="680" cy="140" r="60" stroke-width="2.5"/>
+  <text x="680" y="148" font-family="Space Grotesk, sans-serif" font-size="36" font-weight="500" fill="currentColor" text-anchor="middle">03</text>
+  
+  <!-- 4th in hanko (the build stage) -->
+  <circle cx="960" cy="140" r="60" stroke-width="2.5" class="svg-hanko"/>
+  <text x="960" y="148" font-family="Space Grotesk, sans-serif" font-size="36" font-weight="500" fill="currentColor" class="svg-hanko" text-anchor="middle">04</text>
+  
+  <!-- arrows -->
+  <line x1="190" y1="140" x2="330" y2="140" stroke-width="1.5"/>
+  <polyline points="320,134 330,140 320,146" stroke-width="1.5"/>
+  <line x1="470" y1="140" x2="610" y2="140" stroke-width="1.5"/>
+  <polyline points="600,134 610,140 600,146" stroke-width="1.5"/>
+  <line x1="750" y1="140" x2="890" y2="140" stroke-width="1.5"/>
+  <polyline points="880,134 890,140 880,146" stroke-width="1.5"/>
+</g>
+<g font-family="IBM Plex Mono, monospace" font-size="14" fill="currentColor" class="svg-ink" text-anchor="middle" letter-spacing="1px">
+  <text x="120" y="240">FREE INTRO</text>
+  <text x="120" y="262" font-size="11" class="svg-ink-faint">20 min · scope fit</text>
+  <text x="400" y="240">PAID INTAKE</text>
+  <text x="400" y="262" font-size="11" class="svg-ink-faint">on-site · report</text>
+  <text x="680" y="240">DESIGN</text>
+  <text x="680" y="262" font-size="11" class="svg-ink-faint">drawings · BOM</text>
+  <text x="960" y="240" class="svg-hanko">BUILD</text>
+  <text x="960" y="262" font-size="11" class="svg-ink-faint">execution</text>
+</g>
+</svg>
+
+</div>
+</div>
+<div class="frame-caption">
+  <span>You can stop at any stage. No subscription. No retainer.</span>
+  <span>The intake report is yours. Take it. Use it. Hire whoever you want.</span>
+</div>
+</div></div>
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content" style="flex-direction: row; align-items: stretch; gap: 64px;">
+<div style="flex: 1;">
+<div class="mono-label" style="margin-bottom: 32px;">§ 06 Service area</div>
+<h1 class="display display-lg" style="margin-bottom: 32px;"><em>Toronto</em><br>and the GTA.</h1>
+
+<p class="body" style="font-size: 21px; margin-bottom: 24px;">
+Primary service area is <strong>Toronto and the surrounding Greater Toronto Area</strong>: Mississauga, Brampton, Vaughan, Markham, Pickering, Hamilton, Oakville. All accessible within a single business day for site visits.
+</p>
+<p class="body" style="font-size: 20px; color: var(--ink-soft); margin-bottom: 24px;">
+For locations beyond the GTA, we travel for specific projects at additional cost (travel + accommodation, billed separately). For locations outside Ontario, consider <em>BXBX.Space</em> instead — many catalogue models are available as plans you can build yourself or with a local contractor.
+</p>
+<div class="mono-label" style="margin-top: 32px;">PRIMARY SERVICE AREA · 75 KM RADIUS OF TORONTO CITY HALL</div>
+
+</div>
+<div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+
+<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="width: 100%; max-width: 540px;">
+<g class="svg-ink" fill="none" stroke="currentColor" stroke-width="1.5">
+  <!-- GTA outline schematic -->
+  <ellipse cx="300" cy="200" rx="250" ry="160" stroke-dasharray="6,6" opacity="0.5"/>
+  
+  <!-- Lake Ontario at bottom -->
+  <path d="M 50 320 Q 300 380 550 320" stroke-width="2" fill="currentColor" opacity="0.08"/>
+  <text x="300" y="370" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" class="svg-ink-faint" text-anchor="middle" letter-spacing="2px">LAKE ONTARIO</text>
+  
+  <!-- City dots -->
+  <circle cx="300" cy="240" r="14" fill="currentColor" class="svg-hanko" stroke="none"/>
+  <text x="300" y="220" font-family="IBM Plex Mono, monospace" font-size="13" fill="currentColor" text-anchor="middle" font-weight="700">TORONTO</text>
+  
+  <circle cx="220" cy="200" r="6" fill="currentColor" class="svg-ink-soft" stroke="none"/>
+  <text x="220" y="185" font-family="IBM Plex Mono, monospace" font-size="9" fill="currentColor" class="svg-ink-soft" text-anchor="middle">Mississauga</text>
+  
+  <circle cx="180" cy="155" r="5" fill="currentColor" class="svg-ink-soft" stroke="none"/>
+  <text x="180" y="142" font-family="IBM Plex Mono, monospace" font-size="9" fill="currentColor" class="svg-ink-soft" text-anchor="middle">Brampton</text>
+  
+  <circle cx="265" cy="125" r="5" fill="currentColor" class="svg-ink-soft" stroke="none"/>
+  <text x="265" y="113" font-family="IBM Plex Mono, monospace" font-size="9" fill="currentColor" class="svg-ink-soft" text-anchor="middle">Vaughan</text>
+  
+  <circle cx="350" cy="125" r="5" fill="currentColor" class="svg-ink-soft" stroke="none"/>
+  <text x="350" y="113" font-family="IBM Plex Mono, monospace" font-size="9" fill="currentColor" class="svg-ink-soft" text-anchor="middle">Markham</text>
+  
+  <circle cx="400" cy="220" r="5" fill="currentColor" class="svg-ink-soft" stroke="none"/>
+  <text x="400" y="207" font-family="IBM Plex Mono, monospace" font-size="9" fill="currentColor" class="svg-ink-soft" text-anchor="middle">Pickering</text>
+  
+  <circle cx="105" cy="245" r="6" fill="currentColor" class="svg-ink-soft" stroke="none"/>
+  <text x="105" y="232" font-family="IBM Plex Mono, monospace" font-size="9" fill="currentColor" class="svg-ink-soft" text-anchor="middle">Hamilton</text>
+</g>
+</svg>
+
+</div>
+</div>
+<div class="frame-caption">
+  <span>75 km radius primary. Beyond that, travel-billed.</span>
+  <span>Out of province? See BXBX.Space for plans + kits, anywhere.</span>
+</div>
+</div></div>
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content" style="flex-direction: row; align-items: center; gap: 64px;">
+<div style="flex: 1;">
+<div class="mono-label" style="margin-bottom: 32px;">§ 07 Built work · PF-04</div>
+<h1 class="display display-lg" style="margin-bottom: 32px;"><em>Microcave.</em> A Goplus shed,<br>reinforced into <em>something else</em>.</h1>
+<p class="body" style="font-size: 21px;">PF-04 Microcave is the BXBX.Laneway service flagship. A standard Goplus garden shed reinforced and converted into a microfarm + workspace + kid corner. Shows what AT-02/AT-03/AT-04 work looks like at customer scale. Real photography arrives via PR0J.co.</p>
+</div>
+<div style="flex: 1; aspect-ratio: 4/3; background: var(--paper-shade); border: 1px solid var(--paper-edge); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px;">
+<div class="mono-label" style="color: var(--ink-faint); margin-bottom: 12px; text-align: center;">IMAGE · FPO</div>
+<div class="body" style="font-size: 16px; color: var(--ink-soft); text-align: center; max-width: 32ch; margin-bottom: 16px;">PF-04 MICROCAVE · TORONTO BACKYARD · COMPLETED 2025</div>
+<div class="mono-label" style="color: var(--ink-faint); font-size: 10px;">PHOTOGRAPHY · PR0J.co pipeline · Q3 2026</div>
+</div>
+</div>
+<div class="frame-caption">
+  <span>From shed to room. The Laneway practice at customer scale.</span>
+  <span>Built precedent for AT-02 / AT-03 / AT-04 / AT-06.</span>
+</div>
+</div></div>
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content" style="flex-direction: row; align-items: center; gap: 64px;">
+<div style="flex: 1;">
+<div class="mono-label" style="margin-bottom: 32px;">§ 08 What an intake report looks like</div>
+<h1 class="display display-lg" style="margin-bottom: 32px;">Real <em>deliverable</em>.<br>Real recommendations.</h1>
+<p class="body" style="font-size: 21px;">Every BXBX.Laneway intake produces a written report. 8-12 pages. Floor plan or site plan. Material recommendations. Build sequence. Honest budget estimate. References to relevant catalogue models. Yours to keep, share with contractors, or hand back to the studio for design+build follow-on.</p>
+</div>
+<div style="flex: 1; aspect-ratio: 4/3; background: var(--paper-shade); border: 1px solid var(--paper-edge); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px;">
+<div class="mono-label" style="color: var(--ink-faint); margin-bottom: 12px; text-align: center;">IMAGE · FPO</div>
+<div class="body" style="font-size: 16px; color: var(--ink-soft); text-align: center; max-width: 32ch; margin-bottom: 16px;">SAMPLE INTAKE REPORT · AT-02 DŌJŌ · 11 PAGES</div>
+<div class="mono-label" style="color: var(--ink-faint); font-size: 10px;">SAMPLE · anonymized customer report · publish Q3 2026</div>
+</div>
+</div>
+<div class="frame-caption">
+  <span>The report is the deliverable. The conversation is the value.</span>
+  <span>You own the deliverable. Take it anywhere.</span>
+</div>
+</div></div>
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content">
+<div class="mono-label" style="margin-bottom: 32px;">§ 09 What you can count on</div>
+<h1 class="display display-lg" style="margin-bottom: 16px;">Five <em>promises</em>.</h1>
+<p class="lede" style="margin-bottom: 32px;">These are the operating principles that distinguish BXBX.Laneway from a generic contractor. They are the studio's explicit commitments to every Laneway customer.</p>
+<div class="grid grid-3" style="gap: 24px;">
+<div class="iso-card iso-card-hanko">
+<div class="tier-label">01 · refund policy</div>
+<div class="name">50% refund, no negotiation</div>
+<div class="desc">If you're unsatisfied with the intake assessment, you get 50% refunded. No conversation, no defensiveness.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">STANDARD POLICY · ALL OFFERINGS</div>
+</div>
+<div class="iso-card">
+<div class="tier-label">02 · scope honesty</div>
+<div class="name">No surprise additions</div>
+<div class="desc">The intake-stage report includes a budget range for design + build. We don't pad. If costs exceed estimate, we eat the difference within reason.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">±15% TOLERANCE</div>
+</div>
+<div class="iso-card">
+<div class="tier-label">03 · timeline</div>
+<div class="name">5-10 business days</div>
+<div class="desc">Intake reports are delivered within 5-10 business days of site visit. We don't carry projects open longer than that without explicit reason.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">COMMITTED</div>
+</div>
+<div class="iso-card">
+<div class="tier-label">04 · payment terms</div>
+<div class="name">Honest staging</div>
+<div class="desc">Assessments paid 100% upfront. Larger projects: 50% on engagement, 50% on delivery. No middle-stage payment-extraction games.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">STANDARD ACROSS THE STUDIO</div>
+</div>
+<div class="iso-card">
+<div class="tier-label">05 · references</div>
+<div class="name">You own the IP</div>
+<div class="desc">The intake report is yours. The drawings are yours. Take them to any contractor, anywhere. We don't hold customer work hostage.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">WRITTEN INTO EVERY CONTRACT</div>
+</div>
+<div class="iso-card iso-card-soft">
+<div class="tier-label">06 · referral</div>
+<div class="name">We turn down work</div>
+<div class="desc">If your project isn't a fit for the studio, we'll say so, and refer you to someone who can help. Better to decline cleanly than over-promise.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">TRACK RECORD AVAILABLE ON REQUEST</div>
+</div>
+</div>
+</div>
+<div class="frame-caption">
+  <span>Operating ethics as explicit commitments. Not aspirational.</span>
+  <span>These are the policies. They go in every contract.</span>
+</div>
+</div></div>
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content">
+<div class="mono-label" style="margin-bottom: 32px;">§ 10 What we believe</div>
+<h1 class="display display-lg" style="margin-bottom: 48px;">Constraint as<br><em>generosity</em>.</h1>
+<div style="max-width: 70ch;">
+<p class="body" style="font-size: 22px; margin-bottom: 18px;">The catalogue's working assumption: <em>a 6-mat Japanese tea room (9.2 m²) reads as expansive while a 30 m² New York studio apartment reads as cramped.</em> Volume isn't the variable that determines spatial experience. Composition is.</p>
+<p class="body" style="font-size: 22px; margin-bottom: 18px;">BXBX.Laneway brings that thesis to the urban backyard. Most of our customers' spaces are <em>already large enough</em>. The work isn't to add square footage. The work is to redesign the composition.</p>
+<p class="body" style="font-size: 22px; margin-bottom: 18px;">A garage that doesn't feel like a gym is a composition problem. A backyard that doesn't feel like a retreat is a composition problem. A laneway that feels wasted is a composition problem. We are composition designers, working at body scale.</p>
+</div>
+</div>
+<div class="frame-caption">
+  <span>From Japanese micro-architecture · the catalogue&#x27;s second thesis.</span>
+  <span>Read all four theses at bxbx.studio/#philosophy</span>
+</div>
+</div></div>
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content">
+<div class="mono-label" style="margin-bottom: 32px;">§ 11 Book an intake</div>
+<h1 class="display display-lg" style="margin-bottom: 16px;"><em>Let's talk</em><br>about your space.</h1>
+<p class="lede" style="margin-bottom: 32px;">Two paths into the Laneway practice. Both start with a free 20-minute intro call to confirm scope and fit.</p>
+<div class="grid grid-2" style="gap: 24px;">
+<div class="iso-card iso-card-hanko">
+<div class="tier-label">PATH 1 · book online</div>
+<div class="name">Tally intake form</div>
+<div class="desc">Fill out the structured intake form. We respond within 48 business hours with a fit confirmation and a calendar link for the paid on-site visit. Easiest path for AT-02 through AT-06.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">→ bxbx.studio/#talk</div>
+</div>
+<div class="iso-card">
+<div class="tier-label">PATH 2 · email direct</div>
+<div class="name">Email the studio</div>
+<div class="desc">For complex projects, partnerships, custom scope, or projects outside the six standard Atelier offerings. Long-form OK; we read every email.</div>
+<div class="mono-label" style="margin-top: 24px; font-size: 11px;">→ studio@bxbx.studio</div>
+</div>
+</div>
+</div>
+<div class="frame-caption">
+  <span>Either path. Same person responds. Same care.</span>
+  <span>BXBX.Laneway · commercial intake May 2026.</span>
+</div>
+</div></div>
+<div class="frame-wrap"><div class="frame">
+<div class="frame-brand"><div class="hanko-mark"></div>{BRAND_LABEL}</div>
+<div class="frame-number">{FRAME_NUMBER}</div>
+<div class="frame-content center" style="justify-content: center;">
+<div class="mono-label" style="margin-bottom: 48px; color: var(--hanko);">— BXBX.LANEWAY —</div>
+<h1 class="display display-xxl" style="margin-bottom: 24px; line-height: 0.92;">
+<span style="display: inline-block;">Stealth.</span> <span style="display: inline-block; color: var(--hanko);">Service.</span> <span style="display: inline-block;">Toronto.</span>
+</h1>
+<div class="lede" style="margin-top: 36px; max-width: none; font-size: 36px; color: var(--ink-soft);">Design. Build. Experience. — at the scale of your laneway.</div>
+</div>
+<div class="frame-caption">
+  <span>studio@bxbx.studio · bxbx.studio/#laneway</span>
+  <span>BXBX.LANEWAY · Toronto + GTA · May 2026</span>
+</div>
+</div></div>
+</div>
+
+</body>
+</html>

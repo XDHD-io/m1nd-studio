@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Label Tool · STD-09 generator · BXBX Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #FAFAF7;
+  --paper-shade: #F2F1EC;
+  --paper-edge: #E8E6DF;
+  --ink: #1A1A1A;
+  --ink-soft: #4A4A48;
+  --ink-faint: #8B8A85;
+  --hanko: #C8472D;
+  --hanko-shade: rgba(200, 71, 45, 0.08);
+  --display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #14130F;
+    --paper-shade: #1C1B17;
+    --paper-edge: #2A2925;
+    --ink: #F2EFE6;
+    --ink-soft: #BDB8AB;
+    --ink-faint: #807B6E;
+    --hanko: #E8745C;
+    --hanko-shade: rgba(232, 116, 92, 0.12);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #14130F;
+  --paper-shade: #1C1B17;
+  --paper-edge: #2A2925;
+  --ink: #F2EFE6;
+  --ink-soft: #BDB8AB;
+  --ink-faint: #807B6E;
+  --hanko: #E8745C;
+  --hanko-shade: rgba(232, 116, 92, 0.12);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--body);
+  font-size: 14px;
+  line-height: 1.5;
+  background: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.shell {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 clamp(16px, 3vw, 32px);
+}
+
+/* Header */
+header {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--paper-edge);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.tool-title {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink-soft);
+}
+.tool-title strong { color: var(--ink); font-weight: 600; }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.header-actions a {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 6px 12px;
+  border: 1px solid var(--paper-edge);
+  border-radius: 2px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.header-actions a:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+#theme-toggle {
+  background: transparent;
+  border: 1px solid var(--paper-edge);
+  color: var(--ink-soft);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s, border-color 0.2s;
+}
+#theme-toggle:hover { color: var(--ink); border-color: var(--ink); }
+.theme-icon-sun { display: none; }
+.theme-icon-moon { display: block; }
+:root[data-theme="dark"] .theme-icon-sun { display: block; }
+:root[data-theme="dark"] .theme-icon-moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-icon-sun { display: block; }
+  :root:not([data-theme="light"]) .theme-icon-moon { display: none; }
+}
+
+/* Intro */
+.intro {
+  padding: 28px 0 20px;
+}
+.intro h1 {
+  font-family: var(--display);
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.intro h1 em { font-style: italic; color: var(--ink-soft); }
+.intro p {
+  font-family: var(--display);
+  font-size: 15px;
+  color: var(--ink-soft);
+  max-width: 60ch;
+  line-height: 1.5;
+}
+
+/* Layout grid */
+.work-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 32px;
+  padding: 24px 0 48px;
+  align-items: start;
+}
+@media (max-width: 920px) {
+  .work-grid { grid-template-columns: 1fr; }
+}
+
+.sidebar > section {
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--paper-edge);
+}
+.sidebar > section:last-child { border-bottom: none; }
+
+.sidebar h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+
+/* Type toggle */
+.type-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.type-btn {
+  padding: 10px 12px;
+  border: 1px solid var(--paper-edge);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.type-btn:hover { border-color: var(--ink-soft); background: var(--paper-shade); }
+.type-btn.active { border-color: var(--hanko); background: var(--hanko-shade); }
+.type-btn .type-label { font-weight: 600; }
+.type-btn .type-meta { font-size: 9px; color: var(--ink-faint); }
+
+/* Size picker */
+.size-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.size-btn {
+  padding: 9px 6px;
+  border: 1px solid var(--paper-edge);
+  background: transparent;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.size-btn:hover { border-color: var(--ink-soft); background: var(--paper-shade); }
+.size-btn.active { border-color: var(--hanko); background: var(--hanko-shade); }
+.size-btn-name { font-weight: 600; font-size: 12px; }
+.size-btn-dim { font-size: 9px; color: var(--ink-faint); }
+
+/* Fields */
+.field {
+  margin-bottom: 12px;
+}
+.field label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 4px;
+}
+.field input, .field textarea, .field select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--paper-edge);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 500;
+}
+.field input:focus, .field textarea:focus, .field select:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+.field textarea {
+  resize: vertical;
+  min-height: 50px;
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.hint {
+  font-family: var(--display);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-top: 10px;
+  max-width: 36ch;
+}
+
+/* Action buttons */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.action-btn {
+  padding: 10px 14px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  text-align: center;
+}
+.action-btn:hover { opacity: 0.85; }
+.action-btn.secondary {
+  background: transparent;
+  color: var(--ink);
+}
+.action-btn.secondary:hover { background: var(--paper-shade); opacity: 1; }
+.action-btn.hanko {
+  background: var(--hanko);
+  border-color: var(--hanko);
+  color: var(--paper);
+}
+
+/* Preview */
+.preview-area {
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-edge);
+  padding: 24px;
+}
+.preview-area h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.preview-area .preview-tagline {
+  font-family: var(--display);
+  font-size: 13px;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+
+.preview-stage {
+  background: var(--paper);
+  border: 1px dashed var(--paper-edge);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.preview-stage svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.preview-caption {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+/* History panel */
+.history-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+.history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: var(--paper-shade);
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 10px;
+  transition: border-color 0.15s;
+}
+.history-item:hover {
+  border-color: var(--paper-edge);
+}
+.history-item-code { color: var(--hanko); font-weight: 600; }
+.history-item-name { color: var(--ink-soft); margin-left: 8px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.history-item-del {
+  background: transparent;
+  border: none;
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 4px;
+}
+.history-item-del:hover { color: var(--hanko); }
+.history-empty {
+  font-family: var(--display);
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-style: italic;
+  padding: 12px 0;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(120%);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 12px 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform 0.3s;
+  z-index: 100;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Footer */
+footer {
+  border-top: 1px solid var(--paper-edge);
+  padding: 24px 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+footer a { color: var(--ink-soft); text-decoration: none; }
+footer a:hover { color: var(--ink); text-decoration: underline; }
+
+/* Print styles */
+@page {
+  size: letter;
+  margin: 0.5in;
+}
+
+@media print {
+  body * { visibility: hidden; }
+  #print-area, #print-area * { visibility: visible; }
+  #print-area { position: absolute; left: 0; top: 0; width: 100%; }
+  .no-print { display: none !important; }
+}
+
+#print-area {
+  display: none;
+}
+
+#print-area.printing {
+  display: block;
+}
+
+.print-sheet {
+  width: 7.5in;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25in;
+  page-break-after: always;
+}
+
+.print-label {
+  width: 100%;
+  page-break-inside: avoid;
+}
+
+.print-label svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.crop-mark {
+  border: 1px dotted #ccc;
+  padding: 4px;
+}
+</style>
+</head>
+<body>
+
+<a href="/index.html" style="position: fixed; top: 16px; right: 16px; z-index: 1000; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #4A4640; text-decoration: none; padding: 6px 12px; background: rgba(255,255,255,0.85); border: 1px solid #C8C2B5; border-radius: 2px;">← M1ND.studio</a>
+
+
+<script>
+  (function() {
+    try {
+      const saved = localStorage.getItem('bxbx-theme');
+      if (saved === 'dark' || saved === 'light') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    } catch(e) {}
+  })();
+</script>
+
+<div class="shell no-print">
+
+<header>
+  <a href="#" class="brand">
+    <svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <rect x="1" y="1" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <rect x="5" y="5" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <rect x="9" y="9" width="4" height="4" fill="var(--hanko)"/>
+    </svg>
+    <span>BXBX</span>
+  </a>
+  <div class="tool-title"><strong>Label Tool</strong> · STD-09 generator</div>
+  <div class="header-actions">
+    <a href="../site.html" target="_blank" rel="noopener">↩ BXBX Studio</a>
+    <a href="../site.html#portfolio/PF-09" target="_blank" rel="noopener">PF-09 docs</a>
+    <button id="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <svg class="theme-icon theme-icon-sun" width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="7" cy="7" r="3" fill="currentColor"/>
+        <g stroke="currentColor" stroke-width="1.2" stroke-linecap="round">
+          <line x1="7" y1="1" x2="7" y2="2.5"/><line x1="7" y1="11.5" x2="7" y2="13"/>
+          <line x1="1" y1="7" x2="2.5" y2="7"/><line x1="11.5" y1="7" x2="13" y2="7"/>
+          <line x1="2.6" y1="2.6" x2="3.7" y2="3.7"/><line x1="10.3" y1="10.3" x2="11.4" y2="11.4"/>
+          <line x1="11.4" y1="2.6" x2="10.3" y2="3.7"/><line x1="3.7" y1="10.3" x2="2.6" y2="11.4"/>
+        </g>
+      </svg>
+      <svg class="theme-icon theme-icon-moon" width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M11 8.5a4.5 4.5 0 0 1-5.5-5.5 4.5 4.5 0 1 0 5.5 5.5z" fill="currentColor"/>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<div class="intro">
+  <h1>Generate a <em>pouch label</em>.</h1>
+  <p>Internal studio labels or shipped product labels for JARLINK pouches (STD-09). Live SVG preview. Print 4 labels per 8.5×11 sheet for batch labeling. LocalStorage history of last 50 labels. Export as inventory CSV row for the BXBX studio tracking system.</p>
+</div>
+
+<div class="work-grid">
+
+  <aside class="sidebar">
+    <section>
+      <h4>Label type</h4>
+      <div class="type-toggle">
+        <button class="type-btn active" data-type="shipped">
+          <span class="type-label">Shipped</span>
+          <span class="type-meta">Full brand · for products</span>
+        </button>
+        <button class="type-btn" data-type="internal">
+          <span class="type-label">Internal</span>
+          <span class="type-meta">Studio · workshop use</span>
+        </button>
+      </div>
+    </section>
+
+    <section>
+      <h4>Pouch size · 8 options</h4>
+      <div class="size-grid">
+        <button class="size-btn" data-size="B4"><span class="size-btn-name">B4</span><span class="size-btn-dim">15×11"</span></button>
+        <button class="size-btn active" data-size="A4"><span class="size-btn-name">A4</span><span class="size-btn-dim">13.2×9.4"</span></button>
+        <button class="size-btn" data-size="B5"><span class="size-btn-name">B5</span><span class="size-btn-dim">11.6×8.3"</span></button>
+        <button class="size-btn" data-size="A5"><span class="size-btn-name">A5</span><span class="size-btn-dim">9.4×6.9"</span></button>
+        <button class="size-btn" data-size="B6"><span class="size-btn-name">B6</span><span class="size-btn-dim">7.7×5.5"</span></button>
+        <button class="size-btn" data-size="A6"><span class="size-btn-name">A6</span><span class="size-btn-dim">7.3×4.5"</span></button>
+        <button class="size-btn" data-size="Bills"><span class="size-btn-name">Bills</span><span class="size-btn-dim">9.4×4.3"</span></button>
+        <button class="size-btn" data-size="B8"><span class="size-btn-name">B8</span><span class="size-btn-dim">5.1×4.1"</span></button>
+      </div>
+      <div class="hint">A4 is the shipping default · B6 is the hardware bag default · all 8 are real JARLINK SKUs in the studio inventory.</div>
+    </section>
+
+    <section>
+      <h4>Item code</h4>
+      <div class="field">
+        <label for="code-prefix">Type prefix</label>
+        <select id="code-prefix">
+          <option value="STK">STK · Stock item</option>
+          <option value="KIT">KIT · Assembled kit</option>
+          <option value="BXBX">BXBX · Catalogue model</option>
+          <option value="PF">PF · Portfolio piece</option>
+          <option value="AT">AT · Atelier intake</option>
+          <option value="CSTM">CSTM · Customer-specific</option>
+          <option value="TOOL">TOOL · Workshop tool</option>
+          <option value="DASH">DASH · DASH.Q420 inventory</option>
+        </select>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="code-year">Year</label>
+          <input id="code-year" type="number" min="2024" max="2030" value="2026" step="1">
+        </div>
+        <div class="field">
+          <label for="code-seq">Sequence</label>
+          <input id="code-seq" type="number" min="1" max="9999" value="1" step="1">
+        </div>
+      </div>
+      <button class="action-btn secondary" id="auto-seq" style="font-size: 9px; padding: 6px 10px;">Next available sequence</button>
+    </section>
+
+    <section>
+      <h4>Content</h4>
+      <div class="field">
+        <label for="primary-line">Product / item line (primary)</label>
+        <input id="primary-line" type="text" maxlength="32" placeholder="e.g. BXBX-005 HAKO" value="BXBX-005 HAKO">
+      </div>
+      <div class="field">
+        <label for="secondary-line">Description (secondary)</label>
+        <input id="secondary-line" type="text" maxlength="48" placeholder="e.g. JOINERY KIT · M5 × 30mm" value="JOINERY KIT · M5 × 30mm">
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="date-field">Date</label>
+          <input id="date-field" type="date" value="">
+        </div>
+        <div class="field">
+          <label for="count-field">Count</label>
+          <input id="count-field" type="text" maxlength="10" placeholder="14 PCS" value="14 PCS">
+        </div>
+      </div>
+      <div class="field">
+        <label for="lot-field">Lot / batch (optional)</label>
+        <input id="lot-field" type="text" maxlength="20" placeholder="LOT 0034">
+      </div>
+      <div class="field">
+        <label for="notes-field">Custom notes / location (optional)</label>
+        <textarea id="notes-field" maxlength="60" placeholder="e.g. Workshop wall · row 2 · pos 3"></textarea>
+      </div>
+    </section>
+
+    <section>
+      <h4>Generate output</h4>
+      <div class="actions">
+        <button class="action-btn hanko" id="print-sheet">Print 4-up sheet (8.5×11)</button>
+        <button class="action-btn" id="download-svg">Download single SVG</button>
+        <button class="action-btn secondary" id="copy-csv">Copy as inventory CSV row</button>
+        <button class="action-btn secondary" id="save-history">Save to history</button>
+      </div>
+      <div class="hint">Print sheet lays out 4 labels per 8.5×11 page · cut along dotted lines · slips into the JARLINK A4 line\'s sewn label pocket OR loops through any pouch\'s zipper-pull with cord.</div>
+    </section>
+
+    <section>
+      <h4>History · last 50</h4>
+      <ul class="history-list" id="history-list"></ul>
+      <div style="margin-top: 8px;">
+        <button class="action-btn secondary" id="clear-history" style="font-size: 9px; padding: 6px 10px;">Clear history</button>
+        <button class="action-btn secondary" id="export-history" style="font-size: 9px; padding: 6px 10px;">Export all as CSV</button>
+      </div>
+    </section>
+  </aside>
+
+  <main class="canvas-area">
+    <section class="preview-area">
+      <h4>Live preview</h4>
+      <div class="preview-tagline">Label rendered at print scale · this is what slips into the pouch label pocket OR loops to the zipper-pull</div>
+      <div class="preview-stage">
+        <div id="preview-svg-wrap"></div>
+        <div class="preview-caption" id="preview-caption">Shipped label · A4 · 2.5 × 4 inches</div>
+      </div>
+
+      <div style="margin-top: 24px; padding: 20px; background: var(--paper); border: 1px solid var(--paper-edge);">
+        <h4>Pouch preview · label in position</h4>
+        <div class="preview-tagline">The same label shown on its pouch · upper-left label pocket position · zipper-pull / carabiner attachment at top-right</div>
+        <div style="display: flex; justify-content: center; padding: 16px 0;">
+          <div id="pouch-svg-wrap"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+</div>
+
+<footer class="no-print">
+  <div>BXBX Studio · Label Tool v0.1 · STD-09 sizing + labeling for JARLINK mesh pouches</div>
+  <div><a href="../site.html" target="_blank" rel="noopener">bxbx.studio →</a></div>
+</footer>
+
+</div>
+
+<!-- Print area (hidden until print) -->
+<div id="print-area">
+  <div class="print-sheet" id="print-sheet-content"></div>
+</div>
+
+<div class="toast no-print" id="toast">Saved</div>
+
+<script>
+'use strict';
+
+// ===== PRODUCT DATA =====
+const POUCH_SIZES = {
+  'B4':    { w: 15.0, h: 11.0, jp: 'B4',    note: 'flat-pack large' },
+  'A4':    { w: 13.2, h: 9.4,  jp: 'A4',    note: 'shipping default · letter size' },
+  'B5':    { w: 11.6, h: 8.3,  jp: 'B5',    note: 'notebook size' },
+  'A5':    { w: 9.4,  h: 6.9,  jp: 'A5',    note: 'half-letter · sub-component' },
+  'B6':    { w: 7.7,  h: 5.5,  jp: 'B6',    note: 'hardware bag default' },
+  'A6':    { w: 7.3,  h: 4.5,  jp: 'A6',    note: 'passport size' },
+  'Bills': { w: 9.4,  h: 4.3,  jp: 'Bills', note: 'long-narrow' },
+  'B8':    { w: 5.1,  h: 4.1,  jp: 'B8',    note: 'matchbox' }
+};
+
+// Label dimensions per type (in inches)
+const LABEL_DIMS = {
+  shipped:  { w: 4.0, h: 2.5 },  // ~Avery 5163, slips into A4 pouch pocket
+  internal: { w: 2.5, h: 1.5 }   // smaller cardstock tag, looped via cord
+};
+
+// ===== STATE =====
+const state = {
+  type: 'shipped',
+  size: 'A4',
+  prefix: 'STK',
+  year: 2026,
+  seq: 1,
+  primary: 'BXBX-005 HAKO',
+  secondary: 'JOINERY KIT · M5 × 30mm',
+  date: '',
+  count: '14 PCS',
+  lot: '',
+  notes: '',
+  history: []
+};
+
+// ===== INIT =====
+function init() {
+  // Set today's date as default
+  const today = new Date();
+  const isoDate = today.toISOString().slice(0, 10);
+  document.getElementById('date-field').value = isoDate;
+  state.date = isoDate;
+
+  // Load history from localStorage
+  loadHistory();
+
+  // Theme toggle
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const root = document.documentElement;
+    const current = root.getAttribute('data-theme');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    let next;
+    if (current === 'dark') next = 'light';
+    else if (current === 'light') next = 'dark';
+    else next = systemDark ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('bxbx-theme', next); } catch(e) {}
+  });
+
+  // Type toggle
+  document.querySelectorAll('.type-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.type = btn.dataset.type;
+      render();
+    });
+  });
+
+  // Size picker
+  document.querySelectorAll('.size-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.size = btn.dataset.size;
+      render();
+    });
+  });
+
+  // Field inputs
+  document.getElementById('code-prefix').addEventListener('change', (e) => { state.prefix = e.target.value; render(); });
+  document.getElementById('code-year').addEventListener('input', (e) => { state.year = parseInt(e.target.value, 10) || 2026; render(); });
+  document.getElementById('code-seq').addEventListener('input', (e) => { state.seq = parseInt(e.target.value, 10) || 1; render(); });
+  document.getElementById('primary-line').addEventListener('input', (e) => { state.primary = e.target.value; render(); });
+  document.getElementById('secondary-line').addEventListener('input', (e) => { state.secondary = e.target.value; render(); });
+  document.getElementById('date-field').addEventListener('input', (e) => { state.date = e.target.value; render(); });
+  document.getElementById('count-field').addEventListener('input', (e) => { state.count = e.target.value; render(); });
+  document.getElementById('lot-field').addEventListener('input', (e) => { state.lot = e.target.value; render(); });
+  document.getElementById('notes-field').addEventListener('input', (e) => { state.notes = e.target.value; render(); });
+
+  // Auto-seq button
+  document.getElementById('auto-seq').addEventListener('click', () => {
+    const nextSeq = computeNextSeq();
+    state.seq = nextSeq;
+    document.getElementById('code-seq').value = nextSeq;
+    render();
+    showToast('Sequence ' + nextSeq + ' assigned');
+  });
+
+  // Action buttons
+  document.getElementById('print-sheet').addEventListener('click', printSheet);
+  document.getElementById('download-svg').addEventListener('click', downloadSvg);
+  document.getElementById('copy-csv').addEventListener('click', copyCsvRow);
+  document.getElementById('save-history').addEventListener('click', () => saveToHistory(true));
+
+  // History controls
+  document.getElementById('clear-history').addEventListener('click', clearHistory);
+  document.getElementById('export-history').addEventListener('click', exportHistoryCsv);
+
+  render();
+}
+
+function getItemCode() {
+  const seqStr = String(state.seq).padStart(4, '0');
+  return `${state.prefix}-${state.year}-${seqStr}`;
+}
+
+function computeNextSeq() {
+  // Find highest sequence number used for current prefix + year in history
+  const prefix = state.prefix;
+  const year = state.year;
+  let highest = 0;
+  state.history.forEach(item => {
+    if (item.prefix === prefix && item.year === year) {
+      if (item.seq > highest) highest = item.seq;
+    }
+  });
+  return highest + 1;
+}
+
+// ===== SVG GENERATION =====
+function renderLabelSvg(opts) {
+  // opts: { type, code, primary, secondary, date, count, lot, notes, scale }
+  const type = opts.type || 'shipped';
+  const dims = LABEL_DIMS[type];
+  const scale = opts.scale || 100; // px per inch
+  const W = dims.w * scale;
+  const H = dims.h * scale;
+
+  // Layout: hanko block upper-left, BXBX wordmark next to it, then content below
+  // Different layouts for shipped vs internal
+
+  if (type === 'shipped') {
+    return renderShippedLabel(W, H, scale, opts);
+  } else {
+    return renderInternalLabel(W, H, scale, opts);
+  }
+}
+
+function renderShippedLabel(W, H, scale, opts) {
+  // Hanko block on left (square, ~0.5 inch)
+  const hankoSize = 0.55 * scale;
+  const hankoX = 0.18 * scale;
+  const hankoY = 0.18 * scale;
+
+  // BXBX wordmark to the right of hanko
+  const wordmarkX = hankoX + hankoSize + 0.12 * scale;
+  const wordmarkY = hankoY + hankoSize * 0.55;
+
+  // Separator at top section bottom
+  const sepY = hankoY + hankoSize + 0.18 * scale;
+
+  // Content area
+  const contentX = 0.18 * scale;
+  const primaryY = sepY + 0.22 * scale;
+  const secondaryY = primaryY + 0.18 * scale;
+
+  // Metadata line
+  const metaY = H - 0.22 * scale;
+  const metaSepY = metaY - 0.12 * scale;
+
+  const code = opts.code || 'STK-2026-0001';
+  const primary = opts.primary || '';
+  const secondary = opts.secondary || '';
+  const date = formatDate(opts.date);
+  const count = opts.count || '';
+  const lot = opts.lot || '';
+
+  // Compose metadata line
+  const metaParts = [];
+  if (date) metaParts.push(date);
+  if (count) metaParts.push(count);
+  if (lot) metaParts.push(lot);
+  const metaLine = metaParts.join(' · ');
+
+  // Code line (small, separate from metadata)
+  const codeText = code;
+
+  // Font sizes proportional to scale
+  const primaryFontSize = Math.round(0.16 * scale);
+  const secondaryFontSize = Math.round(0.12 * scale);
+  const metaFontSize = Math.round(0.10 * scale);
+  const wordmarkFontSize = Math.round(0.18 * scale);
+  const subWordmarkFontSize = Math.round(0.08 * scale);
+  const codeFontSize = Math.round(0.10 * scale);
+
+  return `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" font-family="'IBM Plex Mono', monospace">
+  <!-- White background (paper) -->
+  <rect x="0" y="0" width="${W}" height="${H}" fill="white" stroke="#1A1A1A" stroke-width="0.5"/>
+
+  <!-- Hanko stamp block -->
+  <rect x="${hankoX}" y="${hankoY}" width="${hankoSize}" height="${hankoSize}" fill="#C8472D"/>
+  <rect x="${hankoX + 6}" y="${hankoY + 6}" width="${hankoSize - 12}" height="${hankoSize - 12}" fill="none" stroke="white" stroke-width="1"/>
+  <rect x="${hankoX + 12}" y="${hankoY + 12}" width="${hankoSize - 24}" height="${hankoSize - 24}" fill="white"/>
+
+  <!-- BXBX wordmark -->
+  <text x="${wordmarkX}" y="${wordmarkY}" font-family="'Space Grotesk', sans-serif" font-size="${wordmarkFontSize}" font-weight="600" fill="#1A1A1A" letter-spacing="0.08em">BXBX</text>
+  <text x="${wordmarkX}" y="${wordmarkY + subWordmarkFontSize + 4}" font-size="${subWordmarkFontSize}" fill="#8B8A85" letter-spacing="0.10em">STUDIO</text>
+
+  <!-- Item code (top right) -->
+  <text x="${W - 0.18 * scale}" y="${hankoY + hankoSize * 0.45}" font-size="${codeFontSize}" fill="#8B8A85" text-anchor="end" letter-spacing="0.04em">${escapeXml(codeText)}</text>
+
+  <!-- Separator -->
+  <line x1="${0.18 * scale}" y1="${sepY}" x2="${W - 0.18 * scale}" y2="${sepY}" stroke="#8B8A85" stroke-width="0.6"/>
+
+  <!-- Primary content -->
+  <text x="${contentX}" y="${primaryY}" font-size="${primaryFontSize}" font-weight="600" fill="#1A1A1A" letter-spacing="0.04em">${escapeXml(primary.toUpperCase())}</text>
+
+  <!-- Secondary content -->
+  <text x="${contentX}" y="${secondaryY}" font-size="${secondaryFontSize}" fill="#4A4A48">${escapeXml(secondary)}</text>
+
+  <!-- Metadata separator -->
+  <line x1="${0.18 * scale}" y1="${metaSepY}" x2="${W - 0.18 * scale}" y2="${metaSepY}" stroke="#8B8A85" stroke-width="0.4"/>
+
+  <!-- Metadata line -->
+  <text x="${contentX}" y="${metaY}" font-size="${metaFontSize}" fill="#8B8A85">${escapeXml(metaLine)}</text>
+  <text x="${W - 0.18 * scale}" y="${metaY}" font-size="${metaFontSize}" fill="#8B8A85" text-anchor="end" letter-spacing="0.04em">BXBX.STUDIO</text>
+</svg>`;
+}
+
+function renderInternalLabel(W, H, scale, opts) {
+  // Simpler layout: no hanko, just BXBX top-left, content, code bottom
+  const padX = 0.14 * scale;
+  const padY = 0.14 * scale;
+
+  const wordmarkY = padY + 0.13 * scale;
+  const codeY = padY + 0.26 * scale;
+
+  const primaryY = H / 2 + 0.04 * scale;
+  const secondaryY = primaryY + 0.14 * scale;
+
+  const metaY = H - padY - 0.02 * scale;
+
+  const code = opts.code || 'STK-2026-0001';
+  const primary = opts.primary || '';
+  const secondary = opts.secondary || '';
+  const date = formatDate(opts.date);
+  const count = opts.count || '';
+  const lot = opts.lot || '';
+  const notes = opts.notes || '';
+
+  const metaParts = [];
+  if (date) metaParts.push(date);
+  if (count) metaParts.push(count);
+  if (lot) metaParts.push(lot);
+  if (notes) metaParts.push(notes);
+  const metaLine = metaParts.join(' · ');
+
+  const primaryFontSize = Math.round(0.15 * scale);
+  const secondaryFontSize = Math.round(0.10 * scale);
+  const metaFontSize = Math.round(0.08 * scale);
+  const wordmarkFontSize = Math.round(0.11 * scale);
+  const codeFontSize = Math.round(0.09 * scale);
+
+  return `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" font-family="'IBM Plex Mono', monospace">
+  <!-- White background -->
+  <rect x="0" y="0" width="${W}" height="${H}" fill="white" stroke="#1A1A1A" stroke-width="0.5"/>
+
+  <!-- Hole punch indicator (for cord loop) -->
+  <circle cx="${W - padX - 6}" cy="${padY + 4}" r="3" fill="none" stroke="#8B8A85" stroke-width="0.6" stroke-dasharray="1 1"/>
+
+  <!-- BXBX wordmark (top-left) -->
+  <text x="${padX}" y="${wordmarkY}" font-family="'Space Grotesk', sans-serif" font-size="${wordmarkFontSize}" font-weight="600" fill="#1A1A1A" letter-spacing="0.08em">BXBX</text>
+
+  <!-- Code (top right area, smaller) -->
+  <text x="${W - padX - 16}" y="${wordmarkY}" font-size="${codeFontSize}" fill="#8B8A85" text-anchor="end" letter-spacing="0.04em">${escapeXml(code)}</text>
+
+  <!-- Separator -->
+  <line x1="${padX}" y1="${codeY + 4}" x2="${W - padX}" y2="${codeY + 4}" stroke="#8B8A85" stroke-width="0.4"/>
+
+  <!-- Primary content -->
+  <text x="${padX}" y="${primaryY}" font-size="${primaryFontSize}" font-weight="600" fill="#1A1A1A" letter-spacing="0.04em">${escapeXml(primary.toUpperCase())}</text>
+
+  <!-- Secondary content -->
+  <text x="${padX}" y="${secondaryY}" font-size="${secondaryFontSize}" fill="#4A4A48">${escapeXml(secondary)}</text>
+
+  <!-- Metadata line -->
+  <text x="${padX}" y="${metaY}" font-size="${metaFontSize}" fill="#8B8A85">${escapeXml(metaLine)}</text>
+</svg>`;
+}
+
+function renderPouchPreviewSvg(pouchSize, labelSvg, type) {
+  // Render the pouch with the label in its label-pocket position
+  const pouch = POUCH_SIZES[pouchSize];
+  const scale = 18; // px per inch — smaller scale for pouch context view
+  const pouchW = pouch.w * scale;
+  const pouchH = pouch.h * scale;
+
+  const padding = 30;
+  const svgW = pouchW + padding * 2;
+  const svgH = pouchH + padding * 2 + 30; // extra for caption
+
+  // Label position: upper-left, sized roughly to fit a real label pocket position
+  const labelDims = LABEL_DIMS[type];
+  // The label is shown at the same scale as the pouch for visual consistency
+  const labelW = labelDims.w * scale;
+  const labelH = labelDims.h * scale;
+  // Scale label so it fits comfortably in upper-left quadrant
+  const maxLabelW = pouchW * 0.5;
+  const maxLabelH = pouchH * 0.45;
+  let displayLabelScale = 1;
+  if (labelW > maxLabelW) displayLabelScale = maxLabelW / labelW;
+  if (labelH * displayLabelScale > maxLabelH) displayLabelScale = maxLabelH / labelH;
+  const finalLabelW = labelW * displayLabelScale;
+  const finalLabelH = labelH * displayLabelScale;
+
+  const labelX = padding + 0.3 * scale;
+  const labelY = padding + 0.4 * scale;
+
+  return `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgW} ${svgH}" width="${Math.min(640, svgW)}" height="${Math.min(640, svgW) * (svgH / svgW)}">
+  <!-- Pouch (black) -->
+  <rect x="${padding}" y="${padding}" width="${pouchW}" height="${pouchH}" fill="#1A1A1A" opacity="0.92"/>
+
+  <!-- Zipper at top -->
+  <line x1="${padding}" y1="${padding + 5}" x2="${padding + pouchW}" y2="${padding + 5}" stroke="#4A4A48" stroke-width="0.8"/>
+  ${generateZipperTeeth(padding, padding, pouchW)}
+
+  <!-- Zipper-pull / carabiner attachment point -->
+  <circle cx="${padding + pouchW - 5}" cy="${padding + 5}" r="3" fill="none" stroke="white" stroke-width="0.8"/>
+
+  <!-- Mesh texture hint -->
+  <g fill="white" opacity="0.08">
+    ${generateMeshDots(padding, padding, pouchW, pouchH)}
+  </g>
+
+  <!-- Label in upper-left position (rendered at fit-to-pouch scale) -->
+  <g transform="translate(${labelX}, ${labelY}) scale(${displayLabelScale})">
+    ${stripSvgWrapper(labelSvg)}
+  </g>
+
+  <!-- Caption -->
+  <text x="${svgW / 2}" y="${padding + pouchH + 22}" font-family="'IBM Plex Mono', monospace" font-size="11" fill="#8B8A85" text-anchor="middle">${pouchSize} pouch · ${pouch.w} × ${pouch.h}" · ${pouch.note}</text>
+</svg>`;
+}
+
+function generateZipperTeeth(x, y, width) {
+  let teeth = '';
+  for (let i = 4; i < width - 4; i += 8) {
+    teeth += `<line x1="${x + i}" y1="${y + 1}" x2="${x + i}" y2="${y + 9}" stroke="white" stroke-width="0.4" opacity="0.6"/>`;
+  }
+  return teeth;
+}
+
+function generateMeshDots(x, y, width, height) {
+  let dots = '';
+  for (let dx = 14; dx < width - 8; dx += 12) {
+    for (let dy = 16; dy < height - 8; dy += 12) {
+      dots += `<circle cx="${x + dx}" cy="${y + dy}" r="0.8"/>`;
+    }
+  }
+  return dots;
+}
+
+function stripSvgWrapper(svgStr) {
+  // Strip <svg ...> opening tag and </svg> closing tag, return only contents
+  const match = svgStr.match(/<svg[^>]*>([\s\S]*?)<\/svg>/);
+  return match ? match[1] : '';
+}
+
+// ===== RENDER =====
+function render() {
+  const code = getItemCode();
+  const labelOpts = {
+    type: state.type,
+    code: code,
+    primary: state.primary,
+    secondary: state.secondary,
+    date: state.date,
+    count: state.count,
+    lot: state.lot,
+    notes: state.notes,
+    scale: 100
+  };
+
+  // Render the label preview SVG
+  const labelSvg = renderLabelSvg(labelOpts);
+  document.getElementById('preview-svg-wrap').innerHTML = labelSvg;
+
+  // Pouch preview (with label in position)
+  // For pouch preview we use a smaller scale for the label
+  const labelOptsForPouch = { ...labelOpts, scale: 60 };
+  const labelSvgForPouch = renderLabelSvg(labelOptsForPouch);
+  const pouchSvg = renderPouchPreviewSvg(state.size, labelSvgForPouch, state.type);
+  document.getElementById('pouch-svg-wrap').innerHTML = pouchSvg;
+
+  // Caption
+  const typeStr = state.type === 'shipped' ? 'Shipped label' : 'Internal studio label';
+  const dims = LABEL_DIMS[state.type];
+  document.getElementById('preview-caption').textContent = `${typeStr} · ${state.size} pouch · ${dims.w} × ${dims.h} inches`;
+}
+
+// ===== UTILITIES =====
+function escapeXml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
+function formatDate(isoStr) {
+  if (!isoStr) return '';
+  // ISO YYYY-MM-DD → YYYY-MM-DD (no transformation, already clean)
+  return isoStr;
+}
+
+// ===== ACTIONS =====
+function printSheet() {
+  // Generate 4 copies of the current label on a sheet
+  const code = getItemCode();
+  const labelOpts = {
+    type: state.type,
+    code: code,
+    primary: state.primary,
+    secondary: state.secondary,
+    date: state.date,
+    count: state.count,
+    lot: state.lot,
+    notes: state.notes,
+    scale: 96  // print at 96 dpi reference
+  };
+
+  const labelSvg = renderLabelSvg(labelOpts);
+  const sheetContent = document.getElementById('print-sheet-content');
+  let html = '';
+  for (let i = 0; i < 4; i++) {
+    html += `<div class="print-label crop-mark">${labelSvg}</div>`;
+  }
+  sheetContent.innerHTML = html;
+  document.getElementById('print-area').classList.add('printing');
+
+  // Trigger print
+  window.print();
+
+  // Clean up after print dialog closes
+  setTimeout(() => {
+    document.getElementById('print-area').classList.remove('printing');
+  }, 500);
+
+  // Auto-save to history
+  saveToHistory(false);
+  showToast('4-up sheet sent to printer');
+}
+
+function downloadSvg() {
+  const code = getItemCode();
+  const labelOpts = {
+    type: state.type,
+    code: code,
+    primary: state.primary,
+    secondary: state.secondary,
+    date: state.date,
+    count: state.count,
+    lot: state.lot,
+    notes: state.notes,
+    scale: 100
+  };
+
+  const svg = renderLabelSvg(labelOpts);
+  const blob = new Blob([svg], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${code}-label.svg`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  saveToHistory(false);
+  showToast('SVG downloaded · ' + code);
+}
+
+function copyCsvRow() {
+  const row = buildCsvRow();
+  const csvText = row.join(',');
+
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(csvText).then(() => {
+      showToast('CSV row copied · paste into Sheets');
+      saveToHistory(false);
+    }, () => fallbackCopyText(csvText));
+  } else {
+    fallbackCopyText(csvText);
+  }
+}
+
+function fallbackCopyText(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('CSV row copied · paste into Sheets');
+    saveToHistory(false);
+  } catch (e) {
+    showToast('Copy failed · use Download SVG instead');
+  }
+  document.body.removeChild(ta);
+}
+
+function buildCsvRow() {
+  // Match the inventory schema:
+  // ItemCode, Type, Name, Quantity, Location, Status, Container, Pouch_Size, Date_Added, Last_Updated, Customer_Job, Notes
+  const code = getItemCode();
+  const today = new Date().toISOString().slice(0, 10);
+  const pouchLabel = `STD-09 ${state.size}`;
+  const name = state.primary + (state.secondary ? ' · ' + state.secondary : '');
+  const quantity = extractQuantity(state.count);
+  return [
+    csvEscape(code),
+    csvEscape(state.prefix),
+    csvEscape(name),
+    csvEscape(quantity),
+    csvEscape(state.notes || ''),
+    csvEscape('Active'),
+    csvEscape(pouchLabel),
+    csvEscape(state.size),
+    csvEscape(state.date || today),
+    csvEscape(today),
+    csvEscape(state.lot || ''),
+    csvEscape(`${state.type} label · ${state.size} pouch`)
+  ];
+}
+
+function csvEscape(val) {
+  if (val == null) return '';
+  const str = String(val);
+  if (str.includes(',') || str.includes('"') || str.includes('\n')) {
+    return '"' + str.replace(/"/g, '""') + '"';
+  }
+  return str;
+}
+
+function extractQuantity(countStr) {
+  // Extract numeric part from "14 PCS", "1 KIT", etc.
+  if (!countStr) return '1';
+  const match = String(countStr).match(/^\s*(\d+)/);
+  return match ? match[1] : '1';
+}
+
+// ===== HISTORY =====
+function loadHistory() {
+  try {
+    const saved = localStorage.getItem('bxbx-label-history');
+    if (saved) state.history = JSON.parse(saved);
+  } catch (e) {
+    state.history = [];
+  }
+  renderHistory();
+}
+
+function saveHistoryStorage() {
+  try {
+    localStorage.setItem('bxbx-label-history', JSON.stringify(state.history));
+  } catch (e) {
+    console.warn('localStorage save failed:', e);
+  }
+}
+
+function saveToHistory(showFeedback) {
+  const entry = {
+    code: getItemCode(),
+    prefix: state.prefix,
+    year: state.year,
+    seq: state.seq,
+    type: state.type,
+    size: state.size,
+    primary: state.primary,
+    secondary: state.secondary,
+    date: state.date,
+    count: state.count,
+    lot: state.lot,
+    notes: state.notes,
+    createdAt: new Date().toISOString()
+  };
+
+  // De-dupe: if same code already exists, update it instead of adding
+  const existingIdx = state.history.findIndex(h => h.code === entry.code);
+  if (existingIdx >= 0) {
+    state.history[existingIdx] = entry;
+  } else {
+    state.history.unshift(entry);
+    if (state.history.length > 50) state.history = state.history.slice(0, 50);
+  }
+  saveHistoryStorage();
+  renderHistory();
+  if (showFeedback) showToast('Saved · ' + entry.code);
+}
+
+function renderHistory() {
+  const list = document.getElementById('history-list');
+  if (state.history.length === 0) {
+    list.innerHTML = '<div class="history-empty">No labels yet · save your first one</div>';
+    return;
+  }
+  list.innerHTML = state.history.map((h, i) => `
+    <li class="history-item" data-idx="${i}" title="Click to recall">
+      <span class="history-item-code">${escapeHtml(h.code)}</span>
+      <span class="history-item-name">${escapeHtml(h.primary || '(empty)')}</span>
+      <button class="history-item-del" data-idx="${i}" title="Delete this entry" type="button">×</button>
+    </li>
+  `).join('');
+
+  // Wire up click-to-recall
+  list.querySelectorAll('.history-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      if (e.target.classList.contains('history-item-del')) return;
+      const idx = parseInt(item.dataset.idx, 10);
+      recallFromHistory(idx);
+    });
+  });
+  list.querySelectorAll('.history-item-del').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(btn.dataset.idx, 10);
+      state.history.splice(idx, 1);
+      saveHistoryStorage();
+      renderHistory();
+      showToast('Entry deleted');
+    });
+  });
+}
+
+function recallFromHistory(idx) {
+  const h = state.history[idx];
+  if (!h) return;
+  state.prefix = h.prefix;
+  state.year = h.year;
+  state.seq = h.seq;
+  state.type = h.type;
+  state.size = h.size;
+  state.primary = h.primary || '';
+  state.secondary = h.secondary || '';
+  state.date = h.date || '';
+  state.count = h.count || '';
+  state.lot = h.lot || '';
+  state.notes = h.notes || '';
+
+  // Sync UI
+  document.getElementById('code-prefix').value = state.prefix;
+  document.getElementById('code-year').value = state.year;
+  document.getElementById('code-seq').value = state.seq;
+  document.getElementById('primary-line').value = state.primary;
+  document.getElementById('secondary-line').value = state.secondary;
+  document.getElementById('date-field').value = state.date;
+  document.getElementById('count-field').value = state.count;
+  document.getElementById('lot-field').value = state.lot;
+  document.getElementById('notes-field').value = state.notes;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.toggle('active', b.dataset.type === state.type));
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.toggle('active', b.dataset.size === state.size));
+
+  render();
+  showToast('Recalled · ' + h.code);
+}
+
+function clearHistory() {
+  if (state.history.length === 0) {
+    showToast('History already empty');
+    return;
+  }
+  if (!confirm('Delete all ' + state.history.length + ' saved labels? Cannot be undone.')) return;
+  state.history = [];
+  saveHistoryStorage();
+  renderHistory();
+  showToast('History cleared');
+}
+
+function exportHistoryCsv() {
+  if (state.history.length === 0) {
+    showToast('Nothing to export');
+    return;
+  }
+  // CSV with header row
+  const header = ['ItemCode','Type','Name','Quantity','Location','Status','Container','PouchSize','DateAdded','LastUpdated','CustomerJob','Notes'];
+  const rows = [header.join(',')];
+  state.history.forEach(h => {
+    const today = new Date().toISOString().slice(0, 10);
+    const pouchLabel = `STD-09 ${h.size}`;
+    const name = h.primary + (h.secondary ? ' · ' + h.secondary : '');
+    const quantity = extractQuantity(h.count);
+    rows.push([
+      csvEscape(h.code),
+      csvEscape(h.prefix),
+      csvEscape(name),
+      csvEscape(quantity),
+      csvEscape(h.notes || ''),
+      csvEscape('Active'),
+      csvEscape(pouchLabel),
+      csvEscape(h.size),
+      csvEscape(h.date || today),
+      csvEscape(today),
+      csvEscape(h.lot || ''),
+      csvEscape(`${h.type} label · ${h.size} pouch`)
+    ].join(','));
+  });
+  const csv = rows.join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `bxbx-labels-export-${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('Exported ' + state.history.length + ' rows');
+}
+
+function escapeHtml(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+// Boot
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+
+</body>
+</html>
