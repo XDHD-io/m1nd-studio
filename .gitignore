@@ -1,0 +1,76 @@
+# =============================================================================
+# m1nd-studio · .gitignore
+# =============================================================================
+
+# Node / npm — fonts directory uses npm to install @fontsource packages locally,
+# but the actual font files (TTF/WOFF2) are committed under assets/fonts/ as
+# the canonical source. The node_modules folder is build-time only.
+node_modules/
+package-lock.json
+.npm/
+.npmrc
+
+# Python — for the build/processing scripts in scripts/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# OS-level cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+.Spotlight-V100
+.Trashes
+*~
+
+# Editors / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Build artifacts — the MVP is hand-written HTML, no build step
+# Future build pipelines (if added) would output here
+dist/
+build/
+.cache/
+.parcel-cache/
+
+# Zip archives — we used these during MVP iteration but git is the version
+# control going forward. Don't commit them.
+*.zip
+*.tar.gz
+*.tgz
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables — should never be in source control
+.env
+.env.local
+.env.*.local
+
+# Temporary files from working sessions
+tmp/
+temp/
+scratch/
+*.tmp
+*.bak
+
+# CODEX PDF generation working files (large, deferred build)
+codex-build/font-install/node_modules/
+
+# Avoid committing the old MVP versioning artifacts if they get copied in
+m1nd-mvp-v0.*.zip
+m1nd-studio-mvp-v0.*.zip

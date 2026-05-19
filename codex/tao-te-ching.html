@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CODEX-001 · Tao Te Ching · M1ND.studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --paper: #F4F1E8;
+  --paper-rule: #C8C2B5;
+  --paper-faint: #E0DCD0;
+  --paper-shade: #EAE6D9;
+  --paper-deep: #DCD7C6;
+  --ink: #1A1814;
+  --ink-soft: #4A4640;
+  --ink-faint: #8A8580;
+  --hanko: #7A3F2E;
+  --hanko-deep: #5C2E20;
+
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --serif: 'Inter', Georgia, sans-serif;
+  --classical: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--hanko); }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--serif); line-height: 1.55; }
+
+.studio-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--paper); border-bottom: 1px solid var(--paper-rule);
+  padding: 14px 32px; display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.studio-nav .nav-home { display: flex; align-items: center; gap: 10px; color: var(--ink); }
+.studio-nav .nav-mark {
+  width: 22px; height: 22px; background: var(--ink); color: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 13px; font-weight: 500;
+}
+.studio-nav .nav-name { font-weight: 500; }
+.studio-nav .nav-name .dot { color: var(--hanko); }
+.studio-nav .nav-links { display: flex; gap: 24px; }
+.studio-nav .nav-link { color: var(--ink-soft); }
+.studio-nav .nav-link:hover { color: var(--ink); }
+.studio-nav .nav-link.current { color: var(--hanko); }
+
+.breadcrumb {
+  max-width: 1200px; margin: 0 auto; padding: 16px 32px 0;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+.breadcrumb a { color: var(--ink-faint); }
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb .sep { margin: 0 8px; color: var(--paper-rule); }
+.breadcrumb .current { color: var(--ink); }
+
+.page { max-width: 1200px; margin: 0 auto; padding: 32px 32px 96px; }
+
+.product-hero {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 56px;
+  align-items: start;
+  margin-bottom: 64px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--paper-rule);
+}
+
+.product-info .page-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.product-info h1 {
+  font-family: var(--display);
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.product-info h1 em { font-style: italic; color: var(--ink-soft); }
+
+.product-info .product-subtitle {
+  font-family: var(--classical);
+  font-style: italic;
+  font-size: 19px;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+}
+
+.product-info .product-lede {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin-bottom: 24px;
+  max-width: 56ch;
+}
+
+.product-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding: 20px 0;
+  border-top: 1px solid var(--paper-rule);
+  border-bottom: 1px solid var(--paper-rule);
+  margin-bottom: 28px;
+}
+
+.meta-block .meta-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.meta-block .meta-value {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.meta-block .meta-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+.product-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.button {
+  display: inline-block;
+  padding: 12px 22px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  transition: background 0.15s;
+}
+
+.button:hover { background: var(--hanko); border-color: var(--hanko); }
+
+.button.coming-soon {
+  background: transparent;
+  color: var(--ink-faint);
+  border-color: var(--paper-rule);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.button.coming-soon::after {
+  content: ' · in design';
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-right: 6px;
+  margin-bottom: 4px;
+}
+
+.tag.hanko { background: var(--hanko); color: var(--paper); border-color: var(--hanko); }
+.tag.stub { background: transparent; color: var(--ink-faint); }
+
+/* CODEX preview card - mimics what a physical CODEX cover card looks like */
+.codex-preview-card {
+  background: var(--paper);
+  background-image:
+    radial-gradient(ellipse 200px 100px at 20% 15%, rgba(255,250,235,0.5) 0%, transparent 70%);
+  border: 1px solid var(--paper-rule);
+  padding: 24px 22px;
+  position: relative;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  aspect-ratio: 4 / 6;
+  display: flex;
+  flex-direction: column;
+}
+
+.codex-preview-card::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--paper-deep);
+  pointer-events: none;
+}
+
+.codex-preview-card .codex-eyebrow {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.codex-preview-card .codex-series {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.16em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+}
+
+.codex-preview-card .codex-title {
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  margin-bottom: 6px;
+}
+
+.codex-preview-card .codex-title-zh {
+  font-family: var(--display);
+  font-size: 36px;
+  color: var(--hanko);
+  line-height: 1;
+  margin-bottom: 18px;
+}
+
+.codex-preview-card .codex-author {
+  font-family: var(--classical);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-bottom: 4px;
+}
+
+.codex-preview-card .codex-translator {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: auto;
+}
+
+.codex-preview-card .codex-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--paper-rule);
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.codex-preview-caption {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.section { margin-bottom: 64px; }
+
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+
+.section-title em { font-style: italic; color: var(--ink-soft); }
+
+.section-desc {
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 70ch;
+  margin-bottom: 32px;
+}
+
+.section h3 {
+  font-family: var(--display);
+  font-size: 20px;
+  font-weight: 500;
+  margin: 32px 0 12px;
+}
+
+.section h4 {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 24px 0 8px;
+}
+
+.section p {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--ink);
+  margin-bottom: 16px;
+  max-width: 70ch;
+}
+
+.section p strong { font-weight: 600; }
+.section p em { font-style: italic; color: var(--ink-soft); }
+
+.section ul { margin-bottom: 16px; padding-left: 24px; }
+.section li { font-size: 14.5px; line-height: 1.65; margin-bottom: 6px; max-width: 68ch; }
+
+.note {
+  background: var(--paper-shade);
+  border-left: 3px solid var(--hanko);
+  padding: 14px 18px;
+  margin: 20px 0;
+  font-family: var(--serif);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.note strong {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.note.stub { border-left-color: var(--ink-faint); }
+.note.stub strong { color: var(--ink-faint); }
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 32px;
+  font-size: 13.5px;
+}
+
+.data-table th {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--paper-rule);
+  font-weight: 500;
+}
+
+.data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--paper-rule);
+  vertical-align: top;
+  line-height: 1.45;
+}
+
+.data-table .num { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
+
+/* Sample chapter card mockup */
+.chapter-sample {
+  background: var(--paper);
+  border: 1px solid var(--paper-rule);
+  padding: 32px 32px 24px;
+  margin: 24px 0;
+  position: relative;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  font-family: var(--classical);
+}
+
+.chapter-sample::after {
+  content: 'CARD SAMPLE · CHAPTER 1';
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  background: var(--paper);
+  padding: 0 8px;
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+}
+
+.chapter-sample .chapter-num-big {
+  font-family: var(--display);
+  font-size: 56px;
+  font-weight: 500;
+  line-height: 0.9;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.chapter-sample .chapter-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.chapter-sample .body-text {
+  font-family: var(--classical);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink);
+  margin-bottom: 12px;
+  max-width: none;
+}
+
+.chapter-sample .verse-text {
+  font-family: var(--classical);
+  font-style: italic;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  padding-left: 18px;
+  margin-bottom: 12px;
+  white-space: pre-line;
+}
+
+.chapter-sample .card-footer {
+  margin-top: 24px;
+  padding-top: 10px;
+  border-top: 1px solid var(--paper-rule);
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.structure-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--paper-rule);
+  border: 1px solid var(--paper-rule);
+  margin: 24px 0 32px;
+}
+
+.structure-stage {
+  background: var(--paper);
+  padding: 20px 18px;
+}
+
+.structure-stage h4 {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 6px;
+}
+
+.structure-stage .count {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.structure-stage p {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+.page-footer {
+  max-width: 1200px;
+  margin: 96px auto 0;
+  padding: 32px 32px 24px;
+  border-top: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.page-footer .footer-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.page-footer a { color: var(--ink-faint); margin-right: 18px; }
+.page-footer a:hover { color: var(--hanko); }
+.page-footer .footer-meta {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--paper-rule);
+  font-size: 9px;
+}
+
+@media (max-width: 768px) {
+  .product-hero { grid-template-columns: 1fr; gap: 32px; }
+  .product-info h1 { font-size: 40px; }
+  .product-meta-grid { grid-template-columns: repeat(2, 1fr); }
+  .structure-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="studio-nav">
+  <a href="../index.html" class="nav-home">
+    <span class="nav-mark">M</span>
+    <span class="nav-name">M1ND<span class="dot">.</span>studio</span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html" class="nav-link">Catalogue</a>
+    <a href="../t1ny/index.html" class="nav-link">Research</a>
+    <a href="index.html" class="nav-link current">Products</a>
+  </div>
+</nav>
+
+<nav class="breadcrumb">
+  <a href="../index.html">M1ND.studio</a>
+  <span class="sep">/</span>
+  <a href="index.html">CODEX</a>
+  <span class="sep">/</span>
+  <span class="current">001 · Tao Te Ching</span>
+</nav>
+
+<div class="page">
+
+  <div class="product-hero">
+    <div class="product-info">
+      <div class="page-eyebrow">CODEX-001 · Studio Classics Series · Vol 01</div>
+      <h1>Tao Te Ching</h1>
+      <p class="product-subtitle">Lao Tzu · translated by James Legge · 1891 · public domain</p>
+      <p class="product-lede">The studio's inaugural CODEX. At ~5,000 words across 81 short chapters, the Tao Te Ching fits in 9 body cards — leaving 91 cards of room in a single 1646 cell for front matter, chapter-opening cards, translator's notes, and blank journaling cards. <strong>A complete reading-and-meditation kit in one cell.</strong></p>
+
+      <div class="product-meta-grid">
+        <div class="meta-block">
+          <div class="meta-label">Words</div>
+          <div class="meta-value">~5,000</div>
+          <div class="meta-sub">across 81 chapters</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Cards (body)</div>
+          <div class="meta-value">~9</div>
+          <div class="meta-sub">double-sided</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Cards (full)</div>
+          <div class="meta-value">~100</div>
+          <div class="meta-sub">incl. ch. opens + notes</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Storage</div>
+          <div class="meta-value">1 × 1646</div>
+          <div class="meta-sub">single KEEP cell</div>
+        </div>
+      </div>
+
+      <div class="product-actions">
+        <span class="button coming-soon">Download PDF · ~$3-5 to print</span>
+      </div>
+
+      <div>
+        <span class="tag hanko">CODEX-001</span>
+        <span class="tag">Public domain</span>
+        <span class="tag">81 chapters</span>
+        <span class="tag stub">PDF deferred</span>
+      </div>
+    </div>
+
+    <aside>
+      <div class="codex-preview-card">
+        <div class="codex-eyebrow">M1ND.studio · CODEX</div>
+        <div class="codex-series">Vol 01 · Studio Classics</div>
+        <div class="codex-title">Tao Te Ching</div>
+        <div class="codex-title-zh">道德經</div>
+        <div class="codex-author">Lao Tzu</div>
+        <div class="codex-translator">Trans. James Legge · 1891</div>
+        <div class="codex-footer">
+          <span>CODEX-001</span>
+          <span>4×6</span>
+        </div>
+      </div>
+      <div class="codex-preview-caption">Cover card · concept</div>
+    </aside>
+  </div>
+
+  <section class="section">
+    <div class="section-eyebrow">Why this work, first</div>
+    <h2 class="section-title">Five reasons the Tao Te Ching <em>inaugurates the format</em></h2>
+
+    <h3>1 · Length is ideal</h3>
+    <p>At ~5,000 words, the body of the Tao Te Ching fits in 9 cards. This leaves ~91 cards of room in a single 1646 cell for: front matter, chapter-opening cards (one per the 81 chapters in display type), translator's notes, and blank reading-note cards for the reader's own reflections. The CODEX isn't just the book — it's the book plus everything a reader needs to engage with it over time.</p>
+
+    <h3>2 · The text wants random-access reading</h3>
+    <p>The 81 chapters of the Tao Te Ching are aphoristic. Many readers cycle through chapters rather than reading start-to-finish. Card format suits this natively. <em>Reading one chapter per day for 81 days</em> is a real practice that exists in the wild; the CODEX format supports it physically — a single card per day, easy to pull, easy to file back.</p>
+
+    <h3>3 · Public domain everywhere</h3>
+    <p>The Legge translation (1891) is firmly public domain in the US, Canada, UK, EU, and everywhere else relevant. No licensing complications, no per-jurisdiction caveats, no risk of takedown. James Legge was the first Professor of Chinese at Oxford University — his translations remain the scholarly reference editions over 130 years later.</p>
+
+    <h3>4 · The voice matches the studio</h3>
+    <p>Aphoristic, design-conscious, philosophical, measured. The Tao Te Ching is the kind of text the studio's editorial register reads as naturally adjacent. The chapter-per-aphorism structure echoes the studio's card-per-recipe and cell-per-system catalogue logic.</p>
+
+    <h3>5 · It's been typeset thousands of times</h3>
+    <p>The studio isn't typesetting a difficult text from scratch — it's bringing its design judgment to a text that has many existing reference editions. The challenge is making the studio's CODEX edition <em>better than the alternatives</em>, not <em>different from them</em>. Standard problem; clear bar.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Sample chapter</div>
+    <h2 class="section-title">What the typesetting <em>actually looks like</em></h2>
+    <p class="section-desc">Approximate rendering of Chapter 1 as it appears on its card face. The actual PDF will render at 4×6 inches in EB Garamond at 9pt/11pt leading; this preview is scaled up for readability on screen.</p>
+
+    <div class="chapter-sample">
+      <div class="chapter-num-big">1</div>
+      <div class="chapter-label">道 · Chapter the first</div>
+
+      <p class="body-text">The Tao that can be trodden is not the enduring and unchanging Tao. The name that can be named is not the enduring and unchanging name.</p>
+
+      <p class="body-text">(Conceived of as) having no name, it is the Originator of heaven and earth; (conceived of as) having a name, it is the Mother of all things.</p>
+
+      <p class="verse-text">Always without desire we must be found,
+If its deep mystery we would sound;
+But if desire always within us be,
+Its outer fringe is all that we shall see.</p>
+
+      <p class="body-text">Under these two aspects, it is really the same; but as development takes place, it receives the different names. Together we call them the Mystery. Where the Mystery is the deepest is the gate of all that is subtle and wonderful.</p>
+
+      <div class="card-footer">
+        <span>CODEX-001 · Tao Te Ching · Legge</span>
+        <span>Card 11 · recto</span>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Typography decisions</strong>
+      Body text: <strong>EB Garamond at 9pt with 11pt leading</strong> — the classical book-typography choice, scaled to card dimensions. Verse passages: italic, indented 14pt, lighter color to distinguish from prose. Chapter numbers: <strong>Space Grotesk at 56pt display</strong> on chapter-opening cards. Footer marks: <strong>IBM Plex Mono at 8pt</strong> — page numbers, card sides (recto/verso), CODEX identifier. The same typography stack used across the rest of the studio's catalogue.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Card-by-card structure</div>
+    <h2 class="section-title">How the <em>100 cards</em> are organized</h2>
+    <p class="section-desc">A complete Tao Te Ching CODEX is ~100 cards filling a single 1646 cell. The structure leaves room for both the studio's editorial design and the reader's own engagement.</p>
+
+    <div class="structure-grid">
+      <div class="structure-stage">
+        <h4>Front matter</h4>
+        <div class="count">~8 cards</div>
+        <p>Cover (recto: title + author + translator; verso: studio mark + edition designation). Colophon (printing notes, public-domain attribution, typography credits). Table of contents (chapters 1–81 mapped to card numbers). "How to read this CODEX" (one-card guide to the format).</p>
+      </div>
+
+      <div class="structure-stage">
+        <h4>Body</h4>
+        <div class="count">~80 cards</div>
+        <p>81 chapter-opening cards (each chapter gets its own recto with chapter number in display type, the chapter text following on the verso and into next card as needed). For most chapters, one card suffices — the longer chapters use 2-3. Verse passages typeset distinctly from prose.</p>
+      </div>
+
+      <div class="structure-stage">
+        <h4>Reading notes &amp; back matter</h4>
+        <div class="count">~12 cards</div>
+        <p>Blank "Reflections" cards inserted every ~10 chapters, with single light headers for the reader's own writing. Translator's biographical note. Brief history of the text. "First read" card with date/place fields. Archive label for the 1646 cell exterior.</p>
+      </div>
+    </div>
+
+    <h3>Detailed card map</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Cards</th><th>Section</th><th>Content</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">01–02</td><td>Cover &amp; reverse</td><td>Title card; colophon &amp; metadata</td></tr>
+        <tr><td class="num">03–04</td><td>How to read</td><td>One-card guide to the CODEX format; format philosophy</td></tr>
+        <tr><td class="num">05–06</td><td>Table of contents</td><td>Chapters 1–81 mapped to card numbers</td></tr>
+        <tr><td class="num">07–08</td><td>Translator's preface</td><td>Brief James Legge biographical note; the 1891 translation in context</td></tr>
+        <tr><td class="num">09–18</td><td>Chapters 1–10</td><td>Body content; verse passages distinct from prose</td></tr>
+        <tr><td class="num">19</td><td>Reflection card</td><td>Blank · "Reflections, chapters 1–10"</td></tr>
+        <tr><td class="num">20–29</td><td>Chapters 11–20</td><td>Body content</td></tr>
+        <tr><td class="num">30</td><td>Reflection card</td><td>Blank · "Reflections, chapters 11–20"</td></tr>
+        <tr><td class="num">31–...</td><td>Chapters 21–81</td><td>Continuing pattern: 10 chapters + 1 reflection card per cycle</td></tr>
+        <tr><td class="num">~92–96</td><td>Reading notes</td><td>Multiple blank cards for the reader's first-read journaling</td></tr>
+        <tr><td class="num">~97–98</td><td>Back matter</td><td>"First read" card (date / place / circumstances); recommendations for further reading</td></tr>
+        <tr><td class="num">~99–100</td><td>Archive label</td><td>Card sized to slot into the 1646 cell exterior label slot; CODEX-001 identifier; year of printing</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Cost economics</div>
+    <h2 class="section-title">What this CODEX <em>actually costs</em> to produce</h2>
+    <p class="section-desc">A reader holding the studio's Tao Te Ching CODEX is holding ~$3-5 in materials plus the studio's typesetting judgment. The studio's design work is the value layer; the physical book is nearly free.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Component</th><th>Cost</th><th>Source</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Blank 4×6 cards · 100</td><td class="num">$2.20</td><td>Amazon B09GWBJ97Y · $11 / 500-pack</td></tr>
+        <tr><td>Laser print · text only · 100 cards</td><td class="num">$1.00</td><td>~$0.01 per card on standard laser cartridge</td></tr>
+        <tr><td>Inkjet print · color · 100 cards</td><td class="num">$3.00</td><td>~$0.03 per card on Canon Pixma</td></tr>
+        <tr><td>1646 cell envelope · 1</td><td class="num">$2.00</td><td>Per KEEP standard sourcing</td></tr>
+        <tr><td style="font-weight: 600;">Total · laser printed</td><td class="num" style="font-weight: 600;">~$5.20</td><td>All-in, materials + printing</td></tr>
+        <tr><td style="font-weight: 600;">Total · inkjet printed</td><td class="num" style="font-weight: 600;">~$7.20</td><td>All-in, materials + printing</td></tr>
+      </tbody>
+    </table>
+
+    <p>Compared to a quality hardcover edition of the Tao Te Ching at ~$25-40 retail, the CODEX is dramatically cheaper. But the comparison is misleading — the CODEX isn't trying to be a cheaper hardcover. It's a different reading object that happens to also be cheap.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Status &amp; pending work</div>
+    <h2 class="section-title">Where this CODEX <em>actually is</em>, today</h2>
+
+    <p>CODEX-001 Tao Te Ching is the format-establishing flagship for the CODEX practice. Its design is locked, its source text is retrieved, its typography stack is acquired. <strong>The PDF generator that turns all of this into a printable artifact is the next deliverable</strong> — but that work hit two consecutive crashes during long-string typesetting in this session and has been deliberately deferred to a dedicated future session.</p>
+
+    <h3>Complete</h3>
+    <ul>
+      <li>Translation choice: <strong>James Legge 1891</strong>, public domain everywhere, scholarly reference edition</li>
+      <li>Format specification: 4×6 cards, 9pt EB Garamond body / 11pt leading, 0.4" margins, Space Grotesk display</li>
+      <li>Card-by-card structure: ~8 front matter, ~80 body, ~12 reading notes &amp; back matter</li>
+      <li>Source text: full Legge 1891 translation, all 81 chapters, retrieved from terebess.hu (canonical online source)</li>
+      <li>Studio typography stack: EB Garamond Regular/Italic/Medium, Space Grotesk Regular/Medium/Bold, IBM Plex Mono Regular — all TTF files acquired and verified</li>
+      <li>CODEX practice thread document: v0.1 complete (2,676 words)</li>
+    </ul>
+
+    <h3>Pending</h3>
+    <ul>
+      <li><strong>PDF generator script</strong> — written cleanly with text-data separated from generator-code, to avoid the long-string crash mode</li>
+      <li><strong>The CODEX-001 PDF itself</strong> — generated, reviewed, and shipped as a downloadable artifact</li>
+      <li><strong>Print test on Canon Pixma</strong> — verify feed reliability, registration accuracy, and toner/ink consistency on the actual blank 4×6 cards</li>
+      <li><strong>Production photography</strong> — once a real printed CODEX-001 exists, photograph it on a Wowlive shelf in a 1646 cell for the catalogue page</li>
+    </ul>
+
+    <div class="note stub">
+      <strong>Note for next session</strong>
+      The PDF generator should be built as two separate files: <em>(1)</em> a small JSON or Python data file containing the 81 chapters as structured records with paragraph-level prose-vs-verse tagging, and <em>(2)</em> a small ReportLab script that reads that data file and produces the PDF. This separation is what prevented prior attempts from completing — embedding all chapter text inline with the generator code created a single oversized file that crashed mid-write. The text data and the generator code each need to be small enough to write reliably.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Related</div>
+    <h2 class="section-title">Where this <em>sits in the catalogue</em></h2>
+    <p style="margin-bottom: 24px;">
+      <a href="index.html" style="font-family: var(--mono); font-size: 11px; color: var(--hanko); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; margin-right: 24px;">→ CODEX practice</a>
+      <a href="../keep/index.html" style="font-family: var(--mono); font-size: 11px; color: var(--hanko); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; margin-right: 24px;">→ KEEP (sister practice)</a>
+      <a href="../index.html" style="font-family: var(--mono); font-size: 11px; color: var(--hanko); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase;">→ M1ND.studio catalogue</a>
+    </p>
+  </section>
+
+</div>
+
+<footer class="page-footer">
+  <div class="footer-row">
+    <div>
+      <a href="index.html">← CODEX practice</a>
+    </div>
+    <div>CODEX-001 · v0.1 · in design</div>
+  </div>
+  <div class="footer-meta">
+    M1ND.studio · CODEX · 001 · Tao Te Ching · Legge 1891 · public domain · format-establishing flagship · PDF generation deferred to dedicated session
+  </div>
+</footer>
+
+</body>
+</html>

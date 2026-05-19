@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starter Box · $48 · MEAL · M1ND.studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --paper: #F4F1E8;
+  --paper-rule: #C8C2B5;
+  --paper-faint: #E0DCD0;
+  --paper-shade: #EAE6D9;
+  --paper-deep: #DCD7C6;
+  --ink: #1A1814;
+  --ink-soft: #4A4640;
+  --ink-faint: #8A8580;
+  --hanko: #8A6B3A;
+  --hanko-deep: #6E5429;
+  --hanko-bright: #B85540;
+
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --serif: 'Inter', Georgia, sans-serif;
+  --classical: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--hanko-bright); }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--serif); line-height: 1.55; }
+
+.studio-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--paper); border-bottom: 1px solid var(--paper-rule);
+  padding: 14px 32px; display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.studio-nav .nav-home { display: flex; align-items: center; gap: 10px; color: var(--ink); }
+.studio-nav .nav-mark {
+  width: 22px; height: 22px; background: var(--ink); color: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 13px; font-weight: 500;
+}
+.studio-nav .nav-name { font-weight: 500; }
+.studio-nav .nav-name .dot { color: var(--hanko-bright); }
+.studio-nav .nav-links { display: flex; gap: 24px; }
+.studio-nav .nav-link { color: var(--ink-soft); }
+.studio-nav .nav-link:hover { color: var(--ink); }
+.studio-nav .nav-link.current { color: var(--hanko); }
+
+.breadcrumb {
+  max-width: 1200px; margin: 0 auto; padding: 16px 32px 0;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+.breadcrumb a { color: var(--ink-faint); }
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb .sep { margin: 0 8px; color: var(--paper-rule); }
+.breadcrumb .current { color: var(--ink); }
+
+.page { max-width: 1200px; margin: 0 auto; padding: 32px 32px 96px; }
+
+.product-hero {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 56px;
+  align-items: start;
+  margin-bottom: 64px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--paper-rule);
+}
+
+.product-info .page-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.product-info h1 {
+  font-family: var(--display);
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.product-info h1 em { font-style: italic; color: var(--ink-soft); }
+
+.product-info .product-subtitle {
+  font-family: var(--classical);
+  font-style: italic;
+  font-size: 19px;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+}
+
+.product-info .product-lede {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 28px;
+  max-width: 56ch;
+}
+
+.product-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 20px 0;
+  border-top: 1px solid var(--paper-rule);
+  border-bottom: 1px solid var(--paper-rule);
+  margin-bottom: 28px;
+}
+
+.meta-block .meta-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.meta-block .meta-value {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.meta-block .meta-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+.product-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.button {
+  display: inline-block;
+  padding: 14px 26px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+
+.button:hover { background: var(--hanko-bright); border-color: var(--hanko-bright); }
+
+.button.secondary {
+  background: transparent;
+  color: var(--ink);
+}
+.button.secondary:hover { background: var(--ink); color: var(--paper); }
+
+.button.coming-soon {
+  background: transparent;
+  color: var(--ink-faint);
+  border-color: var(--paper-rule);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-right: 6px;
+  margin-bottom: 4px;
+}
+.tag.hanko { background: var(--hanko); color: var(--paper); border-color: var(--hanko); }
+.tag.bright { background: var(--hanko-bright); color: var(--paper); border-color: var(--hanko-bright); }
+.tag.stub { background: transparent; color: var(--ink-faint); }
+
+/* Box preview - the starter box itself */
+.box-preview {
+  background: var(--paper);
+  border: 1px solid var(--paper-rule);
+  padding: 24px 22px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+.box-preview .box-eyebrow {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.box-preview h3 {
+  font-family: var(--display);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.0;
+  margin-bottom: 4px;
+}
+
+.box-preview .box-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 18px;
+}
+
+.cell-stack-three {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.cell-mock {
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-rule);
+  border-radius: 2px;
+  padding: 10px 6px 8px;
+  aspect-ratio: 4/6;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cell-mock .cell-code {
+  font-family: var(--mono);
+  font-size: 7.5px;
+  color: var(--hanko-bright);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cell-mock .cell-name {
+  font-family: var(--display);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.cell-mock.keep { background: #DCD7C6; }
+.cell-mock.bdrc { background: #F0E6D5; }
+.cell-mock.codex { background: #E8D8C8; }
+
+.box-preview .box-footer {
+  padding-top: 14px;
+  margin-top: auto;
+  border-top: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+}
+
+.box-caption {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-top: 14px;
+}
+
+/* Sections */
+.section { margin-bottom: 80px; }
+
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+}
+
+.section-title em { font-style: italic; color: var(--ink-soft); }
+
+.section-desc {
+  font-family: var(--serif);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 72ch;
+  margin-bottom: 32px;
+}
+
+.section h3 {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 500;
+  margin: 32px 0 10px;
+}
+
+.section h4 {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 24px 0 8px;
+}
+
+.section p {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--ink);
+  margin-bottom: 16px;
+  max-width: 72ch;
+}
+
+.section p strong { font-weight: 600; }
+.section p em { font-style: italic; color: var(--ink-soft); }
+
+.section ul { margin-bottom: 16px; padding-left: 24px; }
+.section li { font-size: 14.5px; line-height: 1.65; margin-bottom: 6px; max-width: 70ch; }
+
+/* Three contents cards */
+.contents-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--paper-rule);
+  border: 1px solid var(--paper-rule);
+  margin: 24px 0 40px;
+}
+
+.contents-cell {
+  background: var(--paper);
+  padding: 24px 22px;
+}
+
+.contents-cell .contents-code {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--hanko);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.contents-cell h4 {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 500;
+  margin: 0 0 6px;
+  letter-spacing: -0.005em;
+}
+
+.contents-cell .contents-sub {
+  font-family: var(--classical);
+  font-style: italic;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+
+.contents-cell .contents-desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.contents-cell .contents-role {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--hanko-bright);
+  text-transform: uppercase;
+  padding-top: 12px;
+  border-top: 1px solid var(--paper-rule);
+}
+
+/* Journey diagram */
+.journey-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--paper-rule);
+  border: 1px solid var(--paper-rule);
+  margin: 24px 0 32px;
+}
+
+.step {
+  background: var(--paper);
+  padding: 22px 20px 18px;
+}
+
+.step .step-num {
+  font-family: var(--display);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--hanko-bright);
+  margin-bottom: 6px;
+}
+
+.step h4 {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 8px;
+}
+
+.step p {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* Pricing */
+.pricing-block {
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-rule);
+  padding: 28px 32px;
+  margin: 24px 0 32px;
+}
+
+.pricing-block h3 {
+  font-family: var(--display);
+  font-size: 18px;
+  margin: 0 0 16px;
+}
+
+.pricing-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--paper-rule);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.pricing-row:last-child { border-bottom: none; }
+.pricing-row.total {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 600;
+  padding-top: 14px;
+  margin-top: 6px;
+  border-top: 2px solid var(--ink-soft);
+}
+
+.pricing-row .price {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.pricing-row.total .price { font-size: 16px; font-weight: 600; }
+.pricing-row .price.muted { color: var(--ink-faint); }
+.pricing-row .price.savings { color: var(--hanko-bright); }
+
+.note {
+  background: var(--paper-shade);
+  border-left: 3px solid var(--hanko);
+  padding: 14px 18px;
+  margin: 20px 0;
+  font-family: var(--serif);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.note strong {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.note.stub { border-left-color: var(--ink-faint); }
+.note.stub strong { color: var(--ink-faint); }
+
+.note.bright { border-left-color: var(--hanko-bright); background: #F6E8DC; }
+.note.bright strong { color: var(--hanko-bright); }
+
+.related-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 24px;
+}
+
+.related-row a { color: var(--hanko-bright); }
+.related-row a:hover { color: var(--hanko-deep); }
+
+.page-footer {
+  max-width: 1200px;
+  margin: 96px auto 0;
+  padding: 32px 32px 24px;
+  border-top: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.page-footer .footer-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.page-footer a { color: var(--ink-faint); margin-right: 18px; }
+.page-footer a:hover { color: var(--hanko-bright); }
+.page-footer .footer-meta {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--paper-rule);
+  font-size: 9px;
+}
+
+@media (max-width: 900px) {
+  .product-hero { grid-template-columns: 1fr; gap: 32px; }
+  .product-meta-grid { grid-template-columns: repeat(2, 1fr); }
+  .contents-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .product-info h1 { font-size: 40px; }
+  .page { padding: 24px 20px 64px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="studio-nav">
+  <a href="../../index.html" class="nav-home">
+    <span class="nav-mark">M</span>
+    <span class="nav-name">M1ND<span class="dot">.</span>studio</span>
+  </a>
+  <div class="nav-links">
+    <a href="../../index.html" class="nav-link">Catalogue</a>
+    <a href="../../t1ny/index.html" class="nav-link">Research</a>
+    <a href="../index.html" class="nav-link current">MEAL</a>
+  </div>
+</nav>
+
+<nav class="breadcrumb">
+  <a href="../../index.html">M1ND.studio</a>
+  <span class="sep">/</span>
+  <a href="../index.html">MEAL</a>
+  <span class="sep">/</span>
+  <a href="index.html">Kits</a>
+  <span class="sep">/</span>
+  <span class="current">Starter Box · $48</span>
+</nav>
+
+<div class="page">
+
+  <div class="product-hero">
+    <div class="product-info">
+      <div class="page-eyebrow">MEAL-A07 · à la carte · the studio onboarding SKU</div>
+      <h1>The <em>Starter Box</em></h1>
+      <p class="product-subtitle">One purchase · three cells · the whole studio platform legible in one box</p>
+      <p class="product-lede">A single $48 purchase that introduces the entire M1ND.studio system. <strong>One empty 1646 cell + one live BDRC meal cell + one CODEX recipe template cell.</strong> The customer ends with everything they need to understand the platform — the storage standard, a working pantry product, and the editorial register all in one shipment. No subscription commitment. Intentionally priced as accessible-first; the studio's bet is that the box is so legible the customer comes back for the rest of the catalogue.</p>
+
+      <div class="product-meta-grid">
+        <div class="meta-block">
+          <div class="meta-label">Price</div>
+          <div class="meta-value">$48</div>
+          <div class="meta-sub">CAD · shipping included</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Cells</div>
+          <div class="meta-value">3</div>
+          <div class="meta-sub">KEEP + BDRC + CODEX</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Commitment</div>
+          <div class="meta-value">One-off</div>
+          <div class="meta-sub">no subscription</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Box</div>
+          <div class="meta-value">CP Small</div>
+          <div class="meta-sub">14 × 10.4 × 2.1 in</div>
+        </div>
+      </div>
+
+      <div class="product-actions">
+        <a href="#" class="button coming-soon">Add to cart · in design</a>
+        <a href="#contents" class="button secondary">See what's in the box</a>
+      </div>
+
+      <div>
+        <span class="tag bright">MEAL-A07</span>
+        <span class="tag hanko">Onboarding flagship</span>
+        <span class="tag">3 cells · one-time</span>
+        <span class="tag stub">In design · launches with STOCK Phase 1</span>
+      </div>
+    </div>
+
+    <aside>
+      <div class="box-preview">
+        <div class="box-eyebrow">M1ND.studio</div>
+        <h3>Starter Box</h3>
+        <div class="box-sub">MEAL-A07 · $48</div>
+
+        <div class="cell-stack-three">
+          <div class="cell-mock keep">
+            <div class="cell-code">KEEP-CELL-02</div>
+            <div class="cell-name">Empty 1646</div>
+          </div>
+          <div class="cell-mock bdrc">
+            <div class="cell-code">BDRC-04</div>
+            <div class="cell-name">Saffron Rice Meal</div>
+          </div>
+          <div class="cell-mock codex">
+            <div class="cell-code">CODEX-T04</div>
+            <div class="cell-name">Recipe Template</div>
+          </div>
+        </div>
+
+        <p style="font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; line-height: 1.4; margin-top: 12px;">
+          The platform in one box: storage standard, working pantry product, editorial template. One purchase, three legible cells.
+        </p>
+
+        <div class="box-footer">
+          <span>3 cells</span>
+          <span>CP Small</span>
+        </div>
+      </div>
+      <div class="box-caption">The starter box · MEAL-A07</div>
+    </aside>
+  </div>
+
+  <section class="section">
+    <div class="section-eyebrow">The purpose</div>
+    <h2 class="section-title">An <em>onboarding SKU</em>, not a kit</h2>
+    <p>The Starter Box exists for one reason: <strong>to make the studio's platform legible in a single $48 purchase.</strong> A new customer encountering M1ND.studio for the first time faces a catalogue with 12 practices, multiple sub-lines, several subscription tiers, and an architectural framework about 1646 cells, KEEP, CODEX, MEAL kits. That's a lot to absorb before committing to anything.</p>
+
+    <p>The Starter Box flattens the entire system into three cells the customer can hold. The empty 1646 cell teaches them <em>what storage looks like</em>. The live BDRC cell teaches them <em>what an actual studio product feels like and tastes like</em>. The CODEX recipe template teaches them <em>what the editorial register looks like on physical cards</em>. After unboxing, the customer has a complete model of how the studio works — and three real cells already in their kitchen.</p>
+
+    <div class="note bright">
+      <strong>The funnel logic</strong>
+      The Starter Box is intentionally priced low — $48 instead of the $65-90 a comparable three-cell product would cost — because the studio's bet is that the box is so legible the customer comes back. The customer who buys a Starter Box and likes it has <em>three obvious next steps</em>: subscribe to the Standard Kit ($90/mo), buy a BDRC three-pack ($75 à la carte), or order a CODEX title ($24). The Starter Box is the trailhead; the rest of the catalogue is where the studio actually makes money.
+    </div>
+  </section>
+
+  <section class="section" id="contents">
+    <div class="section-eyebrow">What's in the box</div>
+    <h2 class="section-title">Three cells · <em>three roles</em></h2>
+    <p class="section-desc">Each cell serves a distinct teaching function. The customer can use them in any order, but each one introduces a different layer of the studio.</p>
+
+    <div class="contents-grid">
+
+      <div class="contents-cell">
+        <div class="contents-code">CELL 1 · KEEP-CELL-02</div>
+        <h4>One empty 1646 cell</h4>
+        <p class="contents-sub">The storage standard, ready to fill</p>
+        <p class="contents-desc">A single empty 4×6 photo-archive cell — the universal 1646 envelope that every other studio practice uses. Snap-tight latch, label slot, transparent body. Customer can use it to store anything (cards, photos, spices, parts) and immediately understands the storage system.</p>
+        <p class="contents-desc">Includes a printed insert card explaining the 1646 standard, the Wowlive shelf system, and the cells-as-platform thesis. The customer can read the insert in ~5 minutes and have the full storage architecture in their head.</p>
+        <div class="contents-role">Function · platform legibility</div>
+      </div>
+
+      <div class="contents-cell">
+        <div class="contents-code">CELL 2 · BDRC-04</div>
+        <h4>One live BDRC cell</h4>
+        <p class="contents-sub">Persian saffron rice · a complete meal</p>
+        <p class="contents-desc">A live, working BDRC grain-meal cell. Basmati rice, saffron threads in a glass vial, advieh spice blend, dried barberries, recipe card set with origin notes. Open the cell, cook the meal, eat dinner.</p>
+        <p class="contents-desc">This is what every BDRC cell looks like. After this experience the customer knows what to expect from any future BDRC purchase — and can imagine what 12 different BDRC cells from a Persian Year subscription would feel like.</p>
+        <div class="contents-role">Function · product legibility</div>
+      </div>
+
+      <div class="contents-cell">
+        <div class="contents-code">CELL 3 · CODEX-T04</div>
+        <h4>One blank CODEX template</h4>
+        <p class="contents-sub">Recipe collection · designed-but-blank card set</p>
+        <p class="contents-desc">A blank CODEX template card set — ~50 designed-but-blank cards plus 5 pre-printed example cards showing the customer how the recipe-card format works. The customer can immediately start writing their own recipes onto the template cards.</p>
+        <p class="contents-desc">This is the studio's editorial register made physical. Same typography, same layout, same paper-and-ink discipline as the studio's CODEX-001 Tao Te Ching. Customer ends with a real reference to compare to any future CODEX purchase.</p>
+        <div class="contents-role">Function · editorial legibility</div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">The customer journey</div>
+    <h2 class="section-title">From unboxing to <em>where the customer goes next</em></h2>
+    <p class="section-desc">The Starter Box is designed for a specific customer journey. Each step has a function; the studio is honest about what the journey is and where it leads.</p>
+
+    <div class="journey-grid">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h4>Box arrives</h4>
+        <p>Canada Post Small Flat Rate. The customer opens the box; three cells visible inside, kraft padding, an insert card on top.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <h4>Read the insert</h4>
+        <p>5-minute read. Explains what the studio is, what the three cells are, and how to use them. Ends with "make dinner first."</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <h4>Cook the BDRC</h4>
+        <p>Persian saffron rice. Rice cooker handles it. The customer eats a complete studio meal within 24 hours of opening the box.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <h4>Fill the empty cell</h4>
+        <p>Customer puts something in the empty 1646 — kitchen receipts, recipe clippings, spice packets. Storage becomes immediate.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <h4>Open the CODEX</h4>
+        <p>Customer writes one recipe on a blank template card. The editorial register clicks. The customer understands what a real CODEX is.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <h4>Decide what's next</h4>
+        <p>Standard Kit subscription? Another BDRC? A real CODEX title? The studio's catalogue page is the obvious return destination.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">The economics</div>
+    <h2 class="section-title">Where the <em>$48</em> goes</h2>
+    <p class="section-desc">The Starter Box runs essentially at cost. The studio doesn't make meaningful margin on this SKU; the entire business case is that the box recruits long-term customers into higher-margin parts of the catalogue.</p>
+
+    <div class="pricing-block">
+      <h3>Single-box pricing breakdown</h3>
+
+      <div class="pricing-row">
+        <div>3 × 1646 cells (Novelinks 24-pack bulk)</div>
+        <div class="price">$3.75</div>
+      </div>
+      <div class="pricing-row">
+        <div>BDRC-04 contents (saffron + rice + advieh + barberries)</div>
+        <div class="price">$9.00</div>
+      </div>
+      <div class="pricing-row">
+        <div>CODEX-T04 contents (~50 blank + 5 printed cards)</div>
+        <div class="price">$2.50</div>
+      </div>
+      <div class="pricing-row">
+        <div>Insert card · platform explainer (printed)</div>
+        <div class="price">$0.75</div>
+      </div>
+      <div class="pricing-row">
+        <div>Packaging · kraft paper, label, box-fill</div>
+        <div class="price">$2.00</div>
+      </div>
+      <div class="pricing-row">
+        <div>Studio labor · pack &amp; ship (avg 15 min)</div>
+        <div class="price">$9.00</div>
+      </div>
+      <div class="pricing-row">
+        <div>Canada Post Small flat-rate postage</div>
+        <div class="price">$22.00</div>
+      </div>
+      <div class="pricing-row">
+        <div>Payment processing (Stripe ~3%)</div>
+        <div class="price">$1.45</div>
+      </div>
+      <div class="pricing-row" style="border-top: 1px solid var(--paper-rule); padding-top: 12px;">
+        <div><strong>Total COGS</strong></div>
+        <div class="price"><strong>$50.45</strong></div>
+      </div>
+      <div class="pricing-row total">
+        <div>Customer price</div>
+        <div class="price">$48.00</div>
+      </div>
+      <div class="pricing-row">
+        <div class="price muted">Studio margin per box</div>
+        <div class="price" style="color: var(--ink-faint);">-$2.45 · loss-leader</div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Yes — the Starter Box ships at a slight loss</strong>
+      The studio takes a $2.45 loss on each Starter Box. This is intentional. The customer-acquisition cost on this SKU is built into the box itself. <em>If 1 in 5 Starter Box customers converts to even a 3-month Standard Kit subscription</em> ($270 revenue, ~$15 margin), the Starter Box pays for itself five times over. <em>If 1 in 10 becomes a 12-month subscriber</em> ($1,080 revenue, ~$60 margin), the box pays for itself 25× over. The Starter Box is a marketing instrument disguised as a product.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Why $48 specifically</div>
+    <h2 class="section-title">The <em>price tag is the message</em></h2>
+    <p class="section-desc">The $48 price point is the result of three deliberate constraints.</p>
+
+    <h3>Constraint 1 · Under $50</h3>
+    <p>Crossing $50 changes how a customer mentally categorizes the purchase. <strong>Under $50 is a curiosity spend; $50+ is a considered purchase.</strong> The studio wants the Starter Box to feel like a curiosity spend — something the customer can buy on a Tuesday without consulting their household budget. $48 ($45 + tax in most provinces ≈ $50 visually but psychologically under) hits this constraint precisely.</p>
+
+    <h3>Constraint 2 · Shipping &gt; product</h3>
+    <p>The Canada Post Small flat-rate box is $22. <strong>Shipping is 46% of the customer price.</strong> This is honest signaling — the customer sees that they're paying mostly for shipping and packaging, which positions the actual cell contents as "the studio gave me three things for $26 in product cost." Generosity-coded pricing rather than extraction-coded pricing.</p>
+
+    <h3>Constraint 3 · Matches the catalogue baseline</h3>
+    <p>The studio's BDRC cells retail at $16-26 individually. The CODEX templates retail at ~$12. The KEEP cell at $4. <strong>Three cells at retail = ~$42-52.</strong> So $48 is essentially the customer paying retail for the contents alone, with shipping and onboarding-insert thrown in. The pricing message is "you're getting what you'd pay anyway, plus the introduction." No premium for the onboarding function.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Status</div>
+    <h2 class="section-title">Where the Starter Box <em>actually is</em>, today</h2>
+
+    <p><strong>Launch status:</strong> the Starter Box is in design, queued for launch alongside STOCK Phase 1. The required cells exist or are close to existing:</p>
+
+    <ul>
+      <li><strong>KEEP-CELL-02 (empty 1646):</strong> ready immediately — the Novelinks-spec base cell with a studio insert</li>
+      <li><strong>BDRC-04 (Persian saffron rice):</strong> exists in the catalogue, in active design, queued for v0.5</li>
+      <li><strong>CODEX-T04 (recipe template):</strong> in design — depends on the CODEX-001 design pipeline being established (currently deferred pending the PDF generator recovery work)</li>
+      <li><strong>Platform insert card:</strong> not yet written; ~600 word card explaining the studio to a new customer</li>
+    </ul>
+
+    <p><strong>Realistic launch:</strong> month 4-5 of STOCK Phase 1, once all three component cells are shippable.</p>
+
+    <div class="note stub">
+      <strong>Substitute path · if CODEX template is delayed</strong>
+      If CODEX-T04 isn't ready by the time KEEP-CELL-02 and BDRC-04 are, the Starter Box can launch in a "v0.1 beta" form with the CODEX cell replaced by a printed studio almanac card set (8-12 cards documenting the studio's first year and catalogue map). This is a fair substitute — the editorial register is still legible — and means the Starter Box doesn't have to wait for the CODEX PDF pipeline.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Related</div>
+    <h2 class="section-title">Where this <em>sits in the catalogue</em></h2>
+    <div class="related-row">
+      <a href="index.html">← MEAL kits store</a>
+      <a href="subscription.html">→ Standard Kit subscription · $90/mo</a>
+      <a href="../index.html">→ MEAL practice</a>
+      <a href="../../keep/cell-catalogue.html">→ Cell catalogue</a>
+      <a href="../../codex/index.html">→ CODEX (editorial register)</a>
+    </div>
+  </section>
+
+</div>
+
+<footer class="page-footer">
+  <div class="footer-row">
+    <div>
+      <a href="index.html">← MEAL kits</a>
+    </div>
+    <div>MEAL · A07 Starter Box · v0.1</div>
+  </div>
+  <div class="footer-meta">
+    M1ND.studio · MEAL · A07 Starter Box · $48 · 3 cells · KEEP-CELL-02 + BDRC-04 + CODEX-T04 · CP Small Flat Rate · loss-leader / platform-onboarding SKU · launches with STOCK Phase 1
+  </div>
+</footer>
+
+</body>
+</html>

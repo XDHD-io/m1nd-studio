@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COOK · Chicken Tagine · A STOCK demonstration cell · v0.1</title>
+<style>
+@page { size: letter; margin: 0.4in; }
+
+:root {
+  --paper:        #F4F1E8;
+  --paper-rule:   #C8C2B5;
+  --paper-faint:  #E0DCD0;
+  --paper-shade:  #EAE6D9;
+  --paper-deep:   #DCD7C6;
+  --ink:          #1A1814;
+  --ink-soft:     #4A4640;
+  --ink-faint:    #8A8580;
+  --hanko:        #B85540;
+  --hanko-deep:   #8A3F30;
+  --saffron:      #D6A93B;
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --serif:   'Inter', 'Georgia', serif;
+  --classical: 'EB Garamond', 'Georgia', 'Times New Roman', serif;
+  --mono:    'IBM Plex Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: #2C2A26;
+  color: var(--ink);
+  font-family: var(--serif);
+  -webkit-font-smoothing: antialiased;
+  padding: 32px 0;
+}
+
+@media print {
+  html, body { background: white; padding: 0; }
+  .preview-header, .preview-footer, .section-intro, .card-note, .schematic-section { display: none !important; }
+  .card-grid { gap: 0.25in; padding: 0; }
+  .card { box-shadow: none; break-inside: avoid; }
+}
+
+/* ===== PREVIEW HEADER ===== */
+.preview-header {
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  padding: 0 28px;
+  color: #F2EFE6;
+}
+
+.preview-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: #B85540;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.preview-title {
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin-bottom: 16px;
+  color: #F2EFE6;
+}
+
+.preview-title em {
+  font-style: italic;
+  color: #C8C2B5;
+}
+
+.preview-lede {
+  font-family: var(--serif);
+  font-size: 14px;
+  line-height: 1.55;
+  color: #C8C2B5;
+  max-width: 64ch;
+}
+
+/* ===== SECTION INTRO ===== */
+.section-intro {
+  max-width: 1200px;
+  margin: 56px auto 0;
+  padding: 0 28px 24px;
+  border-bottom: 1px solid #4A4640;
+}
+
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: #B85540;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 500;
+  color: #F2EFE6;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.section-title em {
+  font-style: italic;
+  color: #C8C2B5;
+}
+
+.section-desc {
+  font-family: var(--serif);
+  font-size: 13px;
+  line-height: 1.55;
+  color: #C8C2B5;
+  margin-bottom: 4px;
+  max-width: 64ch;
+}
+
+/* ===== CARD GRID ===== */
+.card-grid {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 0 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+/* ===== CARD · 4 × 6 inches ===== */
+.card {
+  width: 6in;
+  height: 4in;
+  background: var(--paper);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0.08in;
+  border: 0.5px solid var(--paper-rule);
+  pointer-events: none;
+}
+
+/* ===== CHROME (fixed across all recipe cards) ===== */
+.chrome-header {
+  position: absolute;
+  top: 0.12in;
+  left: 0.18in;
+  right: 0.18in;
+  height: 0.3in;
+  border-bottom: 0.5px solid var(--paper-rule);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-bottom: 0.04in;
+  z-index: 3;
+}
+
+.id-block, .date-block { display: flex; flex-direction: column; }
+.date-block { align-items: flex-end; text-align: right; }
+
+.chrome-label {
+  font-family: var(--mono);
+  font-size: 6pt;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: -1pt;
+}
+
+.chrome-id {
+  font-family: var(--mono);
+  font-size: 10pt;
+  color: var(--ink);
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+.chrome-cell {
+  font-family: var(--mono);
+  font-size: 8pt;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+}
+
+.chrome-hanko {
+  position: absolute;
+  bottom: 0.14in;
+  right: 0.20in;
+  width: 0.32in;
+  height: 0.32in;
+  border: 1.2px solid var(--hanko);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  z-index: 4;
+}
+
+.chrome-hanko-mark {
+  width: 0.18in;
+  height: 0.18in;
+  background: var(--hanko);
+  margin-bottom: 0.02in;
+}
+
+.chrome-hanko-label {
+  font-family: var(--mono);
+  font-size: 4.5pt;
+  color: var(--hanko);
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.chrome-brand {
+  position: absolute;
+  bottom: 0.05in;
+  left: 0.18in;
+  font-family: var(--mono);
+  font-size: 5pt;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  z-index: 3;
+}
+
+/* ===== BODY ZONE ===== */
+.body-zone {
+  position: absolute;
+  top: 0.5in;
+  left: 0.18in;
+  right: 0.18in;
+  bottom: 0.6in;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================ */
+/* === CARD 1 · MEAL CARD (Mode A image-led) === */
+/* ============================================ */
+.card.meal .body-zone {
+  padding: 0;
+}
+
+.card.meal .hero-image {
+  width: 100%;
+  height: 1.85in;
+  background: 
+    radial-gradient(ellipse at center, rgba(214, 169, 59, 0.4) 0%, transparent 60%),
+    linear-gradient(135deg, #5a3818 0%, #8a4f1e 30%, #b8773c 65%, #d6a93b 100%);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0.08in;
+}
+
+.card.meal .hero-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 30% 65%, rgba(184, 85, 64, 0.6) 0%, transparent 25%),
+    radial-gradient(circle at 65% 50%, rgba(26, 24, 20, 0.4) 0%, transparent 18%),
+    radial-gradient(circle at 75% 70%, rgba(74, 70, 64, 0.7) 0%, transparent 15%);
+}
+
+.card.meal .image-caption {
+  position: absolute;
+  bottom: 0.05in;
+  right: 0.08in;
+  font-family: var(--mono);
+  font-size: 6pt;
+  color: rgba(244, 241, 232, 0.7);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  z-index: 2;
+}
+
+.card.meal .dish-line {
+  font-family: var(--mono);
+  font-size: 7pt;
+  color: var(--hanko);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 0.04in;
+}
+
+.card.meal .dish-name {
+  font-family: var(--classical);
+  font-size: 17pt;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.05;
+  margin-bottom: 0.07in;
+  letter-spacing: -0.005em;
+}
+
+.card.meal .dish-meta {
+  display: flex;
+  gap: 0.18in;
+  margin-top: 0.05in;
+}
+
+.card.meal .meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.card.meal .meta-label {
+  font-family: var(--mono);
+  font-size: 5.5pt;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.card.meal .meta-value {
+  font-family: var(--display);
+  font-size: 10pt;
+  color: var(--ink);
+  font-weight: 500;
+  margin-top: -1pt;
+}
+
+/* ============================================ */
+/* === CARD 2 · INGREDIENT CARD (Mode B)     === */
+/* ============================================ */
+.card.ingr .ingr-title {
+  font-family: var(--display);
+  font-size: 11pt;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.05in;
+  padding-bottom: 0.03in;
+  border-bottom: 0.5px solid var(--paper-rule);
+  letter-spacing: -0.005em;
+}
+
+.card.ingr .ingr-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.14in;
+  flex: 1;
+  font-family: var(--serif);
+  font-size: 8pt;
+  line-height: 1.5;
+}
+
+.card.ingr .ingr-column h4 {
+  font-family: var(--mono);
+  font-size: 6.5pt;
+  color: var(--hanko);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.04in;
+  font-weight: 500;
+}
+
+.card.ingr .ingr-list {
+  list-style: none;
+  padding: 0;
+}
+
+.card.ingr .ingr-list li {
+  padding: 0.018in 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.05in;
+  color: var(--ink-soft);
+  border-bottom: 0.3px dotted var(--paper-rule);
+}
+
+.card.ingr .ingr-list li:last-child {
+  border-bottom: none;
+}
+
+.card.ingr .ingr-list .qty {
+  font-family: var(--mono);
+  font-size: 7pt;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.card.ingr .ingr-list .name {
+  flex: 1;
+}
+
+.card.ingr .ingr-list .name em {
+  font-style: italic;
+  color: var(--ink-faint);
+  font-size: 7pt;
+}
+
+/* ============================================ */
+/* === CARDS 3-5 · STEP CARDS (Mode B work)  === */
+/* ============================================ */
+.card.step .step-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.05in;
+  padding-bottom: 0.04in;
+  border-bottom: 0.5px solid var(--paper-rule);
+}
+
+.card.step .step-stage {
+  font-family: var(--mono);
+  font-size: 7pt;
+  color: var(--hanko);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.card.step .step-time {
+  font-family: var(--mono);
+  font-size: 7pt;
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+}
+
+.card.step .step-title {
+  font-family: var(--display);
+  font-size: 12pt;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.07in;
+  letter-spacing: -0.005em;
+}
+
+.card.step .step-list {
+  list-style: none;
+  padding: 0;
+  font-family: var(--serif);
+  font-size: 9pt;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.card.step .step-list li {
+  padding: 0.025in 0 0.025in 0.22in;
+  position: relative;
+}
+
+.card.step .step-list li .step-num {
+  position: absolute;
+  left: 0;
+  top: 0.025in;
+  font-family: var(--mono);
+  font-size: 8pt;
+  color: var(--hanko);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.card.step .step-list li strong {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.card.step .step-list li em {
+  font-style: italic;
+  color: var(--ink-faint);
+}
+
+.card.step .step-note {
+  margin-top: 0.05in;
+  padding-top: 0.04in;
+  border-top: 0.5px dashed var(--paper-faint);
+  font-family: var(--mono);
+  font-size: 6pt;
+  color: var(--ink-faint);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.card.step .step-note strong {
+  color: var(--hanko);
+}
+
+/* ============================================ */
+/* === CARD 6 · PAIRING CARD (Mode A small)  === */
+/* ============================================ */
+.card.pair .pair-image {
+  width: 100%;
+  height: 1.2in;
+  background: 
+    linear-gradient(135deg, #2E2B25 0%, #4A4640 100%);
+  position: relative;
+  margin-bottom: 0.08in;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card.pair .pair-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 25% 50%, rgba(214, 169, 59, 0.25) 0%, transparent 30%),
+    radial-gradient(circle at 70% 60%, rgba(184, 85, 64, 0.2) 0%, transparent 28%);
+}
+
+.card.pair .pair-image-label {
+  position: relative;
+  z-index: 2;
+  font-family: var(--mono);
+  font-size: 6pt;
+  color: rgba(244, 241, 232, 0.65);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.card.pair .pair-title {
+  font-family: var(--display);
+  font-size: 11pt;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 0.06in;
+  letter-spacing: -0.005em;
+}
+
+.card.pair .pair-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.1in;
+  font-family: var(--serif);
+  font-size: 8pt;
+  line-height: 1.35;
+}
+
+.card.pair .pair-item h5 {
+  font-family: var(--mono);
+  font-size: 5.5pt;
+  color: var(--hanko);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.015in;
+  font-weight: 500;
+}
+
+.card.pair .pair-item p {
+  color: var(--ink-soft);
+}
+
+.card.pair .pair-item p em {
+  font-style: italic;
+  color: var(--ink-faint);
+}
+
+/* ===== ANNOTATIONS ===== */
+.card-note {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #8A8580;
+  text-transform: uppercase;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.card-note strong { color: #B85540; }
+
+@media (max-width: 1000px) {
+  .card-grid { grid-template-columns: 1fr; }
+  .card { transform: scale(0.85); transform-origin: top left; }
+}
+
+/* ===== CELL LABEL SECTION ===== */
+.cell-label-section {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding: 0 28px;
+}
+
+.cell-label-wrap {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 32px;
+  background: #1F1D18;
+  border-left: 3px solid #B85540;
+}
+
+.cell-label {
+  width: 5in;
+  height: 1.1in;
+  background: var(--paper);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.3);
+  flex-shrink: 0;
+}
+
+.cell-label::before {
+  content: '';
+  position: absolute;
+  inset: 0.05in;
+  border: 0.5px solid var(--paper-rule);
+  pointer-events: none;
+}
+
+.cell-label-inner {
+  position: absolute;
+  inset: 0.1in;
+  display: flex;
+  align-items: center;
+  gap: 0.14in;
+}
+
+.cell-label-mark {
+  width: 0.5in;
+  height: 0.5in;
+  border: 1.2px solid var(--hanko);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.cell-label-mark::after {
+  content: '';
+  position: absolute;
+  inset: 0.07in;
+  background: var(--hanko);
+}
+
+.cell-label-content {
+  flex: 1;
+}
+
+.cell-label-cuisine {
+  font-family: var(--mono);
+  font-size: 8pt;
+  color: var(--hanko);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.cell-label-dish {
+  font-family: var(--display);
+  font-size: 14pt;
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin: 2px 0 4px;
+}
+
+.cell-label-meta {
+  font-family: var(--mono);
+  font-size: 6.5pt;
+  color: var(--ink-faint);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.cell-label-line {
+  font-family: var(--mono);
+  font-size: 5.5pt;
+  color: var(--ink-faint);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  border-top: 0.5px solid var(--paper-rule);
+  padding-top: 0.04in;
+  margin-top: 0.05in;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cell-label-explainer {
+  flex: 1;
+  font-family: var(--serif);
+  font-size: 13px;
+  line-height: 1.55;
+  color: #C8C2B5;
+}
+
+.cell-label-explainer h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #B85540;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.cell-label-explainer strong {
+  color: #F2EFE6;
+}
+
+/* ===== SCHEMATIC SECTION ===== */
+.schematic-section {
+  max-width: 1200px;
+  margin: 56px auto 0;
+  padding: 32px 28px;
+  background: #1F1D18;
+  border-left: 3px solid #B85540;
+}
+
+.schematic-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: #B85540;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.schematic-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.schematic-diagram {
+  width: 320px;
+  flex-shrink: 0;
+}
+
+.schematic-cell {
+  width: 100%;
+  height: 200px;
+  background: var(--paper);
+  border: 2px solid var(--hanko);
+  position: relative;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.schematic-cell-label {
+  font-family: var(--mono);
+  font-size: 7px;
+  color: var(--hanko);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--paper-rule);
+  padding-bottom: 4px;
+  margin-bottom: 4px;
+}
+
+.schematic-item {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--ink-soft);
+  letter-spacing: 0.06em;
+  padding: 2px 6px;
+  background: var(--paper-shade);
+  border-left: 2px solid;
+}
+
+.schematic-item.deck { border-left-color: var(--hanko); }
+.schematic-item.spice { border-left-color: var(--saffron); }
+.schematic-item.preserved { border-left-color: var(--hanko-deep); }
+.schematic-item.olive { border-left-color: #4a5d3a; }
+.schematic-item.padding { border-left-color: var(--paper-rule); color: var(--ink-faint); }
+
+.schematic-dim {
+  margin-top: auto;
+  font-family: var(--mono);
+  font-size: 7px;
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  padding-top: 6px;
+  border-top: 1px dashed var(--paper-rule);
+}
+
+.schematic-explainer {
+  font-family: var(--serif);
+  font-size: 13px;
+  line-height: 1.6;
+  color: #C8C2B5;
+}
+
+.schematic-explainer p + p {
+  margin-top: 12px;
+}
+
+.schematic-explainer strong {
+  color: #F2EFE6;
+}
+
+.schematic-explainer em {
+  color: #F2EFE6;
+  font-style: italic;
+}
+
+.schematic-pricing {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #4A4640;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: #8A8580;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+}
+
+.schematic-pricing strong {
+  color: #F2EFE6;
+}
+
+/* ===== FOOTER ===== */
+.preview-footer {
+  max-width: 1200px;
+  margin: 64px auto 0;
+  padding: 40px 28px;
+  border-top: 1px solid #4A4640;
+  color: #C8C2B5;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.footer-section h4 {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: #B85540;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.footer-section p {
+  font-family: var(--serif);
+  font-size: 13px;
+  line-height: 1.55;
+  color: #C8C2B5;
+}
+
+.footer-section p + p { margin-top: 8px; }
+.footer-section strong { color: #F2EFE6; font-weight: 500; }
+.footer-section em { color: #F2EFE6; font-style: italic; }
+
+.footer-meta {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #4A4640;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #8A8580;
+  display: flex;
+  justify-content: space-between;
+  text-transform: uppercase;
+}
+</style>
+</head>
+<body>
+
+<div class="preview-header">
+  <div class="preview-eyebrow">§ M1ND.studio · STOCK · COOK demonstration cell · v0.1</div>
+  <h1 class="preview-title">
+    Chicken tagine with preserved lemons.<br>
+    <em>The first COOK cell.</em>
+  </h1>
+  <p class="preview-lede">
+    A complete demonstration of what a customer receives when they order a COOK single-meal kit from STOCK. One cell, one dinner, six cards. The 1646 cell contains the recipe deck and the genuinely-hard-to-source ingredients; the customer supplies what they'd find at any grocery store. The cell stays in their pantry afterward — the deck becomes part of their library, ready to re-cook whenever they restock the staples. <strong>The first STOCK venture artifact.</strong>
+  </p>
+</div>
+
+<!-- ===== CELL LABEL ===== -->
+<div class="cell-label-section">
+  <div class="cell-label-wrap">
+    <div class="cell-label">
+      <div class="cell-label-inner">
+        <div class="cell-label-mark"></div>
+        <div class="cell-label-content">
+          <div class="cell-label-cuisine">MOROCCAN · COOK · 003</div>
+          <div class="cell-label-dish">Chicken Tagine with Preserved Lemons</div>
+          <div class="cell-label-meta">SERVES 4 · 75 MIN · TECHNIQUE: BRAISE</div>
+          <div class="cell-label-line">
+            <span>M1ND·STUDIO · STOCK · COOK</span>
+            <span>BEST BY · 2027·05</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cell-label-explainer">
+      <h4>§ The cell label</h4>
+      <p>The customer's first encounter with the cell — visible on the shelf, archival-quality sticker applied to the top edge. The label tells them what's inside in one glance: <strong>cuisine, dish name, serving count, cook time, technique, best-by date.</strong></p>
+      <p>Same chrome language as the cards inside. Pulled from the Wowlive shelf, the label faces forward; pulled to the counter, the cell opens to reveal the deck.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== CARD 1 · MEAL CARD ===== -->
+<div class="section-intro">
+  <div class="section-eyebrow">§ Card 1 of 6 · Meal card (Mode A · image-led)</div>
+  <h2 class="section-title">The hero · <em>what you make tonight.</em></h2>
+  <p class="section-desc">
+    Frontispiece of the deck. The image dominates. Dish name in italic display type. Three meta values at the bottom: serves, time, difficulty. This is the card customers photograph and post.
+  </p>
+</div>
+
+<div class="card-grid">
+  <div>
+    <article class="card meal">
+      <header class="chrome-header">
+        <div class="id-block">
+          <span class="chrome-label">DECK</span>
+          <span class="chrome-id">COOK·003</span>
+        </div>
+        <div class="date-block">
+          <span class="chrome-label">CARD</span>
+          <span class="chrome-cell">1 / 6</span>
+        </div>
+      </header>
+
+      <div class="body-zone">
+        <div class="hero-image">
+          <div class="image-caption">IMAGE · CHICKEN TAGINE TBD</div>
+        </div>
+        <div class="dish-line">MOROCCAN · BRAISE</div>
+        <div class="dish-name">Chicken Tagine with Preserved Lemons & Beldi Olives</div>
+        <div class="dish-meta">
+          <div class="meta-item">
+            <span class="meta-label">SERVES</span>
+            <span class="meta-value">4</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">TIME</span>
+            <span class="meta-value">75 min</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">SKILL</span>
+            <span class="meta-value">Easy +</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">TECHNIQUE</span>
+            <span class="meta-value">Braise</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="chrome-brand">M1ND·STUDIO · STOCK · COOK·003 · v0.1</div>
+      <div class="chrome-hanko">
+        <div class="chrome-hanko-mark"></div>
+        <div class="chrome-hanko-label">COOK</div>
+      </div>
+    </article>
+    <div class="card-note">Meal card · <strong>the hero · what you make tonight</strong></div>
+  </div>
+
+
+<!-- ===== CARD 2 · INGREDIENT CARD ===== -->
+  <div>
+    <article class="card ingr">
+      <header class="chrome-header">
+        <div class="id-block">
+          <span class="chrome-label">DECK</span>
+          <span class="chrome-id">COOK·003</span>
+        </div>
+        <div class="date-block">
+          <span class="chrome-label">CARD</span>
+          <span class="chrome-cell">2 / 6</span>
+        </div>
+      </header>
+
+      <div class="body-zone">
+        <div class="ingr-title">Ingredients · what ships, what you source</div>
+        <div class="ingr-columns">
+          <div class="ingr-column">
+            <h4>IN THE CELL</h4>
+            <ul class="ingr-list">
+              <li><span class="name">Ras el hanout blend <em>(12-spice)</em></span><span class="qty">25 g</span></li>
+              <li><span class="name">Saffron threads <em>(Spanish)</em></span><span class="qty">0.5 g</span></li>
+              <li><span class="name">Preserved lemons</span><span class="qty">small jar</span></li>
+              <li><span class="name">Beldi olives <em>(cured)</em></span><span class="qty">100 g</span></li>
+              <li><span class="name">Dried mint</span><span class="qty">5 g</span></li>
+            </ul>
+          </div>
+          <div class="ingr-column">
+            <h4>YOUR PANTRY</h4>
+            <ul class="ingr-list">
+              <li><span class="name">Chicken thighs, bone-in</span><span class="qty">8 pcs</span></li>
+              <li><span class="name">Yellow onions, sliced</span><span class="qty">2 large</span></li>
+              <li><span class="name">Garlic, minced</span><span class="qty">4 cloves</span></li>
+              <li><span class="name">Olive oil</span><span class="qty">3 tbsp</span></li>
+              <li><span class="name">Salt, black pepper</span><span class="qty">to taste</span></li>
+              <li><span class="name">Cilantro, parsley</span><span class="qty">small bunch ea.</span></li>
+              <li><span class="name">Water or chicken stock</span><span class="qty">1 cup</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="chrome-brand">M1ND·STUDIO · STOCK · COOK·003 · v0.1</div>
+      <div class="chrome-hanko">
+        <div class="chrome-hanko-mark"></div>
+        <div class="chrome-hanko-label">COOK</div>
+      </div>
+    </article>
+    <div class="card-note">Ingredient card · <strong>what ships vs what you source</strong></div>
+  </div>
+
+
+<!-- ===== CARD 3 · MISE EN PLACE ===== -->
+  <div>
+    <article class="card step">
+      <header class="chrome-header">
+        <div class="id-block">
+          <span class="chrome-label">DECK</span>
+          <span class="chrome-id">COOK·003</span>
+        </div>
+        <div class="date-block">
+          <span class="chrome-label">CARD</span>
+          <span class="chrome-cell">3 / 6</span>
+        </div>
+      </header>
+
+      <div class="body-zone">
+        <div class="step-header">
+          <span class="step-stage">STAGE 01 · MISE EN PLACE</span>
+          <span class="step-time">15 MIN</span>
+        </div>
+        <div class="step-title">Before you turn on the heat.</div>
+        <ul class="step-list">
+          <li><span class="step-num">1</span><strong>Pat chicken thighs dry</strong> with paper towels. Season generously with salt and pepper on both sides.</li>
+          <li><span class="step-num">2</span><strong>Slice onions thinly</strong> across the grain. Mince garlic. Set aside in separate piles.</li>
+          <li><span class="step-num">3</span><strong>Bloom the saffron</strong> in 2 tbsp warm water. Let steep <em>10 min minimum</em>.</li>
+          <li><span class="step-num">4</span><strong>Rinse preserved lemons.</strong> Discard pulp, slice peel into thin strips. Pit olives if needed.</li>
+          <li><span class="step-num">5</span><strong>Chop herbs roughly.</strong> Set aside half for cooking, half for garnish.</li>
+        </ul>
+        <div class="step-note">→ NEXT · STAGE 02 · BUILD <strong>· flip the card</strong></div>
+      </div>
+
+      <div class="chrome-brand">M1ND·STUDIO · STOCK · COOK·003 · v0.1</div>
+      <div class="chrome-hanko">
+        <div class="chrome-hanko-mark"></div>
+        <div class="chrome-hanko-label">COOK</div>
+      </div>
+    </article>
+    <div class="card-note">Step card · <strong>mise en place · 15 min before cooking</strong></div>
+  </div>
+
+
+<!-- ===== CARD 4 · BUILD ===== -->
+  <div>
+    <article class="card step">
+      <header class="chrome-header">
+        <div class="id-block">
+          <span class="chrome-label">DECK</span>
+          <span class="chrome-id">COOK·003</span>
+        </div>
+        <div class="date-block">
+          <span class="chrome-label">CARD</span>
+          <span class="chrome-cell">4 / 6</span>
+        </div>
+      </header>
+
+      <div class="body-zone">
+        <div class="step-header">
+          <span class="step-stage">STAGE 02 · BUILD</span>
+          <span class="step-time">15 MIN</span>
+        </div>
+        <div class="step-title">Bloom the spices. Brown the bird.</div>
+        <ul class="step-list">
+          <li><span class="step-num">1</span><strong>Heat 3 tbsp olive oil</strong> in a tagine or heavy Dutch oven over medium heat.</li>
+          <li><span class="step-num">2</span><strong>Brown the chicken</strong> skin-side down, ~5 min per side. Don't crowd the pan; work in batches. Remove and reserve.</li>
+          <li><span class="step-num">3</span><strong>Lower heat to medium-low.</strong> Add onions and a pinch of salt. Cook 8 min until soft and translucent.</li>
+          <li><span class="step-num">4</span><strong>Add garlic and ras el hanout.</strong> Stir constantly for 60 seconds — the spices must <em>bloom in the oil</em> but not burn.</li>
+          <li><span class="step-num">5</span><strong>Pour in the saffron water</strong> with all threads. Return chicken to the pan, nestling pieces among the onions.</li>
+        </ul>
+        <div class="step-note">→ NEXT · STAGE 03 · FINISH <strong>· flip the card</strong></div>
+      </div>
+
+      <div class="chrome-brand">M1ND·STUDIO · STOCK · COOK·003 · v0.1</div>
+      <div class="chrome-hanko">
+        <div class="chrome-hanko-mark"></div>
+        <div class="chrome-hanko-label">COOK</div>
+      </div>
+    </article>
+    <div class="card-note">Step card · <strong>build · bloom + brown</strong></div>
+  </div>
+
+
+<!-- ===== CARD 5 · FINISH ===== -->
+  <div>
+    <article class="card step">
+      <header class="chrome-header">
+        <div class="id-block">
+          <span class="chrome-label">DECK</span>
+          <span class="chrome-id">COOK·003</span>
+        </div>
+        <div class="date-block">
+          <span class="chrome-label">CARD</span>
+          <span class="chrome-cell">5 / 6</span>
+        </div>
+      </header>
+
+      <div class="body-zone">
+        <div class="step-header">
+          <span class="step-stage">STAGE 03 · FINISH</span>
+          <span class="step-time">45 MIN</span>
+        </div>
+        <div class="step-title">Slow simmer. Brighten. Plate.</div>
+        <ul class="step-list">
+          <li><span class="step-num">1</span><strong>Add 1 cup water or stock.</strong> Bring to a gentle simmer. Cover and reduce heat to low.</li>
+          <li><span class="step-num">2</span><strong>Braise covered for 35 min.</strong> The chicken should be falling-tender, sauce thickened but spoonable.</li>
+          <li><span class="step-num">3</span><strong>Stir in preserved lemon and olives</strong> for the last 8 min. Taste — adjust salt; the olives bring saltiness.</li>
+          <li><span class="step-num">4</span><strong>Off the heat,</strong> scatter half the chopped herbs and dried mint over the top. Cover, rest 5 min.</li>
+          <li><span class="step-num">5</span><strong>Serve with bread or couscous.</strong> Finish each plate with remaining herbs. <em>The sauce is the prize.</em></li>
+        </ul>
+        <div class="step-note">→ PAIRING <strong>· final card</strong></div>
+      </div>
+
+      <div class="chrome-brand">M1ND·STUDIO · STOCK · COOK·003 · v0.1</div>
+      <div class="chrome-hanko">
+        <div class="chrome-hanko-mark"></div>
+        <div class="chrome-hanko-label">COOK</div>
+      </div>
+    </article>
+    <div class="card-note">Step card · <strong>finish · slow simmer + plate</strong></div>
+  </div>
+
+
+<!-- ===== CARD 6 · PAIRING ===== -->
+  <div>
+    <article class="card pair">
+      <header class="chrome-header">
+        <div class="id-block">
+          <span class="chrome-label">DECK</span>
+          <span class="chrome-id">COOK·003</span>
+        </div>
+        <div class="date-block">
+          <span class="chrome-label">CARD</span>
+          <span class="chrome-cell">6 / 6</span>
+        </div>
+      </header>
+
+      <div class="body-zone">
+        <div class="pair-image">
+          <div class="pair-image-label">PAIRING NOTES · MOROCCAN TABLE</div>
+        </div>
+        <div class="pair-title">To complete the table.</div>
+        <div class="pair-grid">
+          <div class="pair-item">
+            <h5>BREAD</h5>
+            <p>Khobz, sourdough, or a flaky flatbread. <em>The sauce wants something to soak it.</em></p>
+          </div>
+          <div class="pair-item">
+            <h5>STARCH</h5>
+            <p>Hand-rolled couscous or saffron rice — both serve the braise faithfully.</p>
+          </div>
+          <div class="pair-item">
+            <h5>DRINK</h5>
+            <p>Mint tea (hot or iced). Or a young Côtes du Rhône for the table.</p>
+          </div>
+          <div class="pair-item">
+            <h5>FINISH</h5>
+            <p>Sliced oranges with cinnamon, or pistachio-rose ice cream from a good shop.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chrome-brand">M1ND·STUDIO · STOCK · COOK·003 · v0.1</div>
+      <div class="chrome-hanko">
+        <div class="chrome-hanko-mark"></div>
+        <div class="chrome-hanko-label">COOK</div>
+      </div>
+    </article>
+    <div class="card-note">Pairing card · <strong>complete the table</strong></div>
+  </div>
+
+</div>
+
+
+<!-- ===== CELL CONTENTS SCHEMATIC ===== -->
+<div class="schematic-section">
+  <div class="schematic-title">§ What ships in the cell · physical contents schematic</div>
+  <div class="schematic-grid">
+    <div class="schematic-diagram">
+      <div class="schematic-cell">
+        <div class="schematic-cell-label">1646 CELL · 4.7 × 6.6 × 1.2"</div>
+        <div class="schematic-item deck">RECIPE DECK · 6 cards, band-clipped</div>
+        <div class="schematic-item spice">RAS EL HANOUT · 25g jar</div>
+        <div class="schematic-item spice">SAFFRON · 0.5g vial</div>
+        <div class="schematic-item preserved">PRESERVED LEMONS · small jar</div>
+        <div class="schematic-item olive">BELDI OLIVES · 100g pouch</div>
+        <div class="schematic-item spice">DRIED MINT · 5g packet</div>
+        <div class="schematic-item padding">KRAFT PAPER PADDING</div>
+        <div class="schematic-dim">CONTENTS WEIGHT ~280G · TOTAL CELL ~340G</div>
+      </div>
+    </div>
+    <div class="schematic-explainer">
+      <p><strong>The recipe deck</strong> goes in first, band-clipped, oriented so the meal card faces up when the cell is opened. The spice jars and pouches nest along the side. The preserved lemon jar — the heaviest and most valuable item — sits centered for shipping stability.</p>
+      <p><strong>Kraft paper padding</strong> fills the remaining void. The cell ships in a Canada Post Small Flat Rate Box ($14 fixed cost anywhere in Canada). The whole unit weighs roughly 340g — well under the 5 kg CP limit.</p>
+      <p><em>What the customer doesn't receive:</em> no ice packs, no insulation liners, no plastic-wrap, no fresh produce, no cold-chain anxiety. Just shelf-stable specialty ingredients and a designed deck. <strong>The cell is the package and the package is the durable inventory.</strong></p>
+      <div class="schematic-pricing">
+        <span>COGS · ~$34</span>
+        <span>LABOR · ~$6</span>
+        <span>RETAIL · <strong>$54 CAD</strong></span>
+        <span>MARGIN · ~26% pre-overhead</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== FOOTER ===== -->
+<div class="preview-footer">
+  <div class="footer-grid">
+
+    <div class="footer-section">
+      <h4>§ The recipe card variant</h4>
+      <p>Six cards demonstrating the recipe-card variant of the 1646 system. <strong>Mode A</strong> for the meal card (the hero) and the pairing card (smaller image, supporting). <strong>Mode B</strong> for ingredient and step cards (text-led, working tools that get splashed on).</p>
+      <p>Body type sized up to 9pt — larger than the Zettelkasten / reprint variants — because recipe cards get read mid-task from arm's length. Step numbers in vermillion mono scan instantly. Ingredient quantities right-aligned in a separate column for fast reference.</p>
+      <p>The chrome stays consistent with every other M1ND.studio card: ID top-left, card number top-right, hanko (COOK) bottom-right, brand strip bottom-left. <strong>A card pulled from any cell is recognizable as part of the system.</strong></p>
+    </div>
+
+    <div class="footer-section">
+      <h4>§ The cell as artifact</h4>
+      <p>The cell ships labeled and remains in the customer's pantry permanently. <strong>The recipe deck stays in the cell forever.</strong> When the customer's ras el hanout runs out, they can re-purchase the spice from any source — the deck and cell remain, ready to use again.</p>
+      <p>This is the structural inversion of the meal-kit category. Hello Fresh's recipe cards die with the perishables they came with. STOCK's recipe decks survive the ingredients because they're paired with <em>shelf-stable categories</em> the customer can replenish anywhere.</p>
+      <p>After six COOK purchases, a customer has six cells on their shelf — a beginning library of cuisines they've cooked, each with a pre-built return path. After a year, the cells start accumulating into <strong>a real personal cookbook of dishes the customer has mastered.</strong></p>
+    </div>
+
+    <div class="footer-section">
+      <h4>§ What this enables for the venture</h4>
+      <p>This demo is the proof-of-concept artifact for the STOCK venture launch sequence. A customer presented with this cell — physical or photographed — can answer the question <em>"would I pay $54 for this?"</em> directly. No more abstraction.</p>
+      <p>Next session: <strong>five more COOK cells</strong> following the same template — Mapo Tofu, Italian Cacio e Pepe, Yucatán Cochinita Pibil, Levantine Mujadara, and Vietnamese Bún Chả — completing the launch catalogue for Phase 1 of the STOCK launch path.</p>
+      <p>After that: <strong>the STOCK refill cells</strong> (the "Italian pantry" / "Sichuan pantry" / "Levantine pantry" larger-format products) which use the same card system but with 8-12 recipes per cell and more ingredient quantity per packet.</p>
+    </div>
+
+  </div>
+
+  <div class="footer-meta">
+    <div>M1ND.studio · STOCK · COOK·003 demo · v0.1 · 2026-05-17</div>
+    <div>Chicken Tagine with Preserved Lemons · the first cell · proof of concept</div>
+  </div>
+</div>
+
+</body>
+</html>

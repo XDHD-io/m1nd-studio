@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Folded-card booklets · .Studio · M1ND.studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --paper: #F4F1E8;
+  --paper-rule: #C8C2B5;
+  --paper-faint: #E0DCD0;
+  --paper-shade: #EAE6D9;
+  --paper-deep: #DCD7C6;
+  --ink: #1A1814;
+  --ink-soft: #4A4640;
+  --ink-faint: #8A8580;
+  --hanko: #3A3D3A;
+  --hanko-deep: #25271E;
+  --hanko-bright: #B85540;
+
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --serif: 'Inter', Georgia, sans-serif;
+  --classical: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--hanko-bright); }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--serif); line-height: 1.55; }
+
+.studio-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--paper); border-bottom: 1px solid var(--paper-rule);
+  padding: 14px 32px; display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.studio-nav .nav-home { display: flex; align-items: center; gap: 10px; color: var(--ink); }
+.studio-nav .nav-mark { width: 22px; height: 22px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 13px; font-weight: 500; }
+.studio-nav .nav-name { font-weight: 500; }
+.studio-nav .nav-name .dot { color: var(--hanko-bright); }
+.studio-nav .nav-links { display: flex; gap: 24px; }
+.studio-nav .nav-link { color: var(--ink-soft); }
+.studio-nav .nav-link:hover { color: var(--ink); }
+.studio-nav .nav-link.current { color: var(--hanko); }
+
+.breadcrumb {
+  max-width: 1200px; margin: 0 auto; padding: 16px 32px 0;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+.breadcrumb a { color: var(--ink-faint); }
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb .sep { margin: 0 8px; color: var(--paper-rule); }
+.breadcrumb .current { color: var(--ink); }
+
+.page { max-width: 1200px; margin: 0 auto; padding: 32px 32px 96px; }
+
+.page-header { margin-bottom: 56px; padding-bottom: 32px; border-bottom: 1px solid var(--paper-rule); }
+.page-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; color: var(--hanko); text-transform: uppercase; margin-bottom: 14px; }
+.page-title { font-family: var(--display); font-size: 48px; font-weight: 400; line-height: 1.02; letter-spacing: -0.02em; margin-bottom: 18px; max-width: 22ch; }
+.page-title em { font-style: italic; color: var(--ink-soft); }
+.page-lede { font-family: var(--serif); font-size: 17px; line-height: 1.55; color: var(--ink-soft); max-width: 64ch; }
+
+.section { margin-bottom: 80px; }
+.section-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--hanko); text-transform: uppercase; margin-bottom: 10px; }
+.section-title { font-family: var(--display); font-size: 30px; font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 14px; }
+.section-title em { font-style: italic; color: var(--ink-soft); }
+.section-desc { font-family: var(--serif); font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); max-width: 72ch; margin-bottom: 32px; }
+
+.section h3 { font-family: var(--display); font-size: 19px; font-weight: 500; margin: 32px 0 10px; }
+.section h4 { font-family: var(--display); font-size: 15px; font-weight: 600; margin: 24px 0 8px; }
+.section p { font-size: 14.5px; line-height: 1.65; color: var(--ink); margin-bottom: 16px; max-width: 72ch; }
+.section p strong { font-weight: 600; }
+.section p em { font-style: italic; color: var(--ink-soft); }
+.section ul { margin-bottom: 16px; padding-left: 24px; }
+.section li { font-size: 14.5px; line-height: 1.65; margin-bottom: 6px; max-width: 70ch; }
+
+.note {
+  background: var(--paper-shade); border-left: 3px solid var(--hanko);
+  padding: 14px 18px; margin: 20px 0;
+  font-family: var(--serif); font-size: 13.5px; line-height: 1.55;
+  color: var(--ink-soft);
+}
+.note strong { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; color: var(--hanko); text-transform: uppercase; display: block; margin-bottom: 6px; font-weight: 500; }
+.note.stub { border-left-color: var(--ink-faint); }
+.note.stub strong { color: var(--ink-faint); }
+
+/* Fold-geometry diagram */
+.fold-demo {
+  background: var(--paper-shade);
+  padding: 40px 32px;
+  margin: 24px 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.fold-stage {
+  text-align: center;
+}
+
+.fold-stage .stage-label {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.14em; color: var(--hanko);
+  text-transform: uppercase; margin-bottom: 14px;
+}
+
+.fold-card {
+  display: inline-block;
+  background: var(--paper);
+  border: 1px solid var(--paper-rule);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+.fold-card.open { width: 180px; height: 120px; }
+.fold-card.fold-line {
+  width: 180px; height: 120px;
+  background: linear-gradient(to right,
+    var(--paper) 0%, var(--paper) 49.5%,
+    var(--paper-rule) 49.5%, var(--paper-rule) 50.5%,
+    var(--paper) 50.5%, var(--paper) 100%
+  );
+}
+.fold-card.folded { width: 90px; height: 120px; }
+
+.fold-stage .stage-dim {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.08em;
+  margin-top: 12px;
+}
+
+.fold-stage .stage-arrow {
+  font-family: var(--mono);
+  font-size: 24px;
+  color: var(--hanko-bright);
+  margin: 12px 0;
+}
+
+/* Capacity table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 32px;
+  font-size: 13.5px;
+}
+.data-table th {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  color: var(--ink-faint); text-transform: uppercase; text-align: left;
+  padding: 10px 12px; border-bottom: 1px solid var(--paper-rule);
+  font-weight: 500;
+}
+.data-table td {
+  padding: 10px 12px; border-bottom: 1px solid var(--paper-rule);
+  vertical-align: top; line-height: 1.45;
+}
+.data-table .num { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
+.data-table tr.highlight { background: var(--paper-shade); }
+.data-table tr.highlight td { font-weight: 600; }
+
+/* Product cards */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.product-card {
+  background: var(--paper);
+  border: 1px solid var(--paper-rule);
+  padding: 20px 20px 18px;
+  text-decoration: none;
+  color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  position: relative;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.product-card:hover {
+  border-color: var(--ink-soft);
+  box-shadow: 0 4px 16px rgba(26, 24, 20, 0.08);
+}
+
+.product-card.featured { border-color: var(--hanko); }
+
+.product-card.pending {
+  opacity: 0.75;
+  cursor: default;
+  background: var(--paper-shade);
+}
+.product-card.pending::after {
+  content: 'PENDING';
+  position: absolute; top: 8px; right: 8px;
+  font-family: var(--mono); font-size: 8.5px;
+  letter-spacing: 0.12em; color: var(--ink-faint);
+  background: var(--paper); padding: 2px 6px;
+  border: 1px solid var(--paper-rule);
+}
+
+.product-card .product-num {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+  color: var(--hanko); text-transform: uppercase; margin-bottom: 8px;
+}
+
+/* Mini booklet visual */
+.booklet-vis {
+  margin: 0 -4px 12px;
+  display: flex;
+  gap: 4px;
+  justify-content: flex-start;
+}
+.booklet-vis .booklet-piece {
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-rule);
+  aspect-ratio: 4/3;
+  flex: 1;
+  position: relative;
+  max-width: 60px;
+}
+.booklet-vis .booklet-piece::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  bottom: 4px;
+  width: 1px;
+  background: var(--paper-rule);
+}
+
+.product-card .product-name {
+  font-family: var(--display); font-size: 18px; font-weight: 500;
+  line-height: 1.15; margin-bottom: 4px;
+}
+.product-card .product-name-secondary {
+  font-family: var(--classical); font-style: italic;
+  font-size: 12px; color: var(--ink-soft);
+  line-height: 1.3; margin-bottom: 12px;
+}
+.product-card .product-desc {
+  font-family: var(--serif); font-size: 12.5px; line-height: 1.55;
+  color: var(--ink-soft); flex: 1; margin-bottom: 12px;
+}
+.product-card .product-meta {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding-top: 10px; border-top: 1px solid var(--paper-rule);
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+.product-card .product-price { color: var(--ink); font-weight: 600; font-size: 13px; }
+
+.tag {
+  display: inline-block; padding: 2px 8px;
+  background: var(--paper-shade); border: 1px solid var(--paper-rule);
+  font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.08em;
+  color: var(--ink-soft); text-transform: uppercase;
+  margin-right: 6px; margin-bottom: 4px;
+}
+.tag.hanko { background: var(--hanko); color: var(--paper); border-color: var(--hanko); }
+.tag.bright { background: var(--hanko-bright); color: var(--paper); border-color: var(--hanko-bright); }
+
+.related-row { display: flex; gap: 12px; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 24px; }
+.related-row a { color: var(--hanko-bright); }
+.related-row a:hover { color: var(--hanko-deep); }
+
+.page-footer {
+  max-width: 1200px; margin: 96px auto 0;
+  padding: 32px 32px 24px; border-top: 1px solid var(--paper-rule);
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+.page-footer .footer-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.page-footer a { color: var(--ink-faint); margin-right: 18px; }
+.page-footer a:hover { color: var(--hanko-bright); }
+.page-footer .footer-meta { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--paper-rule); font-size: 9px; }
+
+@media (max-width: 768px) {
+  .page-title { font-size: 36px; }
+  .fold-demo { grid-template-columns: 1fr; }
+  .page { padding: 24px 20px 64px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="studio-nav">
+  <a href="../index.html" class="nav-home">
+    <span class="nav-mark">M</span>
+    <span class="nav-name">M1ND<span class="dot">.</span>studio</span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html" class="nav-link">Catalogue</a>
+    <a href="../t1ny/index.html" class="nav-link">Research</a>
+    <a href="index.html" class="nav-link current">.Studio</a>
+  </div>
+</nav>
+
+<nav class="breadcrumb">
+  <a href="../index.html">M1ND.studio</a>
+  <span class="sep">/</span>
+  <a href="index.html">.Studio</a>
+  <span class="sep">/</span>
+  <span class="current">Booklets</span>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <div class="page-eyebrow">.Studio · folded-card booklet format · v0.1</div>
+    <h1 class="page-title">A 100-pack of cards is also <em>4 mini notebooks</em></h1>
+    <p class="page-lede">Fold a 4×6 card in half along its short axis. You get a 4×3 booklet page — landscape orientation, comfortable thumb-and-finger grip, fits a pocket. Seven cards stapled together = a 28-page mini notebook. Thirteen cards = a 52-page standard booklet. A 100-pack of cards transforms into 4 mini notebooks OR 2 standard booklets. <strong>Same cards. New use.</strong></p>
+  </header>
+
+  <section class="section">
+    <div class="section-eyebrow">The fold geometry</div>
+    <h2 class="section-title">Why <em>4×3 landscape</em></h2>
+    <p class="section-desc">A 4×6 card folds two ways. Short-side fold gives a 4×3 booklet page (landscape orientation, near-Field-Notes proportion). Long-side fold gives a 2×6 booklet page (awkwardly tall, hard to write on). The short-side fold is the natural choice and the studio's standard.</p>
+
+    <div class="fold-demo">
+      <div class="fold-stage">
+        <div class="stage-label">Stage 1 · Open card</div>
+        <div class="fold-card open"></div>
+        <div class="stage-dim">4 × 6 inches · 2 page faces</div>
+      </div>
+
+      <div class="fold-stage">
+        <div class="stage-label">Stage 2 · Fold short-side</div>
+        <div class="fold-card fold-line"></div>
+        <div class="stage-arrow">↓</div>
+        <div class="stage-dim">Crease line at midpoint</div>
+      </div>
+
+      <div class="fold-stage">
+        <div class="stage-label">Stage 3 · Folded booklet page</div>
+        <div class="fold-card folded"></div>
+        <div class="stage-dim">4 × 3 inches · 4 page faces</div>
+      </div>
+    </div>
+
+    <p>One card = 4 page faces when folded. Several cards nested into each other and stapled = a booklet. The studio's standard binding is two staples on the fold line, ~1" from each end.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">The capacity math</div>
+    <h2 class="section-title">What a 100-pack <em>actually makes</em></h2>
+    <p class="section-desc">Cards per booklet × number of booklets, exact remainders matter. A 100-pack of Oxford 4×6 cards yields different booklet configurations depending on the format. The two clean unit-divisions — 4 mini notebooks of 25 pages each, or 2 standard notebooks of 50 pages each — are the .Studio canonical formats.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Booklet format</th><th>Cards used</th><th>Page faces</th><th>Per 100-pack</th><th>Remainder</th></tr>
+      </thead>
+      <tbody>
+        <tr class="highlight"><td>Mini notebook</td><td class="num">7</td><td class="num">28</td><td class="num">14 booklets</td><td class="num">2 cards</td></tr>
+        <tr class="highlight"><td>Standard notebook</td><td class="num">13</td><td class="num">52</td><td class="num">7 booklets</td><td class="num">9 cards</td></tr>
+        <tr><td>Big pocket</td><td class="num">25</td><td class="num">100</td><td class="num">4 booklets</td><td class="num">0 cards</td></tr>
+        <tr class="highlight"><td><strong>Studio Mini · 25 pages exact</strong></td><td class="num">7</td><td class="num">28</td><td class="num"><strong>4 booklets</strong></td><td class="num">72 cards remain</td></tr>
+        <tr class="highlight"><td><strong>Studio Standard · 50 pages exact</strong></td><td class="num">13</td><td class="num">52</td><td class="num"><strong>2 booklets</strong></td><td class="num">74 cards remain</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>The 4 mini / 2 standard pattern</strong>
+      The two highlighted rows above are the studio's canonical product configurations. <strong>STUDIO-BL-01 ships 4 mini notebooks from one 100-pack, leaving 72 cards for the customer.</strong> <strong>STUDIO-BL-02 ships 2 standard notebooks, leaving 74 cards.</strong> The remainder is intentional — the customer ends with both finished booklets AND a usable stock of remaining cards for other purposes. The studio doesn't ship the whole 100 as booklets because that would be 14 mini booklets (excessive) or 7 standards (odd number).
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Text capacity per booklet</div>
+    <h2 class="section-title">What can be <em>printed</em></h2>
+    <p class="section-desc">For studio-printed manuals and other content, the typography spec matches the rest of the .Studio register — 9pt EB Garamond body, 11pt leading, 0.25" margins on the 4×3 page. This yields ~118 words per page face.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Booklet</th><th>Pages</th><th>Words/face</th><th>Total words</th><th>Content words (after front/back)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Mini · 28 pages</td><td class="num">28</td><td class="num">~118</td><td class="num">~3,300</td><td class="num">~2,600</td></tr>
+        <tr><td>Standard · 52 pages</td><td class="num">52</td><td class="num">~118</td><td class="num">~6,100</td><td class="num">~5,400</td></tr>
+        <tr><td>Big pocket · 100 pages</td><td class="num">100</td><td class="num">~118</td><td class="num">~11,800</td><td class="num">~11,000</td></tr>
+      </tbody>
+    </table>
+
+    <p>The studio's <strong>50-page Standard booklet at ~5,400 content words</strong> is precisely the right size for short manuals (BXBX Hako, KEEP 1646 mods), short essays (Studio Almanac year-end), or condensed CODEX titles (CODEX-001 pocket edition). It opens an editorial surface that previously sat awkwardly between "long card" and "full CODEX."</p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Blank booklets · the writing-surface tier</div>
+    <h2 class="section-title">For the customer's <em>own writing</em></h2>
+    <p class="section-desc">Studio-designed but blank inside. Customer fills with their own writing, notes, sketches, field observations. Studio-branded covers in the paper-and-hanko palette, Space Grotesk wordmark. Staple-bound. Compact enough for a back pocket; substantial enough to write in.</p>
+
+    <div class="product-grid">
+
+      <div class="product-card featured">
+        <div class="product-num">STUDIO-BL-01 · FLAGSHIP</div>
+        <div class="booklet-vis">
+          <div class="booklet-piece"></div>
+          <div class="booklet-piece"></div>
+          <div class="booklet-piece"></div>
+          <div class="booklet-piece"></div>
+        </div>
+        <div class="product-name">Mini Notebooks · 4-pack</div>
+        <div class="product-name-secondary">4 × 25-page booklets from one 100-pack</div>
+        <div class="product-desc">Four 25-page mini notebooks, staple-bound, studio-branded covers. Blank or dot-grid interior pages. Each notebook is 4×3 inches landscape — fits in a back pocket, jacket pocket, any small carrying surface. Designed to be filled and refilled over the course of months.</div>
+        <div class="product-meta">
+          <span class="product-price">$18</span>
+          <span>STUDIO-BL-01</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-num">STUDIO-BL-02</div>
+        <div class="booklet-vis">
+          <div class="booklet-piece"></div>
+          <div class="booklet-piece"></div>
+        </div>
+        <div class="product-name">Standard Notebooks · 2-pack</div>
+        <div class="product-name-secondary">2 × 50-page booklets from one 100-pack</div>
+        <div class="product-desc">Two 50-page standard notebooks. More content surface than the mini, still compact. Useful for longer journaling, sustained project notes, sketching across multiple sessions. Same studio-branded covers.</div>
+        <div class="product-meta">
+          <span class="product-price">$16</span>
+          <span>STUDIO-BL-02</span>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-num">STUDIO-BL-03</div>
+        <div class="booklet-vis">
+          <div class="booklet-piece"></div>
+          <div class="booklet-piece"></div>
+          <div class="booklet-piece"></div>
+          <div class="booklet-piece"></div>
+        </div>
+        <div class="product-name">Year-One Studio Journal</div>
+        <div class="product-name-secondary">4 × 25-page booklets · quarterly prompts</div>
+        <div class="product-desc">Four mini notebooks, one for each quarter of the customer's year with the studio. Each booklet has light pre-printed prompts at the top of every spread (e.g., "what worked this week," "what changed about the workspace"). 80% of each page is blank for the customer's writing.</div>
+        <div class="product-meta">
+          <span class="product-price">$24</span>
+          <span>STUDIO-BL-03</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Printed manuals · the studio-content tier</div>
+    <h2 class="section-title">For the studio's <em>own writing</em></h2>
+    <p class="section-desc">Studio editorial work typeset into booklet form. Each title is text the studio has produced or is producing — manuals, almanacs, condensed CODEX editions, internal reference works. Same booklet construction; printed contents instead of blank.</p>
+
+    <div class="product-grid">
+
+      <div class="product-card pending">
+        <div class="product-num">STUDIO-PR-01</div>
+        <div class="product-name">BXBX Hako · Owner's Manual</div>
+        <div class="product-name-secondary">50-page booklet · ~5,000 words</div>
+        <div class="product-desc">Full owner's manual for the BXBX Hako KEEP wall. Build, install, maintenance, cell-system integration, expansion options. Ships with every Hako delivery; available separately for Hako owners who lost theirs or for curious customers researching the system.</div>
+        <div class="product-meta">
+          <span class="product-price">$18</span>
+          <span>Q3 2026</span>
+        </div>
+      </div>
+
+      <div class="product-card pending">
+        <div class="product-num">STUDIO-PR-02 · FEATURED</div>
+        <div class="product-name">KEEP 1646 Mods · Manual</div>
+        <div class="product-name-secondary">50-page booklet · full case study</div>
+        <div class="product-desc">The complete KEEP-1646-mods case study (sourcing, subdivision, mobility, durability) typeset to booklet form. Documents every mod pattern with cost breakdowns, parts lists, and customer worksheets. The studio's first <em>instructional</em> booklet rather than reference.</div>
+        <div class="product-meta">
+          <span class="product-price">$18</span>
+          <span>Q3 2026</span>
+        </div>
+      </div>
+
+      <div class="product-card pending">
+        <div class="product-num">STUDIO-PR-03</div>
+        <div class="product-name">CODEX-001 · Pocket Edition</div>
+        <div class="product-name-secondary">25-page condensed Tao Te Ching</div>
+        <div class="product-desc">A 25-page condensed Tao Te Ching in booklet form. Sequential reading rather than the card-stack format — a different experience, complement to the full CODEX-001 rather than a replacement. ~2,500 words of Legge's translation, condensed by the studio's editorial choice. Public domain.</div>
+        <div class="product-meta">
+          <span class="product-price">$12</span>
+          <span>Q4 2026</span>
+        </div>
+      </div>
+
+      <div class="product-card pending">
+        <div class="product-num">STUDIO-PR-04</div>
+        <div class="product-name">Studio Almanac · Year One</div>
+        <div class="product-name-secondary">50-page year-end booklet</div>
+        <div class="product-desc">The studio's year-end almanac in booklet form. Catalogue map, year's milestones, selected essays in summary, what's next. A physical artifact the customer can hold that represents the studio's first complete year. Annual release; first one ships end of Year 1.</div>
+        <div class="product-meta">
+          <span class="product-price">$20</span>
+          <span>End of Year 1</span>
+        </div>
+      </div>
+
+    </div>
+
+    <h3>Custom typesetting · commission service</h3>
+    <p>Beyond the studio's own catalogue, .Studio offers <strong>custom booklet typesetting as a commission service.</strong> Customer brings text (their own writing, public-domain work, family records); .Studio typesets it to the booklet format and prints a small run. Pricing $80-200 per booklet depending on length and quantity. <em>This is a Year-2 service offering — Year 1 focuses on the catalogue's own SKUs.</em></p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Why this matters</div>
+    <h2 class="section-title">A transformation, <em>not a new product</em></h2>
+    <p>The booklet line uses cards the customer already has. A customer with a 100-pack of 1646 cards can immediately make 4 mini notebooks. .Studio doesn't need to source different paper or invest in new inventory — the booklet is a <em>transformation</em> of an existing product. This is the cleanest possible product line: zero new inventory, infinite combinatorial possibility, every cell-buyer is also a potential booklet-buyer.</p>
+
+    <p>The booklet also opens a new content surface for the studio. Editorial work too long for a single card and too short for a full CODEX — the 5,000-word manual range — now has a natural home. The KEEP 1646 mods case study, the Hako owner's manual, the year-end almanac all become real physical products instead of just web pages.</p>
+
+    <p>And finally: <strong>the booklet compounds with everything else.</strong> A MEAL kit can ship with a booklet insert. A CODEX product can have a companion booklet. A BXBX Hako delivery includes its booklet manual. The booklet is a unifying format that connects practices that previously didn't have a shared deliverable.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Status</div>
+    <h2 class="section-title">Where the booklet line <em>actually is</em>, today</h2>
+
+    <ul>
+      <li><strong>Format spec:</strong> locked. 4×3 landscape, short-side fold, 2-staple binding, 9pt EB Garamond body, 11pt leading</li>
+      <li><strong>Source cards:</strong> Oxford 4×6 ruled/blank, Made in Mexico (B09GWBJ97Y), $0.022 per card at 500-pack pricing</li>
+      <li><strong>STUDIO-BL-01 (Mini · 4-pack):</strong> design complete, cover artwork pending, ready for first production run</li>
+      <li><strong>STUDIO-BL-02 (Standard · 2-pack):</strong> design complete, same status as BL-01</li>
+      <li><strong>STUDIO-BL-03 (Year-One Journal):</strong> prompt content pending; covers ready</li>
+      <li><strong>STUDIO-PR-01 (Hako Manual):</strong> waiting on Hako Year-1 production; manual text drafted in BXBX thread documents</li>
+      <li><strong>STUDIO-PR-02 (1646 Mods Manual):</strong> source content exists (KEEP-1646-mods-thread-v0.1, ~23,000 words); needs editorial pass to condense to ~5,400 booklet words</li>
+      <li><strong>STUDIO-PR-03 (CODEX-001 Pocket):</strong> waiting on CODEX-001 PDF generator recovery; source text already retrieved</li>
+      <li><strong>STUDIO-PR-04 (Studio Almanac):</strong> annual product; first one ships at the end of Year 1</li>
+    </ul>
+
+    <div class="note">
+      <strong>Production tooling</strong>
+      The booklet line needs a small print/fold/staple workflow at studio scale. Print on the customer's existing Pixma laser or a small commercial run; fold by hand or with a bone folder; bind with a long-arm stapler ($30-50 at any office-supply source). Year 1 production is studio-by-hand; if volume warrants, Year 2 can introduce a small saddle-stitch booklet press. Until then, the workflow is intentionally artisanal — each booklet is staple-bound by hand and signed off on by the studio.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Related</div>
+    <h2 class="section-title">Where this <em>sits in the catalogue</em></h2>
+    <div class="related-row">
+      <a href="index.html">← .Studio practice</a>
+      <a href="cell-comparison.html">→ CELL in context (essay)</a>
+      <a href="../codex/index.html">→ CODEX (related format)</a>
+      <a href="../keep/index.html">→ KEEP (cells the booklets come from)</a>
+      <a href="../index.html">→ M1ND.studio catalogue</a>
+    </div>
+  </section>
+
+</div>
+
+<footer class="page-footer">
+  <div class="footer-row">
+    <div><a href="index.html">← .Studio</a></div>
+    <div>.Studio · BL line · v0.1</div>
+  </div>
+  <div class="footer-meta">
+    M1ND.studio · .Studio · folded-card booklet format · STUDIO-BL-01 / -02 / -03 (blank) · STUDIO-PR-01 / -02 / -03 / -04 (printed) · format locked, production studio-by-hand for Year 1
+  </div>
+</footer>
+
+</body>
+</html>

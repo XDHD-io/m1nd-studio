@@ -1,0 +1,50 @@
+M1ND.studio · LICENSE
+
+================================================================================
+All Rights Reserved
+================================================================================
+
+Copyright © 2026 M1ND.studio. All rights reserved.
+
+This repository and all of its contents — including but not limited to:
+
+- All HTML, CSS, and JavaScript files
+- All Markdown documentation (thread documents, brainstorms, architecture
+  documents, editorial essays)
+- All product-page editorial copy
+- The studio's visual identity, including the wordmark, palette, typography
+  selections, and typography stack arrangement
+- The "M1ND.studio" name and all studio-coined terminology including but not
+  limited to "1646 cell," "CODEX," ".Studio," "KEEP," "MEAL," "BXBX," and the
+  practice naming conventions
+
+— are the property of M1ND.studio.
+
+No part of this repository may be reproduced, distributed, modified, or used
+for any purpose, commercial or non-commercial, without prior written permission
+from the studio. Viewing the source for educational reference is permitted;
+reuse, redistribution, derivative works, and commercial use are not.
+
+================================================================================
+Third-Party Content
+================================================================================
+
+This repository includes content sourced from third parties, which retains
+its original licensing:
+
+- Fonts under assets/fonts/ are licensed under the SIL Open Font License (OFL):
+  - Space Grotesk — https://github.com/floriankarsten/space-grotesk
+  - Inter — https://github.com/rsms/inter (loaded from Google Fonts in production)
+  - EB Garamond — https://github.com/octaviopardo/EBGaramond12
+  - IBM Plex Mono — https://github.com/IBM/plex
+
+- Public-domain literary texts referenced in CODEX titles (e.g., the Tao Te
+  Ching translated by James Legge) are in the public domain.
+  The studio's editorial framing, typography, packaging, and presentation
+  of these texts is © 2026 M1ND.studio and not in the public domain.
+
+================================================================================
+Contact
+================================================================================
+
+For licensing inquiries, permissions requests, or questions: m1nd.co

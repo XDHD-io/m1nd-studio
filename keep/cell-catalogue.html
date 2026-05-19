@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cell Catalogue · KEEP · M1ND.studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --paper: #F4F1E8;
+  --paper-rule: #C8C2B5;
+  --paper-faint: #E0DCD0;
+  --paper-shade: #EAE6D9;
+  --paper-deep: #DCD7C6;
+  --ink: #1A1814;
+  --ink-soft: #4A4640;
+  --ink-faint: #8A8580;
+  --hanko: #5C5A56;
+  --hanko-bright: #B85540;
+  --green-live: #4A7349;
+  --amber-design: #B8843A;
+  --blue-queued: #4A6373;
+  --gray-proposed: #8A8580;
+
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --serif: 'Inter', Georgia, sans-serif;
+  --classical: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--hanko-bright); }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--serif); line-height: 1.55; }
+
+.studio-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--paper); border-bottom: 1px solid var(--paper-rule);
+  padding: 14px 32px; display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.studio-nav .nav-home { display: flex; align-items: center; gap: 10px; color: var(--ink); }
+.studio-nav .nav-mark {
+  width: 22px; height: 22px; background: var(--ink); color: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 13px; font-weight: 500;
+}
+.studio-nav .nav-name { font-weight: 500; }
+.studio-nav .nav-name .dot { color: var(--hanko-bright); }
+.studio-nav .nav-links { display: flex; gap: 24px; }
+.studio-nav .nav-link { color: var(--ink-soft); }
+.studio-nav .nav-link:hover { color: var(--ink); }
+.studio-nav .nav-link.current { color: var(--hanko); }
+
+.breadcrumb {
+  max-width: 1280px; margin: 0 auto; padding: 16px 32px 0;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+.breadcrumb a { color: var(--ink-faint); }
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb .sep { margin: 0 8px; color: var(--paper-rule); }
+.breadcrumb .current { color: var(--ink); }
+
+.page { max-width: 1280px; margin: 0 auto; padding: 32px 32px 96px; }
+
+.page-header {
+  margin-bottom: 48px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--paper-rule);
+}
+
+.page-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.page-title {
+  font-family: var(--display);
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+  max-width: 24ch;
+}
+
+.page-title em { font-style: italic; color: var(--ink-soft); }
+
+.page-lede {
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 70ch;
+}
+
+.tally-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--paper-rule);
+  border: 1px solid var(--paper-rule);
+  margin: 32px 0 0;
+}
+
+.tally {
+  background: var(--paper);
+  padding: 18px 20px;
+}
+
+.tally .tally-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.tally .tally-num {
+  font-family: var(--display);
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+.tally.live .tally-num { color: var(--green-live); }
+.tally.design .tally-num { color: var(--amber-design); }
+.tally.queued .tally-num { color: var(--blue-queued); }
+.tally.proposed .tally-num { color: var(--gray-proposed); }
+
+.section { margin-bottom: 72px; }
+
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+
+.section-title em { font-style: italic; color: var(--ink-soft); }
+
+.section-desc {
+  font-family: var(--serif);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 72ch;
+  margin-bottom: 24px;
+}
+
+/* CELL TABLE — the heart of this page */
+.cell-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 32px;
+  font-size: 13px;
+  font-family: var(--serif);
+}
+
+.cell-table thead {
+  background: var(--paper-shade);
+}
+
+.cell-table th {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--paper-rule);
+  font-weight: 500;
+  vertical-align: bottom;
+}
+
+.cell-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--paper-rule);
+  vertical-align: top;
+  line-height: 1.4;
+}
+
+.cell-table tr:hover { background: var(--paper-shade); }
+
+.cell-table .code {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.cell-table .name {
+  font-family: var(--display);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.cell-table .name a { color: var(--hanko-bright); }
+.cell-table .name a:hover { text-decoration: underline; }
+
+.cell-table .contents {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.cell-table .price {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.cell-table .box {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.cell-table .status-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Status pills */
+.status {
+  display: inline-block;
+  padding: 3px 9px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 500;
+  border: 1px solid;
+  border-radius: 0;
+}
+
+.status.live { background: var(--green-live); color: var(--paper); border-color: var(--green-live); }
+.status.design { background: transparent; color: var(--amber-design); border-color: var(--amber-design); }
+.status.queued { background: transparent; color: var(--blue-queued); border-color: var(--blue-queued); }
+.status.proposed { background: transparent; color: var(--gray-proposed); border-color: var(--paper-rule); }
+
+/* Practice header bar */
+.practice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 16px;
+}
+
+.practice-header h3 {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+
+.practice-header .practice-counts {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.practice-header .practice-counts .live-num { color: var(--green-live); font-weight: 500; }
+.practice-header .practice-counts .total-num { color: var(--ink); font-weight: 500; }
+
+.note {
+  background: var(--paper-shade);
+  border-left: 3px solid var(--hanko-bright);
+  padding: 14px 18px;
+  margin: 20px 0;
+  font-family: var(--serif);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.note strong {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--hanko-bright);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.box-fit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--paper-rule);
+  border: 1px solid var(--paper-rule);
+  margin: 24px 0 32px;
+}
+
+.box-fit {
+  background: var(--paper);
+  padding: 20px 18px;
+}
+
+.box-fit .box-name {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.box-fit .box-dims {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+
+.box-fit .box-price {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--hanko-bright);
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.box-fit .box-capacity {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+
+.box-fit .box-best {
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+p {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--ink);
+  margin-bottom: 16px;
+  max-width: 72ch;
+}
+
+p strong { font-weight: 600; }
+p em { font-style: italic; color: var(--ink-soft); }
+
+.related-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 24px;
+}
+
+.related-row a {
+  color: var(--hanko-bright);
+  text-decoration: none;
+}
+
+.related-row a:hover { color: var(--ink); }
+
+.page-footer {
+  max-width: 1280px;
+  margin: 96px auto 0;
+  padding: 32px 32px 24px;
+  border-top: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.page-footer .footer-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.page-footer a { color: var(--ink-faint); margin-right: 18px; }
+.page-footer a:hover { color: var(--hanko-bright); }
+.page-footer .footer-meta {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--paper-rule);
+  font-size: 9px;
+}
+
+@media (max-width: 900px) {
+  .tally-grid { grid-template-columns: repeat(2, 1fr); }
+  .box-fit-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 700px) {
+  .page-title { font-size: 36px; }
+  .page { padding: 24px 16px 64px; }
+  .cell-table { font-size: 12px; }
+  .cell-table td, .cell-table th { padding: 8px 8px; }
+  .cell-table .contents { display: none; }  /* hide contents column on mobile */
+}
+</style>
+</head>
+<body>
+
+<nav class="studio-nav">
+  <a href="../index.html" class="nav-home">
+    <span class="nav-mark">M</span>
+    <span class="nav-name">M1ND<span class="dot">.</span>studio</span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html" class="nav-link">Catalogue</a>
+    <a href="../t1ny/index.html" class="nav-link">Research</a>
+    <a href="index.html" class="nav-link current">KEEP</a>
+  </div>
+</nav>
+
+<nav class="breadcrumb">
+  <a href="../index.html">M1ND.studio</a>
+  <span class="sep">/</span>
+  <a href="index.html">KEEP</a>
+  <span class="sep">/</span>
+  <span class="current">Cell catalogue</span>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <div class="page-eyebrow">KEEP · cell catalogue v0.1 · the studio's full cell menu</div>
+    <h1 class="page-title">Every cell the studio ships, <em>in one place</em></h1>
+    <p class="page-lede">A comprehensive catalogue of pre-packaged 1646 cells across every practice — STOCK's four food sub-lines (COOK, BDRC, GROW, SPORE), CODEX's card-bound texts, KEEP's mod kits, MEAL kit subscriptions, MESH correspondence, and BXBX small-object cells. 101 cells across the catalogue, organized so MEAL subscriptions and à la carte bundles have a real menu to draw from.</p>
+
+    <div class="tally-grid">
+      <div class="tally live">
+        <div class="tally-label">Live</div>
+        <div class="tally-num">19</div>
+      </div>
+      <div class="tally design">
+        <div class="tally-label">In design</div>
+        <div class="tally-num">23</div>
+      </div>
+      <div class="tally queued">
+        <div class="tally-label">Queued</div>
+        <div class="tally-num">7</div>
+      </div>
+      <div class="tally proposed">
+        <div class="tally-label">Proposed</div>
+        <div class="tally-num">52</div>
+      </div>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-eyebrow">Box fit · what ships in what</div>
+    <h2 class="section-title">The Canada Post <em>flat-rate box</em> is the shipping constraint</h2>
+    <p class="section-desc">Every cell in the catalogue is sized to fit a 1646 envelope, but the kit-level economics depend on which CP flat-rate box the bundle fits in. The four CP sizes map naturally onto four canonical kit sizes.</p>
+
+    <div class="box-fit-grid">
+      <div class="box-fit">
+        <div class="box-name">Extra Small</div>
+        <div class="box-dims">8.88 × 6.13 × 3.00 in</div>
+        <div class="box-price">~$19 CAD postage</div>
+        <div class="box-capacity">1 cell</div>
+        <div class="box-best">Single CODEX, single BDRC, mod-kit accessory</div>
+      </div>
+      <div class="box-fit">
+        <div class="box-name">Small</div>
+        <div class="box-dims">14.00 × 10.38 × 2.13 in</div>
+        <div class="box-price">~$22 CAD postage</div>
+        <div class="box-capacity">3-4 cells</div>
+        <div class="box-best">Solo and standard MEAL kits, à la carte 4-cell bundles</div>
+      </div>
+      <div class="box-fit">
+        <div class="box-name">Medium</div>
+        <div class="box-dims">14.94 × 10.25 × 4.75 in</div>
+        <div class="box-price">~$28 CAD postage</div>
+        <div class="box-capacity">12-15 cells</div>
+        <div class="box-best">Couple/family MEAL kits, large à la carte bundles</div>
+      </div>
+      <div class="box-fit">
+        <div class="box-name">Large</div>
+        <div class="box-dims">15.88 × 11.75 × 7.38 in</div>
+        <div class="box-price">~$33 CAD postage</div>
+        <div class="box-capacity">~22-24 cells</div>
+        <div class="box-best">Quarterly showcase, full microsystem starter</div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Pricing caveat</strong>
+      CP flat-rate pricing has been climbing. Sources show 2024 rates at $17.99/$22.99/$29.99 small/medium/large, with 2026 references suggesting $19-33. The studio should verify current rates before publishing customer pricing and refresh quarterly. The catalogue uses 2026 conservative estimates.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="practice-header">
+      <h3>KEEP · cells &amp; mod kits</h3>
+      <div class="practice-counts">
+        <span class="total-num">11 cells</span> · <span class="live-num">2 live</span> · 4 in design · 5 proposed
+      </div>
+    </div>
+    <p class="section-desc">The cell-as-product itself, at five durability tiers, plus the four mod kits that compose into the full KEEP platform.</p>
+
+    <table class="cell-table">
+      <thead>
+        <tr>
+          <th style="width: 110px;">Code</th>
+          <th style="width: 220px;">Name</th>
+          <th>Contents</th>
+          <th style="width: 80px; text-align: right;">Price</th>
+          <th style="width: 70px; text-align: center;">CP fit</th>
+          <th style="width: 100px; text-align: right;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="code">KEEP-CELL-01</td><td class="name">Empty cell · Base</td><td class="contents">Single raw Novelinks cell, unmodified</td><td class="price">$1.25</td><td class="box">XS</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">KEEP-CELL-02</td><td class="name">Empty cell · Working</td><td class="contents">Latch + hinge reinforcement applied</td><td class="price">$1.40</td><td class="box">XS</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">KEEP-CELL-03</td><td class="name">Empty cell · Premium</td><td class="contents">+ Plasti Dip in studio color (ink/hanko/slate/paper)</td><td class="price">$2.50</td><td class="box">XS</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">KEEP-CELL-04</td><td class="name">Empty cell · Display</td><td class="contents">+ Edge banding with book-binding tape</td><td class="price">$3.00</td><td class="box">XS</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">KEEP-CELL-05</td><td class="name">Empty cell · Studio</td><td class="contents">+ Studio-branded vinyl wrap, full visual register</td><td class="price">$7.00</td><td class="box">XS</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">KEEP-MOD-01</td><td class="name"><a href="1646-mods.html">Mod Kit · Subdivision</a></td><td class="contents">100× 4×6 ziplock bags + heat sealer</td><td class="price">$20</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">KEEP-MOD-02</td><td class="name"><a href="1646-mods.html">Mod Kit · Mobility</a></td><td class="contents">100× #64 + 50× #84 rubber bands</td><td class="price">$12</td><td class="box">XS</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">KEEP-MOD-03</td><td class="name"><a href="1646-mods.html">Mod Kit · Durability</a></td><td class="contents">Hot glue gun + sticks, zip ties, fabric tape</td><td class="price">$35</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">KEEP-MOD-04</td><td class="name"><a href="1646-mods.html">Mod Kit · Studio</a></td><td class="contents">Plasti Dip in 5 colors + pre-cut vinyl wraps</td><td class="price">$60</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">KEEP-MOD-99</td><td class="name"><a href="1646-mods.html">Mod Kit · Complete</a></td><td class="contents">All four mod kits bundled together</td><td class="price">$115</td><td class="box">Medium</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">KEEP-PACK-24</td><td class="name">Bulk source kit</td><td class="contents">Novelinks 24-pack, the canonical base-spec source</td><td class="price">$30</td><td class="box">—</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="practice-header">
+      <h3>STOCK · COOK · single-meal recipe kits</h3>
+      <div class="practice-counts">
+        <span class="total-num">12 cells</span> · <span class="live-num">1 live</span> · 4 queued · 7 proposed
+      </div>
+    </div>
+    <p class="section-desc">Individual recipe kits — one cell contains everything for one meal (typically 2 servings) except fresh produce, dairy, and meat. The card deck inside is the recipe. Pairs naturally with BDRC for the grain side of the meal.</p>
+
+    <table class="cell-table">
+      <thead>
+        <tr>
+          <th style="width: 110px;">Code</th>
+          <th style="width: 220px;">Name</th>
+          <th>Contents</th>
+          <th style="width: 80px; text-align: right;">Price</th>
+          <th style="width: 70px; text-align: center;">CP fit</th>
+          <th style="width: 100px; text-align: right;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="code">COOK-01</td><td class="name"><a href="../stock/cook-01-chicken-tagine.html">Chicken Tagine</a></td><td class="contents">Spice blend + dried fruits + preserved lemon paste + recipe card deck</td><td class="price">$32</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">COOK-02</td><td class="name">Mushroom Bourguignon</td><td class="contents">Dried porcini + pearl onions + tomato paste + recipe deck</td><td class="price">$34</td><td class="box">Small</td><td class="status-cell"><span class="status queued">Queued</span></td></tr>
+        <tr><td class="code">COOK-03</td><td class="name">Coconut Dal</td><td class="contents">Yellow lentils + coconut cream + tempering oil + spice + recipe deck</td><td class="price">$28</td><td class="box">Small</td><td class="status-cell"><span class="status queued">Queued</span></td></tr>
+        <tr><td class="code">COOK-04</td><td class="name">Smoky Black Bean Soup</td><td class="contents">Dried black beans + chipotle paste + smoked paprika + recipe deck</td><td class="price">$26</td><td class="box">Small</td><td class="status-cell"><span class="status queued">Queued</span></td></tr>
+        <tr><td class="code">COOK-05</td><td class="name">Lamb Vindaloo</td><td class="contents">Vindaloo paste + spice blend + dried curry leaves + recipe deck</td><td class="price">$36</td><td class="box">Small</td><td class="status-cell"><span class="status queued">Queued</span></td></tr>
+        <tr><td class="code">COOK-06</td><td class="name">Mediterranean White Bean Stew</td><td class="contents">Cannellini beans + sun-dried tomatoes + herb blend + recipe deck</td><td class="price">$28</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">COOK-07</td><td class="name">Miso Mushroom Ramen</td><td class="contents">Dried shiitake + miso paste + nori + ramen noodles + recipe deck</td><td class="price">$30</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">COOK-08</td><td class="name">Hungarian Goulash</td><td class="contents">Paprika blend + caraway + tomato paste + dried mushrooms + recipe deck</td><td class="price">$32</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">COOK-09</td><td class="name">Thai Green Curry</td><td class="contents">Green curry paste + kaffir lime + coconut cream + recipe deck</td><td class="price">$30</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">COOK-10</td><td class="name">Carbonara Studio</td><td class="contents">Cured pancetta + aged Pecorino + black pepper + dried pasta + recipe</td><td class="price">$34</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">COOK-11</td><td class="name">Mole Negro</td><td class="contents">Mole paste + chiles + chocolate + spice blend + recipe deck</td><td class="price">$38</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">COOK-12</td><td class="name">Khichdi Comfort</td><td class="contents">Mung dal + basmati + ghee + spice blend + recipe deck</td><td class="price">$24</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="practice-header">
+      <h3>STOCK · BDRC · rice/grain-cooker meals</h3>
+      <div class="practice-counts">
+        <span class="total-num">16 cells</span> · <span class="live-num">16 live</span>
+      </div>
+    </div>
+    <p class="section-desc">The deepest live catalogue in the studio. Designed for the Hamilton Beach 37548 rice cooker (or equivalent). Each cell is a complete one-pot grain meal — customer adds water and cooker time. The anchor of every MEAL kit.</p>
+
+    <table class="cell-table">
+      <thead>
+        <tr>
+          <th style="width: 110px;">Code</th>
+          <th style="width: 220px;">Name</th>
+          <th>Contents</th>
+          <th style="width: 80px; text-align: right;">Price</th>
+          <th style="width: 70px; text-align: center;">CP fit</th>
+          <th style="width: 100px; text-align: right;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="code">BDRC-01</td><td class="name"><a href="../stock/bdrc-01.html">Classic Mushroom Risotto</a></td><td class="contents">Arborio + porcini + parmesan rind + thyme + recipe</td><td class="price">$22</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-02</td><td class="name"><a href="../stock/bdrc-02.html">Saffron Pilaf</a></td><td class="contents">Basmati + saffron + cardamom + raisins + almonds + recipe</td><td class="price">$24</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-03</td><td class="name"><a href="../stock/bdrc-03.html">Tomato Bulgur</a></td><td class="contents">Bulgur + tomato paste + Mediterranean herbs + recipe</td><td class="price">$20</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-04</td><td class="name"><a href="../stock/bdrc-04.html">Korean Bibimbap Base</a></td><td class="contents">Short grain rice + gochujang + sesame + nori + recipe</td><td class="price">$22</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-05</td><td class="name"><a href="../stock/bdrc-05.html">Carolina Gold Hoppin' John</a></td><td class="contents">Carolina Gold rice + black-eyed peas + ham hock seasoning + recipe</td><td class="price">$24</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-06</td><td class="name"><a href="../stock/bdrc-06.html">Lemon Herb Quinoa</a></td><td class="contents">Quinoa + dried lemon zest + herb blend + currants + recipe</td><td class="price">$20</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-07</td><td class="name"><a href="../stock/bdrc-07.html">Spanish Paella</a></td><td class="contents">Bomba rice + saffron + smoked paprika + sofrito base + recipe</td><td class="price">$26</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-08</td><td class="name"><a href="../stock/bdrc-08.html">Persian Tahdig Crispy Rice</a></td><td class="contents">Basmati + saffron + spice blend + recipe with crust technique</td><td class="price">$22</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-09</td><td class="name"><a href="../stock/bdrc-09.html">Mushroom Farro</a></td><td class="contents">Farro + dried mushroom blend + Italian herbs + recipe</td><td class="price">$22</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-10</td><td class="name"><a href="../stock/bdrc-10.html">Coconut Curry Rice</a></td><td class="contents">Jasmine + coconut + curry blend + lime leaf + recipe</td><td class="price">$22</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-11</td><td class="name"><a href="../stock/bdrc-11.html">Wild Rice Pilaf</a></td><td class="contents">Wild rice blend + dried cranberries + herbs + recipe</td><td class="price">$24</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-12</td><td class="name"><a href="../stock/bdrc-12.html">Bhutanese Red Rice</a></td><td class="contents">Bhutanese red rice + spice blend + dried chilies + recipe</td><td class="price">$26</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-13</td><td class="name"><a href="../stock/bdrc-13.html">Black Rice &amp; Mango</a></td><td class="contents">Black rice + dried mango + coconut + spice + recipe</td><td class="price">$22</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-14</td><td class="name"><a href="../stock/bdrc-14.html">Lentil Mujaddara</a></td><td class="contents">Brown lentils + basmati + fried onion seasoning + recipe</td><td class="price">$20</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-15</td><td class="name"><a href="../stock/bdrc-15.html">Kabsa Spice Rice</a></td><td class="contents">Long-grain rice + kabsa blend + dried lime + nuts + recipe</td><td class="price">$24</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+        <tr><td class="code">BDRC-16</td><td class="name"><a href="../stock/bdrc-16.html">Greek Spanakorizo Base</a></td><td class="contents">Short-grain rice + dried spinach + dill + lemon zest + recipe</td><td class="price">$20</td><td class="box">Small</td><td class="status-cell"><span class="status live">Live</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="practice-header">
+      <h3>STOCK · GROW · hydroponic seed pods</h3>
+      <div class="practice-counts">
+        <span class="total-num">12 cells</span> · <span class="live-num">0 live</span> · 6 in design · 6 proposed
+      </div>
+    </div>
+    <p class="section-desc">Pre-prepared seed pods for the iDOO 12-pod hydroponic system, with nutrient packets sized to one growth cycle. Each cell does one theme.</p>
+
+    <table class="cell-table">
+      <thead>
+        <tr>
+          <th style="width: 110px;">Code</th>
+          <th style="width: 220px;">Name</th>
+          <th>Contents</th>
+          <th style="width: 80px; text-align: right;">Price</th>
+          <th style="width: 70px; text-align: center;">CP fit</th>
+          <th style="width: 100px; text-align: right;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="code">GROW-01</td><td class="name">Italian Herbs</td><td class="contents">Basil ×4, parsley ×2, thyme ×2, rosemary ×2, oregano ×2 + nutrient ×6 weeks</td><td class="price">$32</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">GROW-02</td><td class="name">Salad Greens Standard</td><td class="contents">Lettuces ×8, arugula ×2, mizuna ×2 + nutrient ×4 weeks</td><td class="price">$28</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">GROW-03</td><td class="name">Mexican Herb Garden</td><td class="contents">Cilantro, epazote, Mexican oregano, papalo, tomato + nutrient</td><td class="price">$34</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">GROW-04</td><td class="name">Thai Aromatics</td><td class="contents">Thai basil, cilantro, lemongrass, Thai chili, makrut lime + nutrient</td><td class="price">$36</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">GROW-05</td><td class="name">Microgreens Sampler</td><td class="contents">12 different microgreen pods + 4-week nutrient pack</td><td class="price">$30</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">GROW-06</td><td class="name">French Herbs · Bouquet Garni</td><td class="contents">Thyme, parsley, bay, chervil, tarragon + nutrient ×6 weeks</td><td class="price">$32</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">GROW-07</td><td class="name">Vietnamese Herbs</td><td class="contents">Cilantro, Vietnamese mint, Thai basil, perilla + nutrient</td><td class="price">$36</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">GROW-08</td><td class="name">Tomato Compact</td><td class="contents">Compact tomato varieties ×6, basil ×4, oregano ×2 + nutrient ×8w</td><td class="price">$38</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">GROW-09</td><td class="name">Pepper Bonanza</td><td class="contents">Hot peppers ×6, sweet peppers ×4, parsley ×2 + nutrient ×8w</td><td class="price">$36</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">GROW-10</td><td class="name">North African Herbs</td><td class="contents">Mint, cilantro, parsley, dill + nutrient ×6 weeks</td><td class="price">$32</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">GROW-11</td><td class="name">Japanese Herbs</td><td class="contents">Shiso, mitsuba, chrysanthemum greens, tatsoi + nutrient ×6w</td><td class="price">$38</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">GROW-12</td><td class="name">Bitter Greens · Mediterranean</td><td class="contents">Endive, chicory, radicchio, arugula + nutrient ×5 weeks</td><td class="price">$28</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="practice-header">
+      <h3>STOCK · SPORE · mushroom cultivation</h3>
+      <div class="practice-counts">
+        <span class="total-num">8 cells</span> · <span class="live-num">0 live</span> · 6 in design · 2 proposed
+      </div>
+    </div>
+    <p class="section-desc">Colonized substrate or grain spawn for specific mushroom varieties. Customer adds light + humidity + time. Each cell produces 2-4 flushes (~1-3 lbs total) over 6-10 weeks.</p>
+
+    <table class="cell-table">
+      <thead>
+        <tr>
+          <th style="width: 110px;">Code</th>
+          <th style="width: 220px;">Name</th>
+          <th>Contents</th>
+          <th style="width: 80px; text-align: right;">Price</th>
+          <th style="width: 70px; text-align: center;">CP fit</th>
+          <th style="width: 100px; text-align: right;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="code">SPORE-01</td><td class="name">Blue Oyster</td><td class="contents">Colonized grain spawn ×500g + substrate ×2kg + fruiting chamber instructions</td><td class="price">$35</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">SPORE-02</td><td class="name">Pink Oyster</td><td class="contents">Colonized grain spawn ×500g + substrate ×2kg + fruiting instructions</td><td class="price">$35</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">SPORE-03</td><td class="name">Golden Oyster</td><td class="contents">Colonized grain spawn ×500g + substrate ×2kg + fruiting instructions</td><td class="price">$38</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">SPORE-04</td><td class="name">Lion's Mane</td><td class="contents">Colonized substrate brick + fruiting instructions</td><td class="price">$42</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">SPORE-05</td><td class="name">King Oyster</td><td class="contents">Colonized substrate ×2kg + fruiting chamber + recipe card</td><td class="price">$44</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">SPORE-06</td><td class="name">Shiitake Log</td><td class="contents">Colonized hardwood plug ×8 + log inoculation guide (6-12 month cycle)</td><td class="price">$32</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">SPORE-07</td><td class="name">Reishi Tea Kit</td><td class="contents">Colonized substrate + drying rack + tea-prep card deck</td><td class="price">$48</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">SPORE-08</td><td class="name">Mixed Oyster Sampler</td><td class="contents">Blue + Pink + Golden mini-substrates + comparison guide</td><td class="price">$52</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="practice-header">
+      <h3>CODEX · card-bound texts</h3>
+      <div class="practice-counts">
+        <span class="total-num">15 cells</span> · <span class="live-num">0 live</span> · 1 in design · 3 queued · 11 proposed
+      </div>
+    </div>
+    <p class="section-desc">Printed card-bound texts in the 4×6 format, ~100 cards per cell. Studio Classics Series for canonical works; CODEX-T template line for reader-fillable formats.</p>
+
+    <table class="cell-table">
+      <thead>
+        <tr>
+          <th style="width: 110px;">Code</th>
+          <th style="width: 220px;">Name</th>
+          <th>Contents</th>
+          <th style="width: 80px; text-align: right;">Price</th>
+          <th style="width: 70px; text-align: center;">CP fit</th>
+          <th style="width: 100px; text-align: right;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="code">CODEX-001</td><td class="name"><a href="../codex/tao-te-ching.html">Tao Te Ching</a></td><td class="contents">~100 cards: front matter + 81 chapters + reading notes (Legge 1891)</td><td class="price">$35</td><td class="box">XS</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">CODEX-002</td><td class="name">The Art of War</td><td class="contents">~100 cards: 13 chapters (Giles 1910) + reading notes</td><td class="price">$35</td><td class="box">XS</td><td class="status-cell"><span class="status queued">Queued</span></td></tr>
+        <tr><td class="code">CODEX-003</td><td class="name">Meditations</td><td class="contents">~100 cards: 12 books (Long 1862) + reading notes</td><td class="price">$35</td><td class="box">XS</td><td class="status-cell"><span class="status queued">Queued</span></td></tr>
+        <tr><td class="code">CODEX-004</td><td class="name">The Bhagavad Gita</td><td class="contents">~100 cards (Arnold 1885)</td><td class="price">$35</td><td class="box">XS</td><td class="status-cell"><span class="status queued">Queued</span></td></tr>
+        <tr><td class="code">CODEX-005</td><td class="name">Letters to a Young Poet</td><td class="contents">~50 cards (Hull translation, pending domain check)</td><td class="price">$28</td><td class="box">XS</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">CODEX-006</td><td class="name">The Metamorphosis</td><td class="contents">~80 cards (Wyllie 1915, pending domain check)</td><td class="price">$32</td><td class="box">XS</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">CODEX-007</td><td class="name">Heart of Darkness</td><td class="contents">~100 cards (Conrad, public domain)</td><td class="price">$35</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">CODEX-008</td><td class="name">Notes from Underground</td><td class="contents">~120 cards (Garnett 1918, may span 2 cells)</td><td class="price">$42</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">CODEX-009</td><td class="name">Alice in Wonderland</td><td class="contents">~100 cards (Carroll, public domain)</td><td class="price">$35</td><td class="box">XS</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">CODEX-T01</td><td class="name">Studio Journal Template</td><td class="contents">52 blank cards, one per week + prompts</td><td class="price">$22</td><td class="box">XS</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">CODEX-T02</td><td class="name">Hako Owner's Manual Template</td><td class="contents">Blank cards, one per Hako system</td><td class="price">$18</td><td class="box">XS</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">CODEX-T03</td><td class="name">Household Inventory Template</td><td class="contents">Blank cards for room-by-room inventory</td><td class="price">$18</td><td class="box">XS</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">CODEX-T04</td><td class="name">Recipe Collection Template</td><td class="contents">Blank cards + section dividers for the reader's own recipes</td><td class="price">$22</td><td class="box">XS</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">CODEX-T05</td><td class="name">KEEP 1646 Mods Manual</td><td class="contents">100 cards: how-to diagrams, parts lists, mod patterns</td><td class="price">$28</td><td class="box">XS</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">CODEX-T06</td><td class="name">Reading Journal</td><td class="contents">Blank cards templated for one entry per book</td><td class="price">$22</td><td class="box">XS</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="practice-header">
+      <h3>MEAL · curated multi-cell kits</h3>
+      <div class="practice-counts">
+        <span class="total-num">14 kits + 7 programs</span> · <span class="live-num">0 live</span> · 6 in design · 8 proposed
+      </div>
+    </div>
+    <p class="section-desc">The new product line this catalogue exists to enable. MEAL kits are curated bundles of cells drawn from the STOCK catalogue, themed and shipped on subscription or à la carte. Anchored on BDRC's deep live catalogue, supplemented with COOK, GROW, and SPORE for temporal variety.</p>
+
+    <h4 style="font-family: var(--display); font-size: 16px; font-weight: 600; margin: 24px 0 8px;">Four canonical kit sizes</h4>
+    <table class="cell-table">
+      <thead>
+        <tr>
+          <th style="width: 110px;">Code</th>
+          <th style="width: 220px;">Name</th>
+          <th>Contents</th>
+          <th style="width: 80px; text-align: right;">Price</th>
+          <th style="width: 70px; text-align: center;">CP fit</th>
+          <th style="width: 100px; text-align: right;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="code">MEAL-K01</td><td class="name"><a href="../meal/kits/index.html">Solo Kit · 2 cells</a></td><td class="contents">1× BDRC + 1× COOK · biweekly</td><td class="price">$55</td><td class="box">XS</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">MEAL-K02</td><td class="name"><a href="../meal/kits/subscription.html">Standard Kit · 4 cells</a></td><td class="contents">2× BDRC + 1× COOK + 1× GROW/SPORE · monthly</td><td class="price">$90</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">MEAL-K03</td><td class="name"><a href="../meal/kits/index.html">Couple Kit · 6 cells</a></td><td class="contents">3× BDRC + 2× COOK + 1× GROW/SPORE · monthly</td><td class="price">$135</td><td class="box">Medium</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">MEAL-K04</td><td class="name"><a href="../meal/kits/index.html">Family Kit · 8 cells</a></td><td class="contents">4× BDRC + 2× COOK + 1× GROW + 1× SPORE · monthly</td><td class="price">$175</td><td class="box">Medium</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">MEAL-K05</td><td class="name">Seasonal Kit · 12 cells</td><td class="contents">6× BDRC + 3× COOK + 2× GROW + 1× SPORE · quarterly</td><td class="price">$245</td><td class="box">Medium</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">MEAL-K06</td><td class="name">Quarterly Showcase · 24 cells</td><td class="contents">Full microsystem quarter · 12× BDRC + 6× COOK + 4× GROW + 2× SPORE</td><td class="price">$475</td><td class="box">Large</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+      </tbody>
+    </table>
+
+    <h4 style="font-family: var(--display); font-size: 16px; font-weight: 600; margin: 32px 0 8px;">Subscription programs · 12-month curation themes</h4>
+    <table class="cell-table">
+      <thead>
+        <tr>
+          <th style="width: 130px;">Code</th>
+          <th style="width: 280px;">Program</th>
+          <th>Concept</th>
+          <th style="width: 100px; text-align: right;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="code">MEAL-SUB-01</td><td class="name">Around the World in 12 Months</td><td class="contents">Each month one cuisine — Morocco, Japan, India, Italy, Mexico, Vietnam, Greece, Persia, Thailand, Korea, Spain, Levant</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MEAL-SUB-02</td><td class="name">Grains of the World</td><td class="contents">12 months exploring grain traditions: rice, wheat, corn, barley, oats, rye, sorghum, millet, teff, buckwheat, quinoa, farro</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MEAL-SUB-03</td><td class="name">Slow Cooked</td><td class="contents">All BDRC-heavy kits, each month a different rice cooker pattern</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MEAL-SUB-04</td><td class="name">The Curious Kitchen</td><td class="contents">One unfamiliar ingredient per month with 2-3 recipes built around it</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MEAL-SUB-05</td><td class="name">Vegetarian Year</td><td class="contents">All-vegetarian kits across 12 months</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MEAL-SUB-06</td><td class="name">Seasonal Forager</td><td class="contents">Aligned with Toronto/Ontario seasonal produce patterns</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MEAL-SUB-07</td><td class="name">Studio Microsystem Quarterly</td><td class="contents">The 24-cell quarterly box, designed for customers running the full iDOO + rice cooker + SPORE setup</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+      </tbody>
+    </table>
+
+    <h4 style="font-family: var(--display); font-size: 16px; font-weight: 600; margin: 32px 0 8px;">À la carte themed bundles · one-off purchases</h4>
+    <table class="cell-table">
+      <thead>
+        <tr>
+          <th style="width: 110px;">Code</th>
+          <th style="width: 220px;">Name</th>
+          <th>Contents</th>
+          <th style="width: 80px; text-align: right;">Price</th>
+          <th style="width: 70px; text-align: center;">CP fit</th>
+          <th style="width: 100px; text-align: right;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="code">MEAL-A01</td><td class="name">Persian Sunday Dinner</td><td class="contents">BDRC-08 + COOK-12 + GROW-04</td><td class="price">$75</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MEAL-A02</td><td class="name">Italian Hands-Off Sunday</td><td class="contents">BDRC-09 + COOK-02 + SPORE-01</td><td class="price">$95</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MEAL-A03</td><td class="name">Mediterranean Box</td><td class="contents">BDRC-03 + BDRC-16 + COOK-06 + GROW-01</td><td class="price">$110</td><td class="box">Medium</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MEAL-A04</td><td class="name">Asian Aromatics Sampler</td><td class="contents">BDRC-04 + BDRC-13 + COOK-07 + GROW-04</td><td class="price">$115</td><td class="box">Medium</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MEAL-A05</td><td class="name">Mushroom Forager's Kit</td><td class="contents">BDRC-01 + BDRC-09 + SPORE-01 + COOK-02</td><td class="price">$135</td><td class="box">Medium</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MEAL-A06</td><td class="name">Spice Trade Box</td><td class="contents">6× BDRC across 6 cuisines + curated recipe cards</td><td class="price">$145</td><td class="box">Medium</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MEAL-A07</td><td class="name"><a href="../meal/kits/starter-box.html">Starter Box · "Begin Anywhere"</a></td><td class="contents">KEEP-CELL-01 + BDRC-01 + a CODEX recipe template · the studio's onboarding SKU</td><td class="price">$48</td><td class="box">Small</td><td class="status-cell"><span class="status design">In design</span></td></tr>
+        <tr><td class="code">MEAL-A08</td><td class="name">Gift Box · Studio Classics</td><td class="contents">CODEX-001 + KEEP-CELL-04 (display) + a tea spice cell</td><td class="price">$85</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <strong>The "Starter Box" is the most important customer-facing SKU</strong>
+      MEAL-A07 at $48 is the studio's intentional <em>onboarding product</em>. A customer who's never heard of M1ND.studio can buy this, get an empty cell, a complete BDRC meal, and a recipe template — and the whole platform becomes legible. Worth prioritizing for launch even before the full subscription product line.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="practice-header">
+      <h3>MESH · correspondence &amp; network products · proposed</h3>
+      <div class="practice-counts">
+        <span class="total-num">3 cells</span> · all proposed
+      </div>
+    </div>
+    <table class="cell-table">
+      <thead>
+        <tr>
+          <th style="width: 110px;">Code</th>
+          <th style="width: 220px;">Name</th>
+          <th>Contents</th>
+          <th style="width: 80px; text-align: right;">Price</th>
+          <th style="width: 70px; text-align: center;">CP fit</th>
+          <th style="width: 100px; text-align: right;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="code">MESH-01</td><td class="name">Correspondence Kit</td><td class="contents">50 blank 4×6 cards + envelopes + studio stamps + writing prompts</td><td class="price">$32</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MESH-02</td><td class="name">Gift Card Library</td><td class="contents">100 designed studio cards for various occasions</td><td class="price">$28</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">MESH-03</td><td class="name">Network Starter</td><td class="contents">Cards + reply envelopes + "how to start a correspondence" guide</td><td class="price">$42</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="practice-header">
+      <h3>BXBX · small-object cells · proposed</h3>
+      <div class="practice-counts">
+        <span class="total-num">3 cells</span> · all proposed
+      </div>
+    </div>
+    <p class="section-desc">BXBX mostly produces larger objects (Hako systems), but a 1646-scale product line for hardware, finishing materials, and curated hand tools is worth considering.</p>
+    <table class="cell-table">
+      <thead>
+        <tr>
+          <th style="width: 110px;">Code</th>
+          <th style="width: 220px;">Name</th>
+          <th>Contents</th>
+          <th style="width: 80px; text-align: right;">Price</th>
+          <th style="width: 70px; text-align: center;">CP fit</th>
+          <th style="width: 100px; text-align: right;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="code">BXBX-01</td><td class="name">Hako Hardware Cell</td><td class="contents">Replacement hardware kit for a Hako unit</td><td class="price">$25</td><td class="box">XS</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">BXBX-02</td><td class="name">Hako Touch-Up Cell</td><td class="contents">Stain pens, finishing wax, small brush in studio finishes</td><td class="price">$35</td><td class="box">XS</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+        <tr><td class="code">BXBX-03</td><td class="name">Hako Studio Hand Tools</td><td class="contents">Curated tool set sized to fit a 1646 envelope</td><td class="price">$85</td><td class="box">Small</td><td class="status-cell"><span class="status proposed">Proposed</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">The kit logic</div>
+    <h2 class="section-title">How MEAL kits <em>get assembled</em></h2>
+    <p>MEAL kits aren't just bundles. They're <strong>composed across four temporal patterns</strong> — BDRC is immediate (cook tonight), COOK is active (cook this weekend), GROW is sustained (harvest over weeks), SPORE is delayed (harvest in 2-4 weeks). A monthly MEAL kit gives the customer all four patterns at once.</p>
+    <p>BDRC anchors every kit. It's the deepest live catalogue (16 cells) and the easiest to cook (rice cooker only). COOK adds active complexity. GROW and SPORE rotate seasonally — herbs in spring/summer, mushrooms in fall/winter. The studio's curation work is matching cells to themes across the 12-month rotation so customers never see the same cell twice in a year.</p>
+
+    <div class="related-row">
+      <a href="../meal/index.html">→ MEAL practice</a>
+      <a href="../meal/kits/index.html">→ MEAL kits store</a>
+      <a href="../meal/kits/subscription.html">→ Standard Kit subscription</a>
+      <a href="../meal/kits/starter-box.html">→ Starter Box</a>
+      <a href="1646-mods.html">→ 1646 mods</a>
+      <a href="../codex/index.html">→ CODEX practice</a>
+      <a href="../stock/index.html">→ STOCK practice</a>
+    </div>
+  </section>
+
+</div>
+
+<footer class="page-footer">
+  <div class="footer-row">
+    <div>
+      <a href="index.html">← KEEP practice</a>
+      <a href="1646-mods.html">1646 mods</a>
+    </div>
+    <div>Cell catalogue · v0.1 · 101 cells</div>
+  </div>
+  <div class="footer-meta">
+    M1ND.studio · KEEP · cell catalogue · cross-practice cell registry · 19 live · 23 in design · 7 queued · 52 proposed · MEAL kit menu enabled
+  </div>
+</footer>
+
+</body>
+</html>

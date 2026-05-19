@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Standard Kit · monthly subscription · MEAL · M1ND.studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --paper: #F4F1E8;
+  --paper-rule: #C8C2B5;
+  --paper-faint: #E0DCD0;
+  --paper-shade: #EAE6D9;
+  --paper-deep: #DCD7C6;
+  --ink: #1A1814;
+  --ink-soft: #4A4640;
+  --ink-faint: #8A8580;
+  --hanko: #8A6B3A;
+  --hanko-deep: #6E5429;
+  --hanko-bright: #B85540;
+
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --serif: 'Inter', Georgia, sans-serif;
+  --classical: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--hanko-bright); }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--serif); line-height: 1.55; }
+
+.studio-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--paper); border-bottom: 1px solid var(--paper-rule);
+  padding: 14px 32px; display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.studio-nav .nav-home { display: flex; align-items: center; gap: 10px; color: var(--ink); }
+.studio-nav .nav-mark {
+  width: 22px; height: 22px; background: var(--ink); color: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 13px; font-weight: 500;
+}
+.studio-nav .nav-name { font-weight: 500; }
+.studio-nav .nav-name .dot { color: var(--hanko-bright); }
+.studio-nav .nav-links { display: flex; gap: 24px; }
+.studio-nav .nav-link { color: var(--ink-soft); }
+.studio-nav .nav-link:hover { color: var(--ink); }
+.studio-nav .nav-link.current { color: var(--hanko); }
+
+.breadcrumb {
+  max-width: 1200px; margin: 0 auto; padding: 16px 32px 0;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+.breadcrumb a { color: var(--ink-faint); }
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb .sep { margin: 0 8px; color: var(--paper-rule); }
+.breadcrumb .current { color: var(--ink); }
+
+.page { max-width: 1200px; margin: 0 auto; padding: 32px 32px 96px; }
+
+/* === Product hero === */
+.product-hero {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 56px;
+  align-items: start;
+  margin-bottom: 64px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--paper-rule);
+}
+
+.product-info .page-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.product-info h1 {
+  font-family: var(--display);
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.product-info h1 em { font-style: italic; color: var(--ink-soft); }
+
+.product-info .product-subtitle {
+  font-family: var(--classical);
+  font-style: italic;
+  font-size: 19px;
+  color: var(--ink-soft);
+  margin-bottom: 24px;
+}
+
+.product-info .product-lede {
+  font-family: var(--serif);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 28px;
+  max-width: 56ch;
+}
+
+.product-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 20px 0;
+  border-top: 1px solid var(--paper-rule);
+  border-bottom: 1px solid var(--paper-rule);
+  margin-bottom: 28px;
+}
+
+.meta-block .meta-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.meta-block .meta-value {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.meta-block .meta-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+.product-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.button {
+  display: inline-block;
+  padding: 14px 26px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+
+.button:hover { background: var(--hanko-bright); border-color: var(--hanko-bright); }
+
+.button.secondary {
+  background: transparent;
+  color: var(--ink);
+}
+.button.secondary:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.button.coming-soon {
+  background: transparent;
+  color: var(--ink-faint);
+  border-color: var(--paper-rule);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-right: 6px;
+  margin-bottom: 4px;
+}
+.tag.hanko { background: var(--hanko); color: var(--paper); border-color: var(--hanko); }
+.tag.bright { background: var(--hanko-bright); color: var(--paper); border-color: var(--hanko-bright); }
+.tag.stub { background: transparent; color: var(--ink-faint); }
+
+/* === Box preview card mockup === */
+.box-preview {
+  background: var(--paper);
+  border: 1px solid var(--paper-rule);
+  padding: 24px 22px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+.box-preview .box-eyebrow {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.box-preview h3 {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1.05;
+  margin-bottom: 4px;
+}
+
+.box-preview .box-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 18px;
+}
+
+.cell-stack {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.cell-mock {
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-rule);
+  border-radius: 2px;
+  padding: 10px 8px 8px;
+  aspect-ratio: 4/6;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.cell-mock .cell-code {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--hanko-bright);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cell-mock .cell-name {
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.cell-mock.bdrc { background: #F0E6D5; }
+.cell-mock.cook { background: #E8DCC8; }
+.cell-mock.grow { background: #E4E4D0; }
+.cell-mock.spore { background: #E4D8D8; }
+
+.box-preview .box-footer {
+  padding-top: 14px;
+  margin-top: auto;
+  border-top: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-size: 8.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+}
+
+.box-caption {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-top: 14px;
+}
+
+/* === Sections === */
+.section { margin-bottom: 80px; }
+
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+}
+
+.section-title em { font-style: italic; color: var(--ink-soft); }
+
+.section-desc {
+  font-family: var(--serif);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 72ch;
+  margin-bottom: 32px;
+}
+
+.section h3 {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 500;
+  margin: 32px 0 10px;
+}
+
+.section h4 {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 24px 0 8px;
+}
+
+.section p {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--ink);
+  margin-bottom: 16px;
+  max-width: 72ch;
+}
+
+.section p strong { font-weight: 600; }
+.section p em { font-style: italic; color: var(--ink-soft); }
+
+.section ul { margin-bottom: 16px; padding-left: 24px; }
+.section li { font-size: 14.5px; line-height: 1.65; margin-bottom: 6px; max-width: 70ch; }
+
+/* === Program grid === */
+.program-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 24px 0 32px;
+}
+
+.program {
+  background: var(--paper);
+  border: 1px solid var(--paper-rule);
+  padding: 20px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.program:hover {
+  border-color: var(--hanko);
+  box-shadow: 0 4px 16px rgba(26, 24, 20, 0.08);
+  transform: translateY(-2px);
+}
+
+.program.selected {
+  border-color: var(--hanko-bright);
+  border-width: 2px;
+  padding: 19px 19px 17px;
+  background: var(--paper-shade);
+}
+
+.program .program-code {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.program h4 {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 500;
+  margin: 0 0 6px;
+  letter-spacing: -0.005em;
+}
+
+.program .program-sub {
+  font-family: var(--classical);
+  font-style: italic;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+
+.program .program-desc {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink);
+  flex: 1;
+  margin-bottom: 12px;
+}
+
+.program .program-arc {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  padding-top: 10px;
+  border-top: 1px solid var(--paper-rule);
+}
+
+/* === Composition diagram === */
+.composition-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--paper-rule);
+  border: 1px solid var(--paper-rule);
+  margin: 24px 0 40px;
+}
+
+.comp {
+  background: var(--paper);
+  padding: 22px 18px 20px;
+}
+
+.comp .comp-count {
+  font-family: var(--display);
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--hanko-bright);
+  margin-bottom: 4px;
+}
+
+.comp .comp-times {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  margin-bottom: 8px;
+}
+
+.comp .comp-name {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.comp .comp-pattern {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.comp p {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* === Pricing math === */
+.pricing-block {
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-rule);
+  padding: 28px 32px;
+  margin: 24px 0 32px;
+}
+
+.pricing-block h3 {
+  font-family: var(--display);
+  font-size: 18px;
+  margin: 0 0 16px;
+}
+
+.pricing-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--paper-rule);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.pricing-row:last-child { border-bottom: none; }
+.pricing-row.total {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 600;
+  padding-top: 14px;
+  margin-top: 6px;
+  border-top: 2px solid var(--ink-soft);
+}
+
+.pricing-row .price {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.pricing-row.total .price { font-size: 16px; font-weight: 600; }
+
+.pricing-row .price.muted { color: var(--ink-faint); }
+.pricing-row .price.savings { color: var(--hanko-bright); }
+
+/* === Note callout === */
+.note {
+  background: var(--paper-shade);
+  border-left: 3px solid var(--hanko);
+  padding: 14px 18px;
+  margin: 20px 0;
+  font-family: var(--serif);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.note strong {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.note.stub { border-left-color: var(--ink-faint); }
+.note.stub strong { color: var(--ink-faint); }
+
+/* === Subscription mechanics grid === */
+.mechanics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--paper-rule);
+  border: 1px solid var(--paper-rule);
+  margin: 24px 0 32px;
+}
+
+.mechanic {
+  background: var(--paper);
+  padding: 20px 20px 18px;
+}
+
+.mechanic .mechanic-num {
+  font-family: var(--display);
+  font-size: 13px;
+  color: var(--hanko-bright);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.mechanic h4 {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0 0 8px;
+}
+
+.mechanic p {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* === Sample year table === */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 32px;
+  font-size: 13.5px;
+}
+
+.data-table th {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--paper-rule);
+  font-weight: 500;
+}
+
+.data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--paper-rule);
+  vertical-align: top;
+  line-height: 1.45;
+}
+
+.data-table .num { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
+
+.related-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 24px;
+}
+
+.related-row a { color: var(--hanko-bright); }
+.related-row a:hover { color: var(--hanko-deep); }
+
+.page-footer {
+  max-width: 1200px;
+  margin: 96px auto 0;
+  padding: 32px 32px 24px;
+  border-top: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.page-footer .footer-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.page-footer a { color: var(--ink-faint); margin-right: 18px; }
+.page-footer a:hover { color: var(--hanko-bright); }
+.page-footer .footer-meta {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--paper-rule);
+  font-size: 9px;
+}
+
+@media (max-width: 900px) {
+  .product-hero { grid-template-columns: 1fr; gap: 32px; }
+  .product-meta-grid { grid-template-columns: repeat(2, 1fr); }
+  .composition-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .product-info h1 { font-size: 40px; }
+  .page { padding: 24px 20px 64px; }
+  .composition-grid { grid-template-columns: 1fr; }
+  .product-meta-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="studio-nav">
+  <a href="../../index.html" class="nav-home">
+    <span class="nav-mark">M</span>
+    <span class="nav-name">M1ND<span class="dot">.</span>studio</span>
+  </a>
+  <div class="nav-links">
+    <a href="../../index.html" class="nav-link">Catalogue</a>
+    <a href="../../t1ny/index.html" class="nav-link">Research</a>
+    <a href="../index.html" class="nav-link current">MEAL</a>
+  </div>
+</nav>
+
+<nav class="breadcrumb">
+  <a href="../../index.html">M1ND.studio</a>
+  <span class="sep">/</span>
+  <a href="../index.html">MEAL</a>
+  <span class="sep">/</span>
+  <a href="index.html">Kits</a>
+  <span class="sep">/</span>
+  <span class="current">Standard Kit · subscription</span>
+</nav>
+
+<div class="page">
+
+  <div class="product-hero">
+    <div class="product-info">
+      <div class="page-eyebrow">MEAL-K02 · flagship monthly subscription</div>
+      <h1>The <em>Standard Kit</em></h1>
+      <p class="product-subtitle">4 cells · monthly · the studio's four-pattern rhythm in one shipment</p>
+      <p class="product-lede">Every month, a curated 4-cell kit drawn from the studio's full cell catalogue. <strong>2 BDRC + 1 COOK + 1 GROW or SPORE</strong> — the four temporal patterns of domestic cooking in one box. Around 12-16 meals per kit for one or two people. Pick a 12-month curation program; receive a different themed kit each month with no cell repeating in a 12-month rotation. Ships in a Canada Post Small Flat Rate Box.</p>
+
+      <div class="product-meta-grid">
+        <div class="meta-block">
+          <div class="meta-label">Price</div>
+          <div class="meta-value">$90/mo</div>
+          <div class="meta-sub">CAD · shipping included</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Cells per kit</div>
+          <div class="meta-value">4</div>
+          <div class="meta-sub">across 4 patterns</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Cadence</div>
+          <div class="meta-value">Monthly</div>
+          <div class="meta-sub">pause / skip / cancel anytime</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Box</div>
+          <div class="meta-value">CP Small</div>
+          <div class="meta-sub">14 × 10.4 × 2.1 in</div>
+        </div>
+      </div>
+
+      <div class="product-actions">
+        <a href="#programs" class="button">Pick a program</a>
+        <a href="#composition" class="button secondary">See what's in the box</a>
+      </div>
+
+      <div>
+        <span class="tag bright">MEAL-K02</span>
+        <span class="tag hanko">Flagship</span>
+        <span class="tag">Monthly · 4 cells</span>
+        <span class="tag stub">In design · launching with STOCK Phase 1</span>
+      </div>
+    </div>
+
+    <aside>
+      <div class="box-preview">
+        <div class="box-eyebrow">M1ND.studio · MEAL kit</div>
+        <h3>Standard Kit</h3>
+        <div class="box-sub">June 2026 · Issue 6</div>
+
+        <div class="cell-stack">
+          <div class="cell-mock bdrc">
+            <div class="cell-code">BDRC</div>
+            <div class="cell-name">Persian Saffron</div>
+          </div>
+          <div class="cell-mock bdrc">
+            <div class="cell-code">BDRC</div>
+            <div class="cell-name">Tahdig Spice</div>
+          </div>
+          <div class="cell-mock cook">
+            <div class="cell-code">COOK</div>
+            <div class="cell-name">Khoresh Bademjan</div>
+          </div>
+          <div class="cell-mock grow">
+            <div class="cell-code">GROW</div>
+            <div class="cell-name">Persian Herbs</div>
+          </div>
+        </div>
+
+        <div class="box-footer">
+          <span>4 cells</span>
+          <span>CP Small</span>
+        </div>
+      </div>
+      <div class="box-caption">Sample composition · Persian Year, June</div>
+    </aside>
+  </div>
+
+  <section class="section" id="composition">
+    <div class="section-eyebrow">What's in the box</div>
+    <h2 class="section-title">Four cells · <em>four temporal patterns</em></h2>
+    <p class="section-desc">Every Standard Kit composes across the four STOCK sub-lines. The composition is fixed; the cell contents change month-to-month based on the program. Each pattern contributes a different temporal rhythm — immediate cooking, active project, sustained growing, delayed cultivation — for a complete domestic cooking rhythm in one shipment.</p>
+
+    <div class="composition-grid">
+      <div class="comp">
+        <div class="comp-count">2</div>
+        <div class="comp-times">× BDRC cells</div>
+        <div class="comp-name">Grain meals</div>
+        <div class="comp-pattern">Immediate · same day</div>
+        <p>Rice-cooker single-cell meals. ~4 servings per cell. Open, add water, cook. Two BDRC cells = ~8 servings of immediate cooking from the kit.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-count">1</div>
+        <div class="comp-times">× COOK cell</div>
+        <div class="comp-name">Active recipe</div>
+        <div class="comp-pattern">Active · 1-3 hour project</div>
+        <p>A weekend cooking project. Recipe card set + shelf-stable components. ~4-6 servings. The "Sunday dinner" cell that anchors the month.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-count">1</div>
+        <div class="comp-times">× GROW <em>or</em> SPORE</div>
+        <div class="comp-name">Living component</div>
+        <div class="comp-pattern">Sustained or delayed</div>
+        <p>Alternating monthly. GROW: herb or microgreen seed kit, sustained harvest over weeks. SPORE: mushroom cultivation, ~21-56 day arc to harvest.</p>
+      </div>
+
+      <div class="comp">
+        <div class="comp-count">~12-16</div>
+        <div class="comp-times">total meals</div>
+        <div class="comp-name">Cooking rhythm</div>
+        <div class="comp-pattern">For one or two people</div>
+        <p>The four cells together produce roughly 12-16 meals of cooking — a month's worth of intentional dinners for a solo cook, or a steady supplement for a couple.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Why these four patterns</strong>
+      The composition isn't arbitrary. <strong>BDRC immediate</strong> handles weeknight meals; <strong>COOK active</strong> handles weekend projects; <strong>GROW sustained</strong> means living herbs in the kitchen for 4-8 weeks of finishing touches; <strong>SPORE delayed</strong> creates anticipation — something growing on the counter that won't be ready for weeks. <em>Four different time horizons in one box</em> is the studio's editorial argument about what a kitchen rhythm should feel like.
+    </div>
+  </section>
+
+  <section class="section" id="programs">
+    <div class="section-eyebrow">Six curation programs</div>
+    <h2 class="section-title">Pick your <em>12-month arc</em></h2>
+    <p class="section-desc">The Standard Kit isn't generic — every subscription follows a themed 12-month curation program. You pick the program; each month's kit aligns with that program's arc. Customers never receive the same cell twice in a 12-month rotation, so a single program is a full year of new material. After 12 months, the program rotates or you can switch.</p>
+
+    <div class="program-grid">
+
+      <div class="program selected">
+        <div class="program-code">MEAL-SUB-01 · flagship</div>
+        <h4>The Persian Year</h4>
+        <div class="program-sub">January through December · 12 cuisines from one culture</div>
+        <p class="program-desc">Twelve months of Persian and Persian-adjacent cooking. Tahdig, khoresh stews, rice variations, ash, kashk, herbal traditions. The deep dive — one cuisine over a full year. BDRC pulls heavily from saffron, sumac, advieh; COOK rotates through the canonical dishes; GROW builds the Persian herb garden across seasons.</p>
+        <div class="program-arc">Arc · single-culture deep dive</div>
+      </div>
+
+      <div class="program">
+        <div class="program-code">MEAL-SUB-02</div>
+        <h4>The Spice Road</h4>
+        <div class="program-sub">A different region every month</div>
+        <p class="program-desc">Twelve months, twelve regions. January in Morocco, February in Sichuan, March in Oaxaca. Wide rather than deep — the customer's pantry gets reset every 4 weeks. Built for the curious cook who wants exposure to many traditions rather than mastery of one.</p>
+        <div class="program-arc">Arc · wide-net global</div>
+      </div>
+
+      <div class="program">
+        <div class="program-code">MEAL-SUB-03</div>
+        <h4>Seasonal Toronto</h4>
+        <div class="program-sub">What's growing locally + what pairs with it</div>
+        <p class="program-desc">Built around the Ontario growing calendar. Winter root-vegetable preparations, spring herbs and asparagus, summer tomato and stone-fruit recipes, autumn squash and apple work. GROW cells align with what should actually be planted that month in the region.</p>
+        <div class="program-arc">Arc · regional · seasonally-tied</div>
+      </div>
+
+      <div class="program">
+        <div class="program-code">MEAL-SUB-04</div>
+        <h4>Comfort Classics</h4>
+        <div class="program-sub">The canon of soothing food</div>
+        <p class="program-desc">Twelve months of comfort food across traditions. French pot-au-feu, Japanese oden, Indian khichdi, Italian ribollita, Korean juk, Polish bigos. The cooking-as-care register — recipes designed for slow Sundays, sick weeks, the days that need feeding properly.</p>
+        <div class="program-arc">Arc · cross-cultural comfort canon</div>
+      </div>
+
+      <div class="program">
+        <div class="program-code">MEAL-SUB-05</div>
+        <h4>Plant-Forward</h4>
+        <div class="program-sub">Vegetable-centered cooking across cuisines</div>
+        <p class="program-desc">Twelve months where vegetables and grains carry the meal, not just garnish it. Indian dals, Middle Eastern mezze, Italian risotti, Mexican vegetable-forward preparations, East Asian tofu and tempeh traditions. The kit's COOK cells assume plant-based protein.</p>
+        <div class="program-arc">Arc · plant-centric</div>
+      </div>
+
+      <div class="program">
+        <div class="program-code">MEAL-SUB-06</div>
+        <h4>Technique Builder</h4>
+        <div class="program-sub">A different technique each month</div>
+        <p class="program-desc">January = fermentation; February = braising; March = pickling; April = smoking; May = stocks and broths. Each month's kit teaches one technique through three or four dishes. Aimed at intermediate cooks who want to systematically expand their range.</p>
+        <div class="program-arc">Arc · skill progression</div>
+      </div>
+
+    </div>
+
+    <div class="note">
+      <strong>Switching programs</strong>
+      Customers can switch programs at the end of any 12-month cycle, or once mid-cycle without penalty if a program isn't fitting. The studio uses the switch data as catalogue feedback — programs that customers leave early get re-thought.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">A sample year</div>
+    <h2 class="section-title">What twelve <em>Persian Year</em> kits look like, month by month</h2>
+    <p class="section-desc">Illustrative composition for MEAL-SUB-01. Actual cells will be confirmed at launch and may rotate based on ingredient availability and customer feedback. Every cell is unique within the 12-month window; no repeats.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Month</th><th>Theme</th><th>BDRC ×2</th><th>COOK ×1</th><th>GROW / SPORE ×1</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">Jan</td><td><strong>Polo &amp; Tahdig</strong></td><td>Saffron rice · Persian advieh</td><td>Tahchin chicken</td><td>GROW · Persian dried-lime starter</td></tr>
+        <tr><td class="num">Feb</td><td><strong>Ash &amp; Aush</strong></td><td>Lentil-bean ash · Mint kashk</td><td>Aush reshteh</td><td>SPORE · Pearl oyster</td></tr>
+        <tr><td class="num">Mar</td><td><strong>Norouz</strong></td><td>Sabzi polo herbs · Sumac blend</td><td>Sabzi polo ba mahi</td><td>GROW · Sprouted-wheat sabzeh</td></tr>
+        <tr><td class="num">Apr</td><td><strong>Spring khoresh</strong></td><td>Dried lime · Fenugreek leaves</td><td>Ghormeh sabzi</td><td>GROW · Persian basil &amp; tarragon</td></tr>
+        <tr><td class="num">May</td><td><strong>Yogurt traditions</strong></td><td>Mast kashk culture · Dried mint</td><td>Ash-e mast</td><td>SPORE · Lion's mane</td></tr>
+        <tr><td class="num">Jun</td><td><strong>Khoresh-e bademjan</strong></td><td>Persian saffron · Tahdig spice</td><td>Khoresh bademjan</td><td>GROW · Persian basil refresh</td></tr>
+        <tr><td class="num">Jul</td><td><strong>Summer salads</strong></td><td>Sumac · Walnut-pomegranate</td><td>Fesenjan</td><td>GROW · Persian cucumber + dill</td></tr>
+        <tr><td class="num">Aug</td><td><strong>Kebab traditions</strong></td><td>Kabab koobideh blend · Advieh</td><td>Chelo kabab</td><td>SPORE · Wine cap</td></tr>
+        <tr><td class="num">Sep</td><td><strong>Autumn polo</strong></td><td>Barberries · Pistachio dust</td><td>Zereshk polo</td><td>GROW · Persian saffron crocus bulb</td></tr>
+        <tr><td class="num">Oct</td><td><strong>Khoresh-e fesenjan</strong></td><td>Pomegranate molasses base · Walnut</td><td>Khoresh fesenjan</td><td>SPORE · Maitake</td></tr>
+        <tr><td class="num">Nov</td><td><strong>Yalda traditions</strong></td><td>Pomegranate · Persian nuts blend</td><td>Yalda spread set</td><td>GROW · Indoor microherbs</td></tr>
+        <tr><td class="num">Dec</td><td><strong>Soup &amp; warmth</strong></td><td>Barley · Kashk-bademjan</td><td>Ash-e jow</td><td>SPORE · Shiitake</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">The economics</div>
+    <h2 class="section-title">Where the <em>$90</em> goes</h2>
+    <p class="section-desc">Honest pricing math. The Standard Kit is priced to be sustainable at studio scale rather than maximum-margin. The studio takes ~22% margin on each kit. Shipping (CP Small flat-rate) is ~31% of price — high, but the flat-rate constraint is also what makes the model viable: fixed cost, no surprises.</p>
+
+    <div class="pricing-block">
+      <h3>Single-kit pricing breakdown</h3>
+
+      <div class="pricing-row">
+        <div>4 × 1646 cells (Novelinks 24-pack bulk)</div>
+        <div class="price">$5.00</div>
+      </div>
+      <div class="pricing-row">
+        <div>2 × BDRC contents (avg $9 each)</div>
+        <div class="price">$18.00</div>
+      </div>
+      <div class="pricing-row">
+        <div>1 × COOK contents (avg $10)</div>
+        <div class="price">$10.00</div>
+      </div>
+      <div class="pricing-row">
+        <div>1 × GROW or SPORE contents (avg $10)</div>
+        <div class="price">$10.00</div>
+      </div>
+      <div class="pricing-row">
+        <div>Packaging · kraft paper, label, insert card</div>
+        <div class="price">$2.00</div>
+      </div>
+      <div class="pricing-row">
+        <div>Studio labor · curation + pack (avg 25 min/kit)</div>
+        <div class="price">$15.00</div>
+      </div>
+      <div class="pricing-row">
+        <div>Canada Post Small flat-rate postage</div>
+        <div class="price">$22.00</div>
+      </div>
+      <div class="pricing-row">
+        <div>Payment processing (Stripe ~3%)</div>
+        <div class="price">$2.70</div>
+      </div>
+      <div class="pricing-row" style="border-top: 1px solid var(--paper-rule); padding-top: 12px;">
+        <div><strong>Total COGS</strong></div>
+        <div class="price"><strong>$84.70</strong></div>
+      </div>
+      <div class="pricing-row total">
+        <div>Customer price</div>
+        <div class="price">$90.00</div>
+      </div>
+      <div class="pricing-row">
+        <div class="price muted">Studio margin per kit</div>
+        <div class="price savings">$5.30 · ~6%</div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>The honest read</strong>
+      6% margin is thin. The Standard Kit isn't where the studio makes serious profit — <em>retention is</em>. A customer who subscribes for 12 months pays $1,080. The studio's true margin model assumes the kit funnels customers into the higher-margin product lines: à la carte CODEX titles, the Hako KEEP wall, BXBX studio commissions, premium MEAL annual flagships. <strong>The Standard Kit is the funnel; the cross-practice catalogue is the business.</strong> Price is set for accessibility and trust-building, not extraction.
+    </div>
+
+    <h3>Twelve-month customer value</h3>
+    <table class="data-table">
+      <thead>
+        <tr><th>Cadence</th><th>Cells / year</th><th>Cost / year</th><th>Cost / cell</th><th>Cost / meal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Standard Kit · monthly</td><td class="num">48</td><td class="num">$1,080</td><td class="num">$22.50</td><td class="num">~$5-7</td></tr>
+        <tr><td>HelloFresh-style · weekly</td><td class="num">—</td><td class="num">$1,920-2,880</td><td class="num">—</td><td class="num">~$10-15</td></tr>
+        <tr><td>Penzeys-style · monthly</td><td class="num">~12</td><td class="num">$200-300</td><td class="num">~$20-25</td><td class="num">N/A (no meal kit)</td></tr>
+        <tr><td>Atlas Obscura · monthly</td><td class="num">~12</td><td class="num">$540-660</td><td class="num">~$50</td><td class="num">N/A (no meal kit)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">How it works</div>
+    <h2 class="section-title">Subscription <em>mechanics</em></h2>
+
+    <div class="mechanics-grid">
+      <div class="mechanic">
+        <div class="mechanic-num">01</div>
+        <h4>Pick a program</h4>
+        <p>Choose one of six 12-month curation programs. Default is The Persian Year. Switch at end-of-cycle or once mid-cycle without penalty.</p>
+      </div>
+
+      <div class="mechanic">
+        <div class="mechanic-num">02</div>
+        <h4>Monthly delivery</h4>
+        <p>Kits ship the first week of every month. Canada Post tracking. Typical delivery 3-7 business days within Canada.</p>
+      </div>
+
+      <div class="mechanic">
+        <div class="mechanic-num">03</div>
+        <h4>Pause anytime</h4>
+        <p>Skip a month, pause for a season, or cancel entirely from your account page. No retention fees, no skip penalties. The studio assumes life happens.</p>
+      </div>
+
+      <div class="mechanic">
+        <div class="mechanic-num">04</div>
+        <h4>Account &amp; recipe library</h4>
+        <p>Your account page tracks every cell you've received with archived recipe cards downloadable as PDFs. The kit physical archive is mirrored in your account.</p>
+      </div>
+
+      <div class="mechanic">
+        <div class="mechanic-num">05</div>
+        <h4>Cells live in 1646</h4>
+        <p>Every cell ships in the standard 1646 envelope. Slots into any Wowlive shelf in any KEEP system. Cells don't expire — pantry-shelf-stable for 12-24 months.</p>
+      </div>
+
+      <div class="mechanic">
+        <div class="mechanic-num">06</div>
+        <h4>Year one is the funnel</h4>
+        <p>After 12 months, customers receive a "Studio Year One" recap with cross-practice recommendations — CODEX titles, MEAL annual flagship, the Hako KEEP wall.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Status</div>
+    <h2 class="section-title">Where the Standard Kit <em>actually is</em>, today</h2>
+
+    <p><strong>Launch status:</strong> the Standard Kit is the studio's most ambitious product but launches conditional on STOCK Phase 1 reaching enough catalogue depth to draw from. BDRC has 16 live cells today. COOK has 1 live, 4 queued for v0.5. GROW and SPORE are in design. <strong>The Standard Kit can launch in beta with a BDRC-only composition (4 × BDRC at $65)</strong> and expand to the full four-pattern composition as STOCK's catalogue matures.</p>
+
+    <h3>Year-1 launch roadmap</h3>
+    <ul>
+      <li><strong>Month 0 (now):</strong> Standard Kit defined, pricing locked, six programs scoped, this page published</li>
+      <li><strong>Month 1-2:</strong> BDRC-only beta — $65/mo, 4 BDRC cells from rotating cuisine themes, 5-10 friends-and-family subscribers</li>
+      <li><strong>Month 3-4:</strong> COOK-02 through COOK-05 ship, Standard Kit moves to "2 BDRC + 1 COOK + 1 BDRC" composition at $75</li>
+      <li><strong>Month 5-6:</strong> GROW ships, full $90 composition activates with 2 BDRC + 1 COOK + 1 GROW</li>
+      <li><strong>Month 7+:</strong> SPORE alternates with GROW, Persian Year program launches as the canonical flagship</li>
+      <li><strong>Month 12:</strong> First subscribers complete the 12-month cycle, customer-feedback informs program rotation</li>
+    </ul>
+
+    <div class="note stub">
+      <strong>The honest pre-launch caveats</strong>
+      The Standard Kit page documents an ambitious product. The shipping math works; the curation framework is real; the six programs are scoped. <em>Implementation requires:</em> Stripe Billing or equivalent for subscription billing (not yet integrated), customer account/library infrastructure (in design), STOCK catalogue completion for full composition, and operational pack-and-ship workflow for monthly fulfillment. Launching the BDRC-only beta in month 1-2 is realistic; full $90 composition is month 5-6 minimum. The studio is being honest about this; the page exists to lock the design now so implementation can build to a stable target.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Related</div>
+    <h2 class="section-title">Where this <em>sits in the catalogue</em></h2>
+    <div class="related-row">
+      <a href="index.html">← MEAL kits store</a>
+      <a href="starter-box.html">→ Starter Box · $48</a>
+      <a href="../index.html">→ MEAL practice</a>
+      <a href="../../keep/cell-catalogue.html">→ Cell catalogue</a>
+      <a href="../../stock/index.html">→ STOCK (build counterpart)</a>
+    </div>
+  </section>
+
+</div>
+
+<footer class="page-footer">
+  <div class="footer-row">
+    <div>
+      <a href="index.html">← MEAL kits</a>
+    </div>
+    <div>MEAL · K02 Standard Kit · v0.1</div>
+  </div>
+  <div class="footer-meta">
+    M1ND.studio · MEAL · K02 Standard Kit · monthly subscription · 4 cells × $90 · 2 BDRC + 1 COOK + 1 GROW/SPORE · CP Small Flat Rate · launching beta with STOCK Phase 1
+  </div>
+</footer>
+
+</body>
+</html>

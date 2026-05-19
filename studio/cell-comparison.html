@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The CELL in context · .Studio · M1ND.studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --paper: #F4F1E8;
+  --paper-rule: #C8C2B5;
+  --paper-faint: #E0DCD0;
+  --paper-shade: #EAE6D9;
+  --paper-deep: #DCD7C6;
+  --ink: #1A1814;
+  --ink-soft: #4A4640;
+  --ink-faint: #8A8580;
+  --hanko: #3A3D3A;
+  --hanko-deep: #25271E;
+  --hanko-bright: #B85540;
+
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --serif: 'Inter', Georgia, sans-serif;
+  --classical: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+
+  /* Scale: 1 inch = 32 pixels for object comparison visuals */
+  --inch: 32px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--hanko-bright); }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--serif); line-height: 1.55; }
+
+.studio-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--paper); border-bottom: 1px solid var(--paper-rule);
+  padding: 14px 32px; display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.studio-nav .nav-home { display: flex; align-items: center; gap: 10px; color: var(--ink); }
+.studio-nav .nav-mark { width: 22px; height: 22px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 13px; font-weight: 500; }
+.studio-nav .nav-name { font-weight: 500; }
+.studio-nav .nav-name .dot { color: var(--hanko-bright); }
+.studio-nav .nav-links { display: flex; gap: 24px; }
+.studio-nav .nav-link { color: var(--ink-soft); }
+.studio-nav .nav-link:hover { color: var(--ink); }
+.studio-nav .nav-link.current { color: var(--hanko); }
+
+.breadcrumb {
+  max-width: 1200px; margin: 0 auto; padding: 16px 32px 0;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+.breadcrumb a { color: var(--ink-faint); }
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb .sep { margin: 0 8px; color: var(--paper-rule); }
+.breadcrumb .current { color: var(--ink); }
+
+.page { max-width: 1200px; margin: 0 auto; padding: 32px 32px 96px; }
+
+.page-header { margin-bottom: 56px; padding-bottom: 32px; border-bottom: 1px solid var(--paper-rule); }
+.page-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; color: var(--hanko); text-transform: uppercase; margin-bottom: 14px; }
+.page-title { font-family: var(--display); font-size: 52px; font-weight: 400; line-height: 1.02; letter-spacing: -0.02em; margin-bottom: 18px; max-width: 22ch; }
+.page-title em { font-style: italic; color: var(--ink-soft); }
+.page-lede { font-family: var(--serif); font-size: 17px; line-height: 1.6; color: var(--ink-soft); max-width: 64ch; }
+
+.section { margin-bottom: 80px; }
+.section-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--hanko); text-transform: uppercase; margin-bottom: 10px; }
+.section-title { font-family: var(--display); font-size: 30px; font-weight: 500; line-height: 1.1; letter-spacing: -0.01em; margin-bottom: 14px; }
+.section-title em { font-style: italic; color: var(--ink-soft); }
+.section-desc { font-family: var(--serif); font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); max-width: 72ch; margin-bottom: 32px; }
+
+.section h3 { font-family: var(--display); font-size: 19px; font-weight: 500; margin: 32px 0 10px; }
+.section h4 { font-family: var(--display); font-size: 15px; font-weight: 600; margin: 24px 0 8px; }
+.section p { font-size: 14.5px; line-height: 1.65; color: var(--ink); margin-bottom: 16px; max-width: 72ch; }
+.section p strong { font-weight: 600; }
+.section p em { font-style: italic; color: var(--ink-soft); }
+.section ul { margin-bottom: 16px; padding-left: 24px; }
+.section li { font-size: 14.5px; line-height: 1.65; margin-bottom: 6px; max-width: 70ch; }
+
+/* The scale diagram – all objects drawn to actual relative scale */
+.scale-grid {
+  background: var(--paper-shade);
+  padding: 48px 32px;
+  margin: 24px 0 40px;
+  border: 1px solid var(--paper-rule);
+}
+
+.scale-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--paper-rule);
+}
+.scale-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+.scale-row .scale-label {
+  flex: 0 0 200px;
+  font-family: var(--display);
+  font-size: 14px;
+}
+
+.scale-row .scale-label .label-name {
+  font-weight: 600;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.scale-row .scale-label .label-dims {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+}
+
+.scale-row .scale-label .label-context {
+  font-family: var(--serif);
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-faint);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+.scale-row .scale-object {
+  flex: 0 0 auto;
+  position: relative;
+}
+
+/* Each object's rectangle, with explicit pixel dims for the scale view */
+.obj {
+  background: var(--paper);
+  border: 1.5px solid var(--ink);
+  position: relative;
+  box-shadow: 1px 2px 0 rgba(0,0,0,0.05);
+}
+
+.obj.cell { background: var(--paper-faint); border-color: var(--hanko-bright); }
+.obj.studio { background: var(--paper-deep); }
+
+/* Object specific dimensions – inch-based, with --inch = 32px */
+/* 1646 CELL: 4.75 × 6.70 × 1.23 inches → exterior */
+.obj-cell-flat       { width: calc(6.7 * var(--inch)); height: calc(4.75 * var(--inch)); }
+.obj-cell-end        { width: calc(6.7 * var(--inch)); height: calc(1.23 * var(--inch)); }
+
+/* CD jewel case: 5.55 × 4.92 × 0.4 inches */
+.obj-cd              { width: calc(5.55 * var(--inch)); height: calc(4.92 * var(--inch)); }
+
+/* MiniDisc cartridge: 2.78 × 2.83 × 0.16 inches */
+.obj-minidisc        { width: calc(2.83 * var(--inch)); height: calc(2.78 * var(--inch)); }
+
+/* VHS cassette: 7.4 × 4.06 × 1.0 inches */
+.obj-vhs             { width: calc(7.4 * var(--inch)); height: calc(4.06 * var(--inch)); }
+
+/* Audio cassette: 4.0 × 2.5 × 0.4 inches */
+.obj-cassette        { width: calc(4.0 * var(--inch)); height: calc(2.5 * var(--inch)); }
+
+/* iPhone 15 Pro: 5.77 × 2.78 × 0.32 inches */
+.obj-iphone          { width: calc(5.77 * var(--inch)); height: calc(2.78 * var(--inch)); border-radius: 6px; }
+
+/* iPhone 16 Pro Max: 6.42 × 3.06 × 0.32 */
+.obj-iphone-max      { width: calc(6.42 * var(--inch)); height: calc(3.06 * var(--inch)); border-radius: 6px; }
+
+/* Field Notes original: 5.5 × 3.5 × 0.2 inches */
+.obj-fieldnotes      { width: calc(5.5 * var(--inch)); height: calc(3.5 * var(--inch)); }
+
+/* Studio folded booklet: 4 × 3 × 0.15 inches */
+.obj-booklet         { width: calc(4.0 * var(--inch)); height: calc(3.0 * var(--inch)); }
+
+/* Passport (US): 5.0 × 3.5 × 0.2 inches */
+.obj-passport        { width: calc(5.0 * var(--inch)); height: calc(3.5 * var(--inch)); }
+
+/* Floppy disk 3.5": 3.5 × 4.0 × 0.13 */
+.obj-floppy          { width: calc(3.5 * var(--inch)); height: calc(4.0 * var(--inch)); }
+
+/* INIU battery bank: 6.3 × 3.0 × 0.6 */
+.obj-battery         { width: calc(6.3 * var(--inch)); height: calc(3.0 * var(--inch)); }
+
+/* AirPods Pro case: 1.78 × 2.39 × 0.85 */
+.obj-airpods         { width: calc(2.39 * var(--inch)); height: calc(1.78 * var(--inch)); border-radius: 8px; }
+
+/* Common 6.5" EDC pen: 0.4 × 5.5 × 0.4 (laying flat) */
+.obj-pen             { width: calc(5.5 * var(--inch)); height: calc(0.4 * var(--inch)); }
+
+/* Wallet: 4.5 × 3.5 × 0.5 */
+.obj-wallet          { width: calc(4.5 * var(--inch)); height: calc(3.5 * var(--inch)); }
+
+.obj-label {
+  position: absolute;
+  bottom: 4px;
+  left: 6px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+
+.scale-row.fits .scale-label::after,
+.scale-row.no-fit .scale-label::after {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 8px;
+  border-radius: 50%;
+}
+.scale-row.fits .scale-label::after { background: var(--hanko-bright); }
+.scale-row.no-fit .scale-label::after { background: var(--ink-faint); }
+
+.fits-marker {
+  display: inline-block;
+  padding: 2px 8px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 8px;
+  border-radius: 2px;
+}
+.fits-marker.yes { background: var(--hanko-bright); color: var(--paper); }
+.fits-marker.no  { background: var(--paper-rule); color: var(--ink-soft); }
+.fits-marker.tight { background: #C8AB6B; color: var(--ink); }
+
+/* Charger cell deep-dive */
+.charger-spec {
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-rule);
+  padding: 32px;
+  margin: 24px 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.charger-visual {
+  background: var(--paper);
+  border: 1px solid var(--paper-rule);
+  padding: 24px;
+  position: relative;
+}
+
+.charger-visual .visual-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.charger-visual .cell-outline {
+  /* 4.6 × 6.5 inches internal, scaled 1:1 visually */
+  width: 100%;
+  aspect-ratio: 6.5/4.6;
+  border: 2px dashed var(--ink-soft);
+  background: var(--paper-faint);
+  position: relative;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.charger-visual .battery-rect {
+  /* 6.3 × 3.0 inches within 6.5 × 4.6 cell */
+  width: 96%;
+  height: 65%;
+  background: var(--ink-soft);
+  border: 1px solid var(--ink);
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.charger-visual .battery-rect::after {
+  content: 'INIU 20000mAh · 6.3×3.0×0.6"';
+  position: absolute;
+  bottom: 4px;
+  left: 6px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--paper);
+  letter-spacing: 0.05em;
+}
+
+.charger-visual .cable-rect {
+  width: 50%;
+  height: 10%;
+  background: var(--hanko-bright);
+  border: 1px solid var(--ink);
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.charger-visual .cable-rect::after {
+  content: 'cables';
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  transform: translateY(-50%);
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--paper);
+  letter-spacing: 0.05em;
+}
+
+.charger-visual .manual-rect {
+  width: 30%;
+  height: 12%;
+  background: var(--hanko);
+  border: 1px solid var(--ink);
+  position: relative;
+}
+
+.charger-visual .manual-rect::after {
+  content: 'manual';
+  position: absolute;
+  top: 50%;
+  left: 6px;
+  transform: translateY(-50%);
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--paper);
+  letter-spacing: 0.05em;
+}
+
+.charger-visual .cell-label {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--ink-faint);
+  letter-spacing: 0.08em;
+}
+
+.charger-details h3 {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.charger-details .charger-tagline {
+  font-family: var(--classical);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+
+.spec-list {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 6px 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.spec-list dt {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+.spec-list dd {
+  color: var(--ink);
+}
+
+/* Battery comparison table */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 32px;
+  font-size: 13.5px;
+}
+.data-table th { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; color: var(--ink-faint); text-transform: uppercase; text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--paper-rule); font-weight: 500; }
+.data-table td { padding: 10px 12px; border-bottom: 1px solid var(--paper-rule); vertical-align: top; line-height: 1.45; }
+.data-table .num { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
+.data-table tr.fits td { background: rgba(184, 85, 64, 0.06); }
+.data-table .fit-yes { color: var(--hanko-bright); font-weight: 600; }
+.data-table .fit-no  { color: var(--ink-faint); }
+
+.note {
+  background: var(--paper-shade); border-left: 3px solid var(--hanko);
+  padding: 14px 18px; margin: 20px 0;
+  font-family: var(--serif); font-size: 13.5px; line-height: 1.55;
+  color: var(--ink-soft);
+}
+.note strong { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.14em; color: var(--hanko); text-transform: uppercase; display: block; margin-bottom: 6px; font-weight: 500; }
+.note.bright { border-left-color: var(--hanko-bright); background: #F6E8DC; }
+.note.bright strong { color: var(--hanko-bright); }
+
+/* EDC fit summary */
+.fit-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--paper-rule);
+  border: 1px solid var(--paper-rule);
+  margin: 24px 0 32px;
+}
+
+.fit-column {
+  background: var(--paper);
+  padding: 24px;
+}
+
+.fit-column h3 {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.fit-column.yes h3 { color: var(--hanko-bright); }
+.fit-column.no h3 { color: var(--ink-faint); }
+
+.fit-column ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.fit-column li {
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+.fit-column li strong {
+  font-family: var(--display);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.fit-column li .dims {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  margin-left: 6px;
+  letter-spacing: 0.04em;
+}
+
+.related-row { display: flex; gap: 12px; flex-wrap: wrap; font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 24px; }
+.related-row a { color: var(--hanko-bright); }
+.related-row a:hover { color: var(--hanko-deep); }
+
+.page-footer { max-width: 1200px; margin: 96px auto 0; padding: 32px 32px 24px; border-top: 1px solid var(--paper-rule); font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; }
+.page-footer .footer-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.page-footer a { color: var(--ink-faint); margin-right: 18px; }
+.page-footer a:hover { color: var(--hanko-bright); }
+.page-footer .footer-meta { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--paper-rule); font-size: 9px; }
+
+@media (max-width: 900px) {
+  :root { --inch: 24px; }
+  .charger-spec { grid-template-columns: 1fr; }
+  .scale-row { flex-direction: column; align-items: flex-start; }
+  .scale-row .scale-label { flex: 0 0 auto; }
+  .fit-summary-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  :root { --inch: 20px; }
+  .page-title { font-size: 36px; }
+  .page { padding: 24px 20px 64px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="studio-nav">
+  <a href="../index.html" class="nav-home">
+    <span class="nav-mark">M</span>
+    <span class="nav-name">M1ND<span class="dot">.</span>studio</span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html" class="nav-link">Catalogue</a>
+    <a href="../t1ny/index.html" class="nav-link">Research</a>
+    <a href="index.html" class="nav-link current">.Studio</a>
+  </div>
+</nav>
+
+<nav class="breadcrumb">
+  <a href="../index.html">M1ND.studio</a>
+  <span class="sep">/</span>
+  <a href="index.html">.Studio</a>
+  <span class="sep">/</span>
+  <span class="current">The CELL · in context</span>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <div class="page-eyebrow">.Studio · STUDIO-RES-01 · published 2026-05-19</div>
+    <h1 class="page-title">The 1646 CELL · <em>in context</em></h1>
+    <p class="page-lede">Every standard-sized object the cell was almost. CD jewel case, VHS tape, MiniDisc, audio cassette, Field Notes notebook, iPhone, passport, AirPods case, common everyday-carry items, and the largest battery bank that fits inside a 1646 cell with room to spare. The 1646 cell isn't a new dimension; it's a 4×6 envelope that's been quietly underneath consumer-product design for fifty years. <strong>This essay makes that visible.</strong></p>
+  </header>
+
+  <section class="section">
+    <div class="section-eyebrow">The premise</div>
+    <h2 class="section-title">4×6 has been <em>everywhere</em></h2>
+    <p>Pick up almost any small object in a modern home and check its dimensions. A photograph is 4×6 inches. A standard recipe card is 4×6 inches. A jewel case is approximately 4×5 inches. A passport is approximately 3.5×5 inches. The audio cassette is 4×2.5 inches. The MiniDisc is approximately 3×3 inches. <strong>The 4×6 envelope has been the quiet substrate of consumer product design for decades</strong> — sometimes exactly, sometimes within rounding distance, almost always within a single archive-box dimension.</p>
+
+    <p>The studio's 1646 cell isn't an invention. It's a recognition. A 4.75×6.70 inch external dimension photo storage case ships from Novelinks for $1.25 in bulk; the studio calls it 1646 and uses it as the universal storage envelope. <strong>What this essay does is measure the 1646 cell against the universe of nearby standard objects</strong> — to show what fits, what doesn't, what was always going to be neighbors in dimensional space, and what the studio can ship as a result.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Scale comparison · objects to the 1646 CELL</div>
+    <h2 class="section-title">What fits <em>inside the cell</em></h2>
+    <p class="section-desc">Every object below is drawn to the same scale — 1 inch = 32 pixels. The 1646 cell exterior is the reference. Objects that fit inside the cell's internal volume (approximately 4.6 × 6.5 × 1.1 inches usable) get the bright marker. Objects that don't get the muted marker. The diagram is honest — these are real dimensions, not approximations.</p>
+
+    <div class="scale-grid">
+
+      <div class="scale-row">
+        <div class="scale-label">
+          <span class="label-name">1646 CELL (exterior)</span>
+          <span class="label-dims">4.75 × 6.70 × 1.23 in</span>
+          <span class="label-context">The reference. The studio's universal storage envelope, Novelinks photo case spec.</span>
+        </div>
+        <div class="scale-object">
+          <div class="obj cell obj-cell-flat">
+            <span class="obj-label">1646 · the cell · this is what we're measuring against</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row fits">
+        <div class="scale-label">
+          <span class="label-name">CD jewel case</span>
+          <span class="label-dims">5.55 × 4.92 × 0.4 in</span>
+          <span class="label-context">Standard CD-R packaging. The 90s archive standard.</span>
+          <div class="fits-marker yes">Fits with room</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj obj-cd">
+            <span class="obj-label">CD jewel case</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row no-fit">
+        <div class="scale-label">
+          <span class="label-name">VHS cassette</span>
+          <span class="label-dims">7.4 × 4.06 × 1.0 in</span>
+          <span class="label-context">The 80s home-video standard. Pre-DVD living-room substrate.</span>
+          <div class="fits-marker no">Too long · doesn't fit</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj obj-vhs">
+            <span class="obj-label">VHS cassette · too long</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row fits">
+        <div class="scale-label">
+          <span class="label-name">Audio cassette</span>
+          <span class="label-dims">4.0 × 2.5 × 0.4 in</span>
+          <span class="label-context">The 70s/80s portable-music standard. Fits twice over.</span>
+          <div class="fits-marker yes">Fits 2-3 of them</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj obj-cassette">
+            <span class="obj-label">Audio cassette</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row fits">
+        <div class="scale-label">
+          <span class="label-name">MiniDisc cartridge</span>
+          <span class="label-dims">2.83 × 2.78 × 0.16 in</span>
+          <span class="label-context">Sony's mid-90s portable digital audio format. Small and dense.</span>
+          <div class="fits-marker yes">Fits 4 stacked</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj obj-minidisc">
+            <span class="obj-label">MiniDisc</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row fits">
+        <div class="scale-label">
+          <span class="label-name">3.5" floppy disk</span>
+          <span class="label-dims">3.5 × 4.0 × 0.13 in</span>
+          <span class="label-context">The disk format the studio's archive thesis effectively replaces.</span>
+          <div class="fits-marker yes">Fits comfortably</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj obj-floppy">
+            <span class="obj-label">3.5" floppy</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row fits">
+        <div class="scale-label">
+          <span class="label-name">iPhone 15 Pro</span>
+          <span class="label-dims">5.77 × 2.78 × 0.32 in</span>
+          <span class="label-context">Fits inside a 1646 cell with comfortable margins on every axis.</span>
+          <div class="fits-marker yes">Fits comfortably</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj obj-iphone">
+            <span class="obj-label">iPhone 15 Pro</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row fits">
+        <div class="scale-label">
+          <span class="label-name">iPhone 16 Pro Max</span>
+          <span class="label-dims">6.42 × 3.06 × 0.32 in</span>
+          <span class="label-context">Even the largest current iPhone slides in with mm to spare.</span>
+          <div class="fits-marker tight">Fits · tight</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj obj-iphone-max">
+            <span class="obj-label">iPhone 16 Pro Max</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row fits">
+        <div class="scale-label">
+          <span class="label-name">Field Notes original</span>
+          <span class="label-dims">5.5 × 3.5 × 0.2 in</span>
+          <span class="label-context">The pocket-notebook reference standard. Fits with room to spare.</span>
+          <div class="fits-marker yes">Fits · room for several</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj obj-fieldnotes">
+            <span class="obj-label">Field Notes notebook</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row fits">
+        <div class="scale-label">
+          <span class="label-name">Studio folded booklet</span>
+          <span class="label-dims">4.0 × 3.0 × 0.15 in</span>
+          <span class="label-context">.Studio's own pocket-notebook format. Naturally fits.</span>
+          <div class="fits-marker yes">Fits · multiple</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj studio obj-booklet">
+            <span class="obj-label">.Studio booklet</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row fits">
+        <div class="scale-label">
+          <span class="label-name">US passport</span>
+          <span class="label-dims">5.0 × 3.5 × 0.2 in</span>
+          <span class="label-context">The travel-document standard. Fits naturally.</span>
+          <div class="fits-marker yes">Fits</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj obj-passport">
+            <span class="obj-label">Passport</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row fits">
+        <div class="scale-label">
+          <span class="label-name">AirPods Pro case</span>
+          <span class="label-dims">2.39 × 1.78 × 0.85 in</span>
+          <span class="label-context">Small footprint, almost half the cell height.</span>
+          <div class="fits-marker yes">Fits easily</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj obj-airpods">
+            <span class="obj-label">AirPods Pro</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row fits">
+        <div class="scale-label">
+          <span class="label-name">Bifold wallet</span>
+          <span class="label-dims">~4.5 × 3.5 × 0.5 in</span>
+          <span class="label-context">Most folded wallets sit comfortably inside.</span>
+          <div class="fits-marker yes">Fits</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj obj-wallet">
+            <span class="obj-label">Bifold wallet</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="scale-row fits">
+        <div class="scale-label">
+          <span class="label-name">EDC pen (5.5")</span>
+          <span class="label-dims">5.5 × 0.4 × 0.4 in</span>
+          <span class="label-context">Long but narrow. Fits laying flat along the long axis.</span>
+          <div class="fits-marker yes">Fits flat</div>
+        </div>
+        <div class="scale-object">
+          <div class="obj obj-pen">
+            <span class="obj-label">EDC pen</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">The EDC question</div>
+    <h2 class="section-title">What everyday-carry <em>actually fits</em></h2>
+    <p class="section-desc">A useful question for any storage envelope: which common EDC objects can it hold? A 1646 cell, as a "go-bag" or "daily essentials" container, accommodates a surprising amount. Two columns: what fits, what doesn't.</p>
+
+    <div class="fit-summary-grid">
+      <div class="fit-column yes">
+        <h3>Fits inside · the cell as a daily kit</h3>
+        <ul>
+          <li><strong>iPhone</strong> <span class="dims">up to Pro Max 6.42×3.06</span> — every current iPhone slides in</li>
+          <li><strong>AirPods Pro case</strong> <span class="dims">2.39×1.78×0.85</span> — uses 25% of cell volume</li>
+          <li><strong>Passport</strong> <span class="dims">5.0×3.5×0.2</span> — natural fit, easy to slide out</li>
+          <li><strong>Folded bifold wallet</strong> <span class="dims">~4.5×3.5×0.5</span></li>
+          <li><strong>EDC pen</strong> <span class="dims">5.5×0.4×0.4</span> — fits along long axis</li>
+          <li><strong>Field Notes notebook</strong> <span class="dims">5.5×3.5×0.2</span> — or a stack of 4-5 .Studio booklets</li>
+          <li><strong>Small flashlight</strong> <span class="dims">~4×0.6×0.6</span> — fits along any axis</li>
+          <li><strong>Multitool / Leatherman Wave</strong> <span class="dims">4.0×1.3×1.0</span> — fits with mm to spare on thickness</li>
+          <li><strong>Bandages / first-aid roll</strong> — small kit fits in remainder space</li>
+          <li><strong>Battery bank up to 6.3×3.0×0.6"</strong> — see below for the studio's charger-cell SKU</li>
+          <li><strong>Glasses case (slim)</strong> <span class="dims">~6.0×2.0×0.5</span></li>
+          <li><strong>Keys with carabiner</strong> — typical keyring fits in remainder</li>
+        </ul>
+      </div>
+
+      <div class="fit-column no">
+        <h3>Doesn't fit · over the line</h3>
+        <ul>
+          <li><strong>VHS cassette</strong> <span class="dims">7.4×4.06×1.0</span> — too long</li>
+          <li><strong>Standard hardcover book</strong> — typical sizes exceed 6"</li>
+          <li><strong>iPad Mini</strong> <span class="dims">7.69×5.3</span> — way too large</li>
+          <li><strong>Kindle Paperwhite</strong> <span class="dims">6.9×4.9</span> — too long</li>
+          <li><strong>Standard letter-size paper folded once</strong> <span class="dims">8.5×5.5</span> — too long</li>
+          <li><strong>Most thermos / water bottles</strong> — too tall or too round</li>
+          <li><strong>Most everyday sunglasses cases</strong> <span class="dims">typical 6.5×2.5×2.0</span> — too thick</li>
+          <li><strong>Hardcover Moleskine large</strong> <span class="dims">5.0×8.25</span> — too tall</li>
+          <li><strong>DSLR / mirrorless camera body</strong> — usually too thick</li>
+          <li><strong>Larger battery banks</strong> <span class="dims">&gt;1.1" thick</span> — see candidates table below</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">The charger-cell deep dive</div>
+    <h2 class="section-title">The biggest battery bank that fits <em>inside a 1646 cell</em></h2>
+    <p class="section-desc">A specific question the cell-comparison work answers: what's the largest portable power bank that fits comfortably inside a 1646 cell with room for cables and a small manual? This is a real product opportunity — a studio "charger cell" that ships as a complete travel-power kit in a single 1646 envelope.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Battery bank</th><th>Dimensions</th><th>Capacity</th><th>Output</th><th>Price</th><th>Fits 1646?</th></tr>
+      </thead>
+      <tbody>
+        <tr class="fits"><td>INIU 20000mAh slim</td><td class="num">6.3 × 3.0 × 0.6 in</td><td class="num">20,000 mAh</td><td class="num">65 W PD</td><td class="num">~$45</td><td class="fit-yes">YES · room to spare</td></tr>
+        <tr><td>Anker PowerCore 10000</td><td class="num">3.6 × 2.4 × 0.9 in</td><td class="num">10,000 mAh</td><td class="num">18 W</td><td class="num">~$35</td><td class="fit-yes">Yes · small, lots of room</td></tr>
+        <tr><td>MOMAX iPower Hub Pro</td><td class="num">6.1 × 2.9 × 1.0 in</td><td class="num">20,000 mAh</td><td class="num">100 W PD</td><td class="num">~$80</td><td class="fit-yes">Yes · tight on thickness</td></tr>
+        <tr><td>Anker PowerCore 20100</td><td class="num">6.7 × 2.4 × 0.9 in</td><td class="num">20,100 mAh</td><td class="num">24 W</td><td class="num">~$60</td><td class="fit-no">No · too long (6.7 &gt; 6.5)</td></tr>
+        <tr><td>Anker 737 Power Bank</td><td class="num">6.0 × 2.1 × 2.0 in</td><td class="num">24,000 mAh</td><td class="num">140 W PD</td><td class="num">~$150</td><td class="fit-no">No · too thick (2.0 &gt; 1.1)</td></tr>
+        <tr><td>Anker Prime 27650 250W</td><td class="num">6.0 × 3.1 × 1.7 in</td><td class="num">27,650 mAh</td><td class="num">250 W PD</td><td class="num">~$180</td><td class="fit-no">No · too thick</td></tr>
+      </tbody>
+    </table>
+
+    <div class="charger-spec">
+      <div class="charger-visual">
+        <div class="visual-label">Inside the 1646 charger cell</div>
+        <div class="cell-outline">
+          <span class="cell-label">1646 internal · 6.5 × 4.6 in</span>
+          <div class="battery-rect"></div>
+          <div class="cable-rect"></div>
+          <div class="manual-rect"></div>
+        </div>
+        <p style="font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.06em; color: var(--ink-faint); margin-top: 12px; line-height: 1.5;">Battery uses ~65% of cell volume. Cables fit in ~15%. Booklet manual fits in ~10%. ~10% remains for adapters or stickers.</p>
+      </div>
+      <div class="charger-details">
+        <h3>STOCK-CHG-01 · the Charger Cell</h3>
+        <div class="charger-tagline">A 1646 cell that's also a 20,000mAh power bank</div>
+        <dl class="spec-list">
+          <dt>Battery</dt><dd>INIU 20000mAh, 65W USB-C PD output</dd>
+          <dt>Dimensions</dt><dd>6.3 × 3.0 × 0.6 inches</dd>
+          <dt>Charges</dt><dd>iPhone ~5x · MacBook Air ~1x · iPad Mini ~3x</dd>
+          <dt>Cables included</dt><dd>USB-C to USB-C · USB-C to Lightning</dd>
+          <dt>Manual</dt><dd>STUDIO-PR booklet format · 25 pages</dd>
+          <dt>Cell mod</dt><dd>1646-R · Working tier (latch + hinge reinforcement)</dd>
+        </dl>
+
+        <h4 style="margin-top: 16px;">Pricing</h4>
+        <dl class="spec-list">
+          <dt>Battery</dt><dd>$45</dd>
+          <dt>Cables (2)</dt><dd>$10</dd>
+          <dt>1646-R cell · Working</dt><dd>$3</dd>
+          <dt>Booklet manual</dt><dd>$2 production cost</dd>
+          <dt>Studio assembly + packaging</dt><dd>$5</dd>
+          <dt><strong>COGS total</strong></dt><dd><strong>$65</strong></dd>
+          <dt><strong>Customer price</strong></dt><dd><strong>$89</strong></dd>
+          <dt>Margin</dt><dd>27% / $24 per unit</dd>
+        </dl>
+      </div>
+    </div>
+
+    <div class="note bright">
+      <strong>The studio's first electronics SKU</strong>
+      STOCK-CHG-01 is the studio's first product that's primarily electronic rather than physical-archival or editorial. <em>It works because the charger fits the studio's existing platform.</em> The 1646 cell hosts the battery, the cell labeling system identifies it, the .Studio booklet format documents it, the KEEP shelving stores it. The studio doesn't have to build new infrastructure to ship electronics — it has to identify which electronics fit the existing infrastructure. <strong>INIU 20000mAh fits.</strong> Most others don't.
+    </div>
+
+    <h3>Why this product makes sense</h3>
+    <ul>
+      <li><strong>The charger cell <em>is</em> the cell.</strong> Customer doesn't store the battery elsewhere — the cell IS the carrying case, and slots into a Wowlive shelf when not in use.</li>
+      <li><strong>Power-bank-plus-cable-mess is solved by the cell envelope.</strong> No tangled cables in a drawer; everything lives in the labeled cell.</li>
+      <li><strong>The 1646-R reinforced cell makes the unit transit-worthy.</strong> Rubber-band the cell, throw it in luggage, the battery and cables stay together and don't rattle around.</li>
+      <li><strong>It's a single SKU with a meaningful margin.</strong> $24/unit margin is comfortable at the studio's scale; the product can ship on its own without being part of a kit.</li>
+      <li><strong>It opens the door to other electronics-in-cells SKUs.</strong> A charger cell today; a backup-drive cell, a small toolkit cell, a coffee-grinder accessory cell — all become legible once the pattern is established.</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">What the comparison reveals</div>
+    <h2 class="section-title">The cell is in a <em>dense neighborhood</em></h2>
+    <p>The comparison work isn't merely cute. It shows that the 1646 cell sits in a remarkably crowded dimensional neighborhood — surrounded by CDs, MiniDiscs, audio cassettes, passports, phones, wallets, Field Notes notebooks, EDC pens, slim battery banks. <strong>This neighborhood is the modern consumer-product comfort zone.</strong> Things in this size range get carried, get filed, get put on shelves, get found again. Things meaningfully larger get put in closets. Things meaningfully smaller get lost.</p>
+
+    <p>The 1646 cell, framed this way, isn't a niche storage product. It's a <em>commodity envelope that happens to be the size of nearly everything the modern world carries around.</em> That's a structurally significant observation for the studio: by standardizing on this dimension, the studio is standardizing on the natural carrying-and-filing size of the contemporary household.</p>
+
+    <p><strong>The studio's catalogue, taken as a whole, is an attempt to fill this dimensional neighborhood deliberately.</strong> CODEX titles (4×6 card stacks). MEAL kits (4×6 cells with curated contents). KEEP infrastructure (4×6 cells, 4×6 shelf slots). .Studio booklets (4×3 folded from 4×6). The charger cell (4×6 cell with 6.3×3 battery inside). All of it conforms to a dimension that humans have been carrying and filing comfortably for two generations. The studio didn't choose this dimension; the dimension chose the studio.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Closing observation</div>
+    <h2 class="section-title">VHS <em>didn't fit</em>. That's important.</h2>
+    <p>The one major standard the cell doesn't accommodate is VHS. The 7.4-inch length of a VHS cassette pushes past the cell's 6.5-inch internal capacity. This isn't a failure of the cell; it's a clue about a different design era. <strong>VHS was designed for shelving, not carrying.</strong> Its dimensions assumed a TV-room context — a piece of furniture with shelves, a permanent setup, a stationary archive. The 1646 cell, by contrast, accommodates everything from that era that was designed for handheld or pocket carry (CDs, cassettes, MiniDiscs, photos, recipe cards) but cuts off precisely where storage transitioned from <em>portable</em> to <em>permanent.</em></p>
+
+    <p>The studio's archive thesis lives in the portable register. Everything that fits in a 1646 cell can also fit in a backpack. The studio isn't trying to be a bookshelf or a media console; it's trying to be a system you can pack up and move if you needed to. <strong>VHS not fitting confirms this.</strong> The cell's dimensional boundary is the boundary between archives that can travel and archives that can't.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Related</div>
+    <h2 class="section-title">Where this <em>sits in the catalogue</em></h2>
+    <div class="related-row">
+      <a href="index.html">← .Studio practice</a>
+      <a href="booklets.html">→ Folded-card booklets</a>
+      <a href="../keep/index.html">→ KEEP (the cell envelope)</a>
+      <a href="../keep/1646-mods.html">→ 1646 mods (1646-R spec)</a>
+      <a href="../stock/index.html">→ STOCK (charger cell ships here)</a>
+    </div>
+  </section>
+
+</div>
+
+<footer class="page-footer">
+  <div class="footer-row">
+    <div><a href="index.html">← .Studio</a></div>
+    <div>.Studio · STUDIO-RES-01 · v0.1</div>
+  </div>
+  <div class="footer-meta">
+    M1ND.studio · .Studio · STUDIO-RES-01 The CELL in context · scale comparison essay · 13 objects measured · charger-cell SKU spec'd · published 2026-05-19
+  </div>
+</footer>
+
+</body>
+</html>

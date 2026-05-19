@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1646 cell modifications · KEEP · M1ND.studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+:root {
+  --paper: #F4F1E8;
+  --paper-rule: #C8C2B5;
+  --paper-faint: #E0DCD0;
+  --paper-shade: #EAE6D9;
+  --paper-deep: #DCD7C6;
+  --ink: #1A1814;
+  --ink-soft: #4A4640;
+  --ink-faint: #8A8580;
+  --hanko: #5C5A56;
+  --hanko-deep: #3D3B37;
+  --hanko-bright: #B85540;
+
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --serif: 'Inter', Georgia, sans-serif;
+  --classical: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--hanko-bright); }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--serif); line-height: 1.55; }
+
+.studio-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--paper); border-bottom: 1px solid var(--paper-rule);
+  padding: 14px 32px; display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.studio-nav .nav-home { display: flex; align-items: center; gap: 10px; color: var(--ink); }
+.studio-nav .nav-mark {
+  width: 22px; height: 22px; background: var(--ink); color: var(--paper);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--display); font-size: 13px; font-weight: 500;
+}
+.studio-nav .nav-name { font-weight: 500; }
+.studio-nav .nav-name .dot { color: var(--hanko-bright); }
+.studio-nav .nav-links { display: flex; gap: 24px; }
+.studio-nav .nav-link { color: var(--ink-soft); }
+.studio-nav .nav-link:hover { color: var(--ink); }
+.studio-nav .nav-link.current { color: var(--hanko); }
+
+.breadcrumb {
+  max-width: 1200px; margin: 0 auto; padding: 16px 32px 0;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+.breadcrumb a { color: var(--ink-faint); }
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb .sep { margin: 0 8px; color: var(--paper-rule); }
+.breadcrumb .current { color: var(--ink); }
+
+.page { max-width: 1200px; margin: 0 auto; padding: 32px 32px 96px; }
+
+.page-header {
+  margin-bottom: 56px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--paper-rule);
+}
+
+.page-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.page-title {
+  font-family: var(--display);
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  margin-bottom: 18px;
+  max-width: 22ch;
+}
+
+.page-title em { font-style: italic; color: var(--ink-soft); }
+
+.page-lede {
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 64ch;
+}
+
+.section { margin-bottom: 80px; }
+
+.section-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.section-title {
+  font-family: var(--display);
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin-bottom: 14px;
+}
+
+.section-title em { font-style: italic; color: var(--ink-soft); }
+
+.section-desc {
+  font-family: var(--serif);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 72ch;
+  margin-bottom: 32px;
+}
+
+.section h3 {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 500;
+  margin: 32px 0 10px;
+}
+
+.section h4 {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 24px 0 8px;
+  letter-spacing: -0.005em;
+}
+
+.section p {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--ink);
+  margin-bottom: 16px;
+  max-width: 72ch;
+}
+
+.section p strong { font-weight: 600; }
+.section p em { font-style: italic; color: var(--ink-soft); }
+
+.section ul { margin-bottom: 16px; padding-left: 24px; }
+.section li { font-size: 14.5px; line-height: 1.65; margin-bottom: 6px; max-width: 70ch; }
+
+.note {
+  background: var(--paper-shade);
+  border-left: 3px solid var(--hanko);
+  padding: 14px 18px;
+  margin: 20px 0;
+  font-family: var(--serif);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.note strong {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0 32px;
+  font-size: 13.5px;
+}
+
+.data-table th {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--paper-rule);
+  font-weight: 500;
+}
+
+.data-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--paper-rule);
+  vertical-align: top;
+  line-height: 1.45;
+}
+
+.data-table .num { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); }
+.data-table .strong { font-weight: 600; }
+.data-table tr.highlight { background: var(--paper-shade); }
+.data-table tr.highlight td { color: var(--ink); }
+.data-table .savings { color: var(--hanko-bright); font-weight: 500; }
+
+/* Vector grid - the four mod axes */
+.vector-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--paper-rule);
+  border: 1px solid var(--paper-rule);
+  margin: 24px 0 40px;
+}
+
+.vector {
+  background: var(--paper);
+  padding: 24px 20px;
+}
+
+.vector-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.vector h3 {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 500;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+
+.vector .vector-mod {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+  letter-spacing: 0.04em;
+}
+
+.vector p {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin: 0;
+}
+
+/* Pattern cards for the mod sub-sections */
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 20px 0 28px;
+}
+
+.pattern {
+  background: var(--paper);
+  border: 1px solid var(--paper-rule);
+  padding: 18px 18px 16px;
+}
+
+.pattern .pattern-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.pattern h4 {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.pattern p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: none;
+}
+
+.pattern .pattern-use {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--paper-rule);
+}
+
+/* Spec block — used for product specifications */
+.spec-block {
+  background: var(--paper-shade);
+  padding: 20px 22px;
+  margin: 16px 0 28px;
+  border-left: 3px solid var(--ink-soft);
+}
+
+.spec-block .spec-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.spec-block dl {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 6px 16px;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.spec-block dt {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+.spec-block dd {
+  color: var(--ink);
+}
+
+/* Tier ladder */
+.tier-ladder {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin: 24px 0 32px;
+  border: 1px solid var(--paper-rule);
+}
+
+.tier {
+  display: grid;
+  grid-template-columns: 100px 1fr 140px 140px;
+  gap: 20px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--paper-rule);
+  align-items: center;
+}
+
+.tier:last-child { border-bottom: none; }
+.tier:nth-child(even) { background: var(--paper-shade); }
+
+.tier .tier-name {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.tier .tier-mods {
+  font-family: var(--serif);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+.tier .tier-price {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.tier .tier-use {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+}
+
+.tag {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  margin-right: 6px;
+  margin-bottom: 4px;
+}
+
+.tag.hanko { background: var(--hanko); color: var(--paper); border-color: var(--hanko); }
+.tag.bright { background: var(--hanko-bright); color: var(--paper); border-color: var(--hanko-bright); }
+
+.related-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 24px;
+}
+
+.related-row a {
+  color: var(--hanko-bright);
+  text-decoration: none;
+}
+
+.related-row a:hover { color: var(--hanko-deep); }
+
+.page-footer {
+  max-width: 1200px;
+  margin: 96px auto 0;
+  padding: 32px 32px 24px;
+  border-top: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+.page-footer .footer-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.page-footer a { color: var(--ink-faint); margin-right: 18px; }
+.page-footer a:hover { color: var(--hanko-bright); }
+.page-footer .footer-meta {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--paper-rule);
+  font-size: 9px;
+}
+
+@media (max-width: 900px) {
+  .vector-grid { grid-template-columns: repeat(2, 1fr); }
+  .tier { grid-template-columns: 1fr; gap: 4px; padding: 14px 18px; }
+}
+
+@media (max-width: 600px) {
+  .page-title { font-size: 36px; }
+  .page { padding: 24px 20px 64px; }
+  .vector-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="studio-nav">
+  <a href="../index.html" class="nav-home">
+    <span class="nav-mark">M</span>
+    <span class="nav-name">M1ND<span class="dot">.</span>studio</span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html" class="nav-link">Catalogue</a>
+    <a href="../t1ny/index.html" class="nav-link">Research</a>
+    <a href="index.html" class="nav-link current">KEEP</a>
+  </div>
+</nav>
+
+<nav class="breadcrumb">
+  <a href="../index.html">M1ND.studio</a>
+  <span class="sep">/</span>
+  <a href="index.html">KEEP</a>
+  <span class="sep">/</span>
+  <span class="current">1646 mods</span>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <div class="page-eyebrow">KEEP · 1646 mods · case study v0.1</div>
+    <h1 class="page-title">What the 1646 cell <em>becomes</em>, modded</h1>
+    <p class="page-lede">A case study on four cheap modifications — bulk sourcing, ziplock subdivision, rubber band transport, and durability coatings — and the architectural shift they create. Modded, the 1646 cell stops being a commodity envelope and starts being a studio-spec'd platform component. The mods are inexpensive. The shift is not.</p>
+  </header>
+
+  <section class="section">
+    <div class="section-eyebrow">The premise</div>
+    <h2 class="section-title">Each mod pulls the cell in a <em>different direction</em></h2>
+    <p>The four mod categories don't sit on a single axis. Sourcing is about cost; subdivision is about the interior; mobility is about getting the cell off the shelf; durability is about quality grade. <strong>The mods compose</strong> — a cell with all four applied is doing four different things at once, and at that point it's not really the same object as the unmodded base.</p>
+
+    <div class="vector-grid">
+      <div class="vector">
+        <div class="vector-label">Vector 1</div>
+        <h3>Sourcing</h3>
+        <div class="vector-mod">Novelinks 24-pack · $1.25/cell</div>
+        <p>Changes the cell's cost. Doesn't change what it is. A 50% reduction across every system that uses 1646 at scale.</p>
+      </div>
+      <div class="vector">
+        <div class="vector-label">Vector 2</div>
+        <h3>Subdivision</h3>
+        <div class="vector-mod">4×6 ziplock bags · ~$0.02-0.15 each</div>
+        <p>Changes the cell's interior. From single chamber to organizable kit with modular sub-units.</p>
+      </div>
+      <div class="vector">
+        <div class="vector-label">Vector 3</div>
+        <h3>Mobility</h3>
+        <div class="vector-mod">#64 / #84 rubber bands · ~$0.05 each</div>
+        <p>Changes the cell's portability. From static archive object to transport-rated component that can leave the shelf.</p>
+      </div>
+      <div class="vector">
+        <div class="vector-label">Vector 4</div>
+        <h3>Durability</h3>
+        <div class="vector-mod">Glue · coating · tape · vinyl wrap</div>
+        <p>Changes the cell's quality grade. From commodity envelope to studio-spec'd object across a five-tier ladder.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Vector 1 · Sourcing</div>
+    <h2 class="section-title">The <em>Novelinks 24-pack</em> changes the math</h2>
+    <p class="section-desc">The Novelinks Photo Case 24-Pack on Amazon (B07PHWGFYP) at $29.99 CAD works out to $1.25 per 1646-spec cell — half the studio's prior assumed cost. At scale, this is meaningful.</p>
+
+    <div class="spec-block">
+      <div class="spec-label">Product specifications</div>
+      <dl>
+        <dt>Source</dt><dd>Amazon B07PHWGFYP · Novelinks 24-pack</dd>
+        <dt>Price</dt><dd>$29.99 CAD</dd>
+        <dt>Per-cell cost</dt><dd>$1.25</dd>
+        <dt>Cell dimensions</dt><dd>4.75 × 6.70 × 1.23 inches (matches 1646 spec)</dd>
+        <dt>Capacity</dt><dd>100 photos / cards per cell (46-70 typical in practice)</dd>
+        <dt>Closure</dt><dd>Snap-tight latch, individual to each cell</dd>
+        <dt>Body</dt><dd>Transparent rigid plastic with label slot</dd>
+        <dt>Outer carrier</dt><dd>12.8 × 15.74 × 5.43 inches with handle</dd>
+        <dt>Origin</dt><dd>Made in USA</dd>
+      </dl>
+    </div>
+
+    <h3>What this does at scale</h3>
+    <p>Every configuration in the studio's catalogue that uses 1646 drops in materials cost by roughly 50%. The cell-cost objection to going all-in on 1646 mostly disappears, and several previously-marginal product configurations become viable.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Configuration</th><th>Old cost · $2.50/cell</th><th>New cost · $1.25/cell</th><th>Saved</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Single Hako KEEP wall (~84 cells)</td><td class="num">$210</td><td class="num">$105</td><td class="savings">$105 · 50%</td></tr>
+        <tr><td>STOCK half-wall starter (~40 cells)</td><td class="num">$100</td><td class="num">$50</td><td class="savings">$50 · 50%</td></tr>
+        <tr><td>CODEX library · 100 titles</td><td class="num">$250</td><td class="num">$125</td><td class="savings">$125 · 50%</td></tr>
+        <tr><td>BDRC + COOK kitchen build (~50 cells)</td><td class="num">$125</td><td class="num">$63</td><td class="savings">$62 · 50%</td></tr>
+      </tbody>
+    </table>
+
+    <h3>The downstream effects</h3>
+    <ul>
+      <li><strong>A full Hako KEEP wall is now under $110 in cells.</strong> Material cost is no longer a real barrier to going all-in.</li>
+      <li><strong>The studio can include a cell with certain products</strong> without it being a meaningful margin hit — a base-spec cell as a bonus with every CODEX or STOCK purchase becomes affordable.</li>
+      <li><strong>CODEX-001 and the Studio Classics Series become more viable</strong> — at $1.25 the cell is a rounding error, no longer a separate investment decision for the reader.</li>
+    </ul>
+
+    <div class="note">
+      <strong>Honest caveat · the durability question</strong>
+      Reviews note the Novelinks plastic is "thin" and the latches "feel like they could snap off with heavy use." This is the trade-off built into the $1.25 price point. The 24-pack is the right base spec, not the final form — and Vector 4 below addresses the durability mod ladder for cells that need more than base-spec handling.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Vector 2 · Subdivision</div>
+    <h2 class="section-title">Ziplock bags turn a chamber into <em>a kit</em></h2>
+    <p class="section-desc">A 1646 cell is great for one kind of thing in volume — 100 cards of a CODEX, a single spice mix, a stack of recipe cards. It's less great for mixed-component contents. 4×6 zip-top poly bags solve this by creating modular sub-units inside the cell. The studio's contribution is documenting which patterns work.</p>
+
+    <div class="spec-block">
+      <div class="spec-label">Product specifications</div>
+      <dl>
+        <dt>Spec</dt><dd>4×6 inch reclosable poly bags, 2 mil thickness</dd>
+        <dt>Per-bag cost</dt><dd>~$0.02 in bulk wholesale · ~$0.10-0.15 retail 100-packs</dd>
+        <dt>Material</dt><dd>Low-density polyethylene, FDA/USDA food-safe, BPA-free</dd>
+        <dt>Usable dimensions</dt><dd>4"W × 6"H (with 0.1-0.15" extra for fit)</dd>
+        <dt>Closure</dt><dd>Zipper top, reclosable</dd>
+        <dt>Heat-sealable</dt><dd>Yes — above the zipline at 230-250°F for tamper-evidence</dd>
+        <dt>Industry parlance</dt><dd>"Apple baggies," "dispensary bags," "parts bags"</dd>
+      </dl>
+    </div>
+
+    <h3>Six patterns</h3>
+
+    <div class="pattern-grid">
+
+      <div class="pattern">
+        <div class="pattern-label">Pattern A · Component subdivision</div>
+        <h4>The cell as a kit</h4>
+        <p>A BDRC spice cell with cinnamon, cardamom, star anise — each in its own ziplock inside the cell. Pull one component without disturbing the others.</p>
+        <div class="pattern-use">BDRC · COOK · MEAL</div>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-label">Pattern B · Moisture protection</div>
+        <h4>Inner moisture envelope</h4>
+        <p>SPORE grain spawn, GROW seed packets, COOK dried herbs — materials where you want the cell open to inspection but the contents sealed.</p>
+        <div class="pattern-use">SPORE · GROW · COOK</div>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-label">Pattern C · Tamper-evident sealing</div>
+        <h4>Shipped product integrity</h4>
+        <p>For commercial STOCK shipments, the heat-sealable variant above the zipper creates a tamper-evident inner envelope. Customer cuts the heat seal on receipt; the bag still reseals normally afterward.</p>
+        <div class="pattern-use">STOCK · commerce</div>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-label">Pattern D · Liquid containment</div>
+        <h4>Oils &amp; tinctures inside dry-storage cells</h4>
+        <p>The cell normally holds dry goods. With a ziplock as the inner container, it can safely hold a small bottle of oil or tincture — the ziplock catches leakage and isolates spills from the rest of the cell.</p>
+        <div class="pattern-use">COOK · SPORE · MESH</div>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-label">Pattern E · Quick-grab modular units</div>
+        <h4>The cell stays · the bags travel</h4>
+        <p>Pull one or two ziplock bags out of a cell, drop them in a daypack. The ziplock is the unit of portability; the cell is the unit of archive. Separates "where it lives" from "how it travels."</p>
+        <div class="pattern-use">Travel · festival · workshop</div>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-label">Pattern F · Reader's own organization</div>
+        <h4>Subdivide within a CODEX</h4>
+        <p>A 100-card CODEX read 20 chapters in. A "read · ch 1-20" labeled ziplock separates progress from unread cards without disturbing the original sequence.</p>
+        <div class="pattern-use">CODEX · KEEP archive</div>
+      </div>
+
+    </div>
+
+    <h3>What ziplock bags do NOT do</h3>
+    <p>They don't add structural strength to the cell, they don't provide UV protection, they don't help with stacking. They are exclusively about <em>interior organization and moisture isolation.</em> Treat them as a subdivision mod, not a durability mod.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Vector 3 · Mobility</div>
+    <h2 class="section-title">Rubber bands turn an archive cell into <em>a transport-rated cell</em></h2>
+    <p class="section-desc">The snap-tight latch on a 1646 cell holds against gravity and gentle force. A sharp impact or sustained pressure on the wrong axis can pop it. A simple rubber band around the cell adds a second layer of closure — cheaper, faster, and more reliable than any alternative for the cells that need to leave the shelf.</p>
+
+    <div class="spec-block">
+      <div class="spec-label">Product specifications</div>
+      <dl>
+        <dt>Spec — circumferential</dt><dd>#64 rubber bands (3.5" × 1/4") · ~$5 / 100-pack</dd>
+        <dt>Spec — heavy-duty</dt><dd>#84 rubber bands (3.5" × 1/2") · ~$8 / 100-pack</dd>
+        <dt>Per-band cost</dt><dd>~$0.05</dd>
+        <dt>Lifespan</dt><dd>6-18 months depending on UV exposure and tension</dd>
+        <dt>NOT for</dt><dd>Long-term archive cells (rubber residue / breakage over years)</dd>
+      </dl>
+    </div>
+
+    <h3>Three strap patterns, three contexts</h3>
+
+    <div class="pattern-grid">
+
+      <div class="pattern">
+        <div class="pattern-label">Pattern 1 · Single band</div>
+        <h4>Circumferential, long axis</h4>
+        <p>One #64 band around the 6.7" axis. Holds the latch closed against all axes except sliding along the band's path. The default mod for around-the-house and short transport.</p>
+        <div class="pattern-use">Bag · car · counter</div>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-label">Pattern 2 · Cross-strap</div>
+        <h4>Two bands, X-pattern over top</h4>
+        <p>Two bands, one on each axis, crossing at the top of the cell. Holds the latch against all impact directions. The recommended pattern for any cell that leaves the home.</p>
+        <div class="pattern-use">Luggage · shipping · transit</div>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-label">Pattern 3 · Stack-strap</div>
+        <h4>Multi-cell bundle</h4>
+        <p>Bands wrap multiple stacked cells as a single unit. Move a STOCK shipment, a CODEX library subset, or relocate the contents of a shelf in one trip.</p>
+        <div class="pattern-use">Move · ship · relocate</div>
+      </div>
+
+    </div>
+
+    <h3>The architectural shift</h3>
+    <p>Rubber bands are tiny. They change what 1646 is. Without them the cell is implicitly <em>static</em> — it lives on a shelf, rarely leaves. With them the cell becomes <em>transport-rated</em>. This unlocks:</p>
+    <ul>
+      <li><strong>Festival / travel CODEX</strong> — three CODEX titles in a daypack for a weekend trip</li>
+      <li><strong>Mobile STOCK kitchens</strong> — chef takes BDRC + COOK + SPORE cells to a pop-up event</li>
+      <li><strong>Shipping CODEX/STOCK products</strong> — banded cells ship safely without extra packaging</li>
+      <li><strong>Workshop / site bags</strong> — banded cells survive a tool bag</li>
+    </ul>
+
+    <div class="note">
+      <strong>Apply when moving, remove when shelving</strong>
+      Rubber bands degrade over time, especially with UV exposure. They are not a long-term archival closure — for cells that sit on a shelf for years, the latch alone is correct. Bands are for transport, not archive. The studio's KEEP Mod Kit should include them as removable transport accessories, not as a permanent install.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Vector 4 · Durability</div>
+    <h2 class="section-title">Five mods, five tiers, <em>one ladder</em></h2>
+    <p class="section-desc">The Novelinks plastic is honestly described as "thin" in reviews. That's the price-point trade-off, not a defect. The studio's job is to map a reinforcement ladder — five mods, ordered cheapest to most-involved — that lets the customer pick the right tier for the right cell. Not every cell needs every mod.</p>
+
+    <h3>Mod ladder</h3>
+
+    <div class="pattern-grid">
+
+      <div class="pattern">
+        <div class="pattern-label">Mod 1 · Hot glue · ~$0.05 / cell</div>
+        <h4>Latch reinforcement</h4>
+        <p>A small dab of hot glue inside the latch mechanism firms up the click and prevents the latch working loose with repeated opening. The most-recommended mod from the Amazon reviews themselves.</p>
+        <div class="pattern-use">Daily-use cells</div>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-label">Mod 2 · Zip tie · ~$0.10 / cell</div>
+        <h4>Hinge reinforcement</h4>
+        <p>A tiny zip-tie or wire through the hinge axis adds reinforcement against the hinge failing under stress. Less commonly needed; reserve for cells that take real hinge stress (open kitchen mise-en-place).</p>
+        <div class="pattern-use">Kitchen prep cells</div>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-label">Mod 3 · Plasti Dip · ~$0.50-1.00 / cell</div>
+        <h4>Rubberized exterior coating</h4>
+        <p>Spray-can rubberized coating on the cell exterior. Significant impact resistance, hides scratches, applies in studio colors (ink, hanko, slate). A $10-12 can covers 10-20 cells. The premium reinforcement tier.</p>
+        <div class="pattern-use">STOCK shipping · premium CODEX</div>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-label">Mod 4 · Fabric tape · ~$0.25-0.50 / cell</div>
+        <h4>Edge banding</h4>
+        <p>Book-binding tape strip around the edges where lid meets body. Protects against edge wear and creates a refined visual line. For display and gift cells where visual quality matters most.</p>
+        <div class="pattern-use">Display · gift presentations</div>
+      </div>
+
+      <div class="pattern">
+        <div class="pattern-label">Mod 5 · Vinyl wrap · ~$2-4 / cell</div>
+        <h4>Studio-branded surface</h4>
+        <p>Custom-cut vinyl wrap on the exterior in the studio visual register — paper-and-hanko palette, Space Grotesk type, studio mark. Turns the cell from "modded commodity" into "fully studio-branded object."</p>
+        <div class="pattern-use">Flagship · retail · display</div>
+      </div>
+
+    </div>
+
+    <h3>Ladder as product tiers</h3>
+    <p>The five mods double as <strong>product tiers</strong> for the studio's own catalogue. A customer can pick a tier based on what they're doing with the cell, and the studio prices accordingly:</p>
+
+    <div class="tier-ladder">
+      <div class="tier">
+        <div class="tier-name">Base</div>
+        <div class="tier-mods">Raw Novelinks · no mods</div>
+        <div class="tier-price">$1.25 / cell</div>
+        <div class="tier-use">Default catalogue</div>
+      </div>
+      <div class="tier">
+        <div class="tier-name">Working</div>
+        <div class="tier-mods">+ latch reinforcement, hinge reinforcement</div>
+        <div class="tier-price">$1.40 / cell</div>
+        <div class="tier-use">Daily-use cells · kitchen · workshop</div>
+      </div>
+      <div class="tier">
+        <div class="tier-name">Premium</div>
+        <div class="tier-mods">+ Plasti Dip rubberized coating in studio color</div>
+        <div class="tier-price">$2.00-2.50 / cell</div>
+        <div class="tier-use">STOCK · premium CODEX shipments</div>
+      </div>
+      <div class="tier">
+        <div class="tier-name">Display</div>
+        <div class="tier-mods">+ edge banding, refined visual line</div>
+        <div class="tier-price">$2.50-3.00 / cell</div>
+        <div class="tier-use">Gift cells · display contexts</div>
+      </div>
+      <div class="tier">
+        <div class="tier-name">Studio</div>
+        <div class="tier-mods">+ full studio-branded vinyl wrap</div>
+        <div class="tier-price">$5-7 / cell</div>
+        <div class="tier-use">Flagship · retail · top-tier deliverable</div>
+      </div>
+    </div>
+
+    <p><strong>Even at the top tier the cell is still under $7.</strong> The studio can offer five different quality levels of the same fundamental object and never exceed the cost of a single mass-market hardcover book.</p>
+
+    <h3>What durability mods do NOT solve</h3>
+    <p>They don't make the cell waterproof (a flood ruins it regardless of coating). They don't make it crush-proof (a heavy box dropped on it still wins). They don't extend the <em>archival</em> lifespan past what the plastic itself can support — for true archival storage measured in decades, the cell should still live on a shelf out of direct light. <strong>The mods are about handling and use; not about archival permanence.</strong></p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">The kit</div>
+    <h2 class="section-title">What goes in the <em>KEEP Mod Kit</em></h2>
+    <p class="section-desc">Based on the four vectors above, a customer-facing KEEP Mod Kit should include the components to apply any mod from any vector. Sold individually or as a complete kit. Customer assembles their own tier and applies mods to the cells they care about most.</p>
+
+    <table class="data-table">
+      <thead>
+        <tr><th>Component</th><th>Vector</th><th>Pattern</th><th>Stock unit</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>4×6 ziplock bags</td><td>Subdivision</td><td>A-F · all six</td><td>100-pack</td></tr>
+        <tr><td>Heat sealer (impulse, optional)</td><td>Subdivision</td><td>C · tamper-evident</td><td>Single unit</td></tr>
+        <tr><td>#64 rubber bands</td><td>Mobility</td><td>1 · circumferential</td><td>100-pack</td></tr>
+        <tr><td>#84 rubber bands</td><td>Mobility</td><td>2, 3 · heavy-duty</td><td>50-pack</td></tr>
+        <tr><td>Hot glue gun + sticks</td><td>Durability</td><td>Mod 1 · latch</td><td>Single unit + 20 sticks</td></tr>
+        <tr><td>Zip ties · 4" length</td><td>Durability</td><td>Mod 2 · hinge</td><td>100-pack</td></tr>
+        <tr><td>Plasti Dip aerosol</td><td>Durability</td><td>Mod 3 · coating</td><td>Per studio color</td></tr>
+        <tr><td>Book-binding fabric tape</td><td>Durability</td><td>Mod 4 · edge</td><td>Roll</td></tr>
+        <tr><td>Pre-cut vinyl wrap, studio branded</td><td>Durability</td><td>Mod 5 · top tier</td><td>Per-cell pre-cut</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">The architectural payoff</div>
+    <h2 class="section-title">From <em>commodity envelope</em> to <em>cell platform</em></h2>
+    <p>Before mods, 1646 is <em>the commodity envelope the studio standardized on.</em> Anyone can replace it; the studio's only contribution is the naming and the spec.</p>
+    <p>After mods, 1646 is <em>the studio's standardized cell platform.</em> The base cell is still a commodity, but the system around it — the sourcing economics, the subdivision patterns, the transport rating, the durability ladder, the visual register — is the studio's own work and not replaceable by going to any photo-supply store.</p>
+    <p>This is an important shift. KEEP's value proposition becomes less about <em>"we picked a good box"</em> and more about <strong>"we operate the entire ecosystem around a good box."</strong> The cell is the substrate. KEEP is the operating system. CODEX, STOCK, BDRC, COOK, SPORE, GROW all sit on top of this platform.</p>
+    <p><strong>A customer who buys into the 1646 system is buying into the platform, not just the box.</strong></p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Open questions</div>
+    <h2 class="section-title">What's <em>not resolved yet</em></h2>
+
+    <h3>Pre-modded or DIY?</h3>
+    <p>Buying a pre-Plasti-Dipped cell in studio colors is convenient; doing it yourself is more involved but cheaper and customizable. The studio likely needs to offer both. Which is the default catalogue offering?</p>
+
+    <h3>Is there a sixth mod vector?</h3>
+    <p>This document covers sourcing, subdivision, mobility, durability. Possibilities for additional vectors: <strong>labeling</strong> (insert cards, exterior labels — already partly a KEEP feature), <strong>stacking systems</strong> (custom risers or trays for organizing cells outside the Wowlive shelf), <strong>security</strong> (locks, tamper-evidence beyond heat-seal).</p>
+
+    <h3>Does the Wowlive shelf still fit a coated cell?</h3>
+    <p>A Plasti-Dipped cell is slightly thicker than a raw cell. Does it still fit cleanly in the Wowlive cell slots? Action: measure with calipers once mods are applied to confirm fit. Edge banding adds maybe 1mm per side — likely fine. Vinyl wrap adds &lt;0.5mm — fine. Plasti Dip can add 2-4mm depending on coats — needs verification.</p>
+
+    <h3>What about the Novelinks outer carrier?</h3>
+    <p>The 24-pack includes a 12.8 × 15.74 × 5.43 inch carrying box with handle. Is it discarded after unboxing, or does it become the <em>travel crate</em> for the mobility vector — a "go bag" of 24 cells you can grab and take somewhere? Worth naming.</p>
+
+    <h3>A CODEX about the mods?</h3>
+    <p>A "KEEP 1646 Mods" CODEX — 100 cards documenting every mod pattern, with how-to diagrams, parts lists, and customer worksheets. The studio's first <em>instructional</em> CODEX rather than a literary one. Possible Studio Classics Series companion title.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-eyebrow">Related</div>
+    <h2 class="section-title">Where this <em>sits in the catalogue</em></h2>
+    <div class="related-row">
+      <a href="index.html">→ KEEP practice</a>
+      <a href="../codex/index.html">→ CODEX (uses 1646)</a>
+      <a href="../stock/index.html">→ STOCK (uses 1646)</a>
+      <a href="../bxbx/index.html">→ BXBX (Hako uses KEEP wall)</a>
+      <a href="../index.html">→ M1ND.studio catalogue</a>
+    </div>
+  </section>
+
+</div>
+
+<footer class="page-footer">
+  <div class="footer-row">
+    <div>
+      <a href="index.html">← KEEP practice</a>
+    </div>
+    <div>KEEP · 1646 mods · v0.1</div>
+  </div>
+  <div class="footer-meta">
+    M1ND.studio · KEEP · 1646 cell mods case study · sourcing · subdivision · mobility · durability · the cell as platform
+  </div>
+</footer>
+
+</body>
+</html>
