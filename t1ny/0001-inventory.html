@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T1NY.0001 · Genesis Collection · T1NY · M1ND.studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap');
+
+:root {
+  --paper: #F4F1E8;
+  --paper-rule: #C8C2B5;
+  --paper-faint: #E0DCD0;
+  --paper-shade: #EAE6D9;
+  --ink: #1A1814;
+  --ink-soft: #4A4640;
+  --ink-faint: #8A8580;
+  --hanko: #3D5A6C;
+  --hanko-deep: #6E5429;
+  --hanko-bright: #B85540;
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --serif: 'Inter', Georgia, sans-serif;
+  --classical: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--hanko-bright); }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: var(--classical); line-height: 1.55; }
+
+.studio-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--paper); border-bottom: 1px solid var(--paper-rule);
+  padding: 14px 32px; display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.studio-nav .nav-home { display: flex; align-items: center; gap: 10px; color: var(--ink); }
+.studio-nav .nav-mark { width: 22px; height: 22px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 13px; font-weight: 500; }
+.studio-nav .nav-name { font-weight: 500; }
+.studio-nav .nav-name .dot { color: var(--hanko-bright); }
+.studio-nav .nav-links { display: flex; gap: 24px; }
+.studio-nav .nav-link { color: var(--ink-soft); }
+.studio-nav .nav-link:hover { color: var(--ink); }
+.studio-nav .nav-link.current { color: var(--hanko); }
+
+.breadcrumb {
+  max-width: 760px; margin: 0 auto; padding: 16px 32px 0;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+.breadcrumb a { color: var(--ink-faint); }
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb .sep { margin: 0 8px; color: var(--paper-rule); }
+.breadcrumb .current { color: var(--ink); }
+
+article { max-width: 720px; margin: 0 auto; padding: 48px 32px 96px; }
+
+.essay-header {
+  margin-bottom: 56px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--paper-rule);
+}
+.essay-eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--hanko);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.essay-title {
+  font-family: var(--display);
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1.0;
+  letter-spacing: -0.025em;
+  margin-bottom: 20px;
+}
+.essay-subtitle {
+  font-family: var(--classical);
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.35;
+  color: var(--ink-soft);
+  margin-bottom: 28px;
+  max-width: 32ch;
+}
+.essay-meta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  line-height: 1.7;
+}
+.essay-meta strong { color: var(--ink-soft); font-weight: 500; }
+
+.essay-body {
+  font-family: var(--classical);
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.essay-body h2 {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 56px 0 18px;
+  color: var(--ink);
+}
+
+.essay-body h3 {
+  font-family: var(--display);
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 40px 0 14px;
+  color: var(--ink);
+}
+
+.essay-body h4 {
+  font-family: var(--classical);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 19px;
+  margin: 28px 0 10px;
+  color: var(--ink);
+}
+
+.essay-body p {
+  margin-bottom: 22px;
+}
+
+.essay-body p strong { font-weight: 600; }
+.essay-body p em { font-style: italic; }
+
+.essay-body ul, .essay-body ol {
+  margin: 0 0 22px 24px;
+  padding-left: 0;
+}
+.essay-body li {
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.essay-body hr {
+  border: none;
+  border-top: 1px solid var(--paper-rule);
+  margin: 48px auto;
+  width: 60%;
+}
+
+.essay-body blockquote {
+  margin: 32px 0 32px 24px;
+  padding-left: 20px;
+  border-left: 3px solid var(--paper-rule);
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+.essay-body em.colophon {
+  display: block;
+  margin-top: 56px;
+  padding-top: 24px;
+  border-top: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink-faint);
+  letter-spacing: 0.02em;
+}
+
+footer.essay-footer {
+  max-width: 720px;
+  margin: 64px auto 0;
+  padding: 32px;
+  border-top: 1px solid var(--paper-rule);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+footer.essay-footer a { color: var(--ink-soft); }
+footer.essay-footer a:hover { color: var(--hanko-bright); }
+
+@media (max-width: 720px) {
+  .essay-title { font-size: 36px; }
+  .essay-subtitle { font-size: 19px; }
+  .essay-body { font-size: 17px; }
+  .essay-body h2 { font-size: 24px; }
+  article { padding: 32px 20px 64px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="studio-nav">
+  <a href="../index.html" class="nav-home">
+    <span class="nav-mark">M</span>
+    <span class="nav-name">M1ND<span class="dot">.</span>studio</span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html" class="nav-link">Catalogue</a>
+    <a href="index.html" class="nav-link current">T1NY</a>
+  </div>
+</nav>
+
+<nav class="breadcrumb">
+  <a href="../index.html">M1ND.studio</a>
+  <span class="sep">/</span>
+  <a href="index.html">T1NY</a>
+  <span class="sep">/</span>
+  <span class="current">T1NY.0001 · Genesis Collection</span>
+</nav>
+
+<article>
+  <header class="essay-header">
+    <div class="essay-eyebrow">T1NY.0001 · inventory · in development</div>
+    <h1 class="essay-title">T1NY.0001 · Genesis Collection</h1>
+    <p class="essay-subtitle">Working inventory of inspirations.</p>
+    <div class="essay-meta">
+      
+    </div>
+  </header>
+
+  <div class="essay-body">
+<p><strong>Date initiated:</strong> 2026-05-18 <strong>Owner:</strong> Jordan <strong>Purpose:</strong> structured place to capture the global inheritance that anchors T1NY.0001 <strong>Companion document:</strong> T1NY-thread-v0.2.md <strong>Status:</strong> living document · add entries as memory surfaces · revise freely</p>
+<hr>
+<h2>How to use this document</h2>
+<p>This isn&#x27;t a draft of T1NY.0001. It&#x27;s the <strong>structured working inventory</strong> that has to exist before the essay can be drafted. Think of it as the studio&#x27;s analogue of a research bibliography or a director&#x27;s mood-board: a place where the raw material accumulates until there&#x27;s enough mass to synthesize from.</p>
+<p><strong>No pressure to fill it all in at once.</strong> Add to it when something surfaces — on a walk, mid-conversation, while reading something else, while looking at old travel photos. The prompts below are starting points; if a category is missing or the prompt isn&#x27;t quite right, edit freely. <strong>This document serves you, not the other way around.</strong></p>
+<p>When sections feel meaningfully complete — when you&#x27;ve captured most of what&#x27;s in your head on that topic — mark them done with a <code>[FULL]</code> tag at the section heading. When the document as a whole feels ready, T1NY.0001 gets drafted from it.</p>
+<p>A reasonable target: <strong>15-25 substantial entries across all sections</strong> before T1NY.0001 is draftable. Quantity matters less than density of insight per entry.</p>
+<hr>
+<h2>§ 1 · The places — cities and countries that taught you something</h2>
+<p><em class="colophon">Prompt: For each place that meaningfully shaped your thinking about small-scale dwelling, capture: how long you were there, what you observed about how people lived, what specifically struck you that you don&#x27;t see in North America, what infrastructure made it work, what you&#x27;ve never been able to forget.</em></p>
+<h3>Japan</h3>
+<p>[your entries here]</p>
+<ul>
+<li>What cities/regions specifically?</li>
+<li>What dwelling patterns did you see? (kyosho jutaku narrow houses, danchi apartment blocks, capsule hotels, machiya townhouses, ryokan rooms?)</li>
+<li>What enabling infrastructure stood out? (transit density, micro-retail, convenience stores as kitchens, vending machine ubiquity?)</li>
+<li>What cultural attitudes around space did you observe that differ from North America?</li>
+<li>A specific moment or scene you remember:</li>
+</ul>
+<hr>
+<h3>China</h3>
+<p>[your entries here]</p>
+<ul>
+<li>What cities specifically? (Beijing, Shanghai, Shenzhen, Hong Kong, Guangzhou, smaller cities?)</li>
+<li>Dwelling patterns observed:</li>
+<li>Infrastructure that surprised you:</li>
+<li>The pace of change you witnessed:</li>
+<li>A specific moment or scene:</li>
+</ul>
+<hr>
+<h3>Thailand</h3>
+<p><em class="colophon">You mentioned the battery-swap infrastructure already — that&#x27;s gold. What else?</em></p>
+<p>[your entries here]</p>
+<ul>
+<li>Bangkok specifically? Other cities?</li>
+<li>The scooter-and-battery-swap system — describe what you saw, how it worked, why it impressed you:</li>
+<li>Street vendor / mobile commerce patterns:</li>
+<li>Canal-house or stilt-dwelling traditions if observed:</li>
+<li>Tourist infrastructure that became dwelling infrastructure for you:</li>
+<li>A specific moment or scene:</li>
+</ul>
+<hr>
+<h3>Other Asia</h3>
+<p><em class="colophon">Vietnam? Singapore? Malaysia? Indonesia? Korea? Taiwan? The Philippines?</em></p>
+<p>[your entries here]</p>
+<ul>
+<li>What places, however briefly:</li>
+<li>Dwelling patterns or infrastructure that stuck:</li>
+</ul>
+<hr>
+<h3>Europe</h3>
+<p><em class="colophon">Old urban cores — apartments built into 400-year-old buildings, the medieval cities that never adopted the suburban experiment.</em></p>
+<p>[your entries here]</p>
+<ul>
+<li>Places visited:</li>
+<li>What size-of-dwelling normality looked like:</li>
+<li>What worked particularly well:</li>
+</ul>
+<hr>
+<h3>North America (the counter-examples and the affirmations)</h3>
+<p><em class="colophon">Most of NA is the suburban experiment. But there are pockets — old urban cores, alternative communities, specific neighborhoods where things work differently.</em></p>
+<p>[your entries here]</p>
+<ul>
+<li>Toronto neighborhoods that work despite the city&#x27;s overall failures:</li>
+<li>Other Canadian cities or rural places that work:</li>
+<li>US cities or regions:</li>
+<li>Specific communities you&#x27;ve encountered (intentional communities, sailing communities, vanlife enclaves, etc.):</li>
+</ul>
+<hr>
+<h3>The places you haven&#x27;t been but want to (or want to study from a distance)</h3>
+<p><em class="colophon">Some inspirations come second-hand. Books, documentaries, people you&#x27;ve met who&#x27;ve lived elsewhere. Capture those too.</em></p>
+<p>[your entries here]</p>
+<hr>
+<h2>§ 2 · The people — writers, builders, travelers, thinkers</h2>
+<p><em class="colophon">Prompt: Who has shaped your thinking about small-scale dwelling? Capture: name, what they did/wrote, when you encountered them, what you took from them, whether they&#x27;re still active, what&#x27;s worth reading or watching of theirs.</em></p>
+<h3>The lineage already named</h3>
+<p><strong>Tynan</strong></p>
+<ul>
+<li>Author of <em>Life Nomadic</em> and related work, lived out of one bag for years traveling</li>
+<li>Later lived in a 1997 Volkswagen Winnebago Rialta RV doing urban-stealth long before vanlife became a content category</li>
+<li>What specifically struck you about his approach?</li>
+<li>What did you take from him that you still apply?</li>
+<li>His best work to recommend in T1NY.0001:</li>
+</ul>
+<hr>
+<h3>Others in the lineage</h3>
+<p>[your entries here — people you&#x27;ve read, watched, encountered, learned from]</p>
+<p>Potential prompts:</p>
+<ul>
+<li>Foster Huntington (early van conversion documentation, <em>A Restless Transplant</em>)?</li>
+<li>Bob Wells / CheapRVliving?</li>
+<li>The early-2000s blog era of nomadic living?</li>
+<li>Architects you admire who work at small scale (Toshiko Mori? Atelier Bow-Wow? Tezuka Architects? Anyone Japanese small-house-specific?)</li>
+<li>Bloggers, podcasters, YouTubers whose work shaped you?</li>
+<li>Writers on minimalism whose work has aged well (versus the Instagram-era minimalism that hasn&#x27;t)?</li>
+<li>Sailing-residence writers (Lin and Larry Pardey? Bernard Moitessier? Annie Hill on voyaging on small budgets?)</li>
+<li>Specific Toronto-area people doing interesting alternative-dwelling work?</li>
+<li>Friends, mentors, family members whose dwelling choices shaped your thinking?</li>
+</ul>
+<hr>
+<h3>The negative influences — people whose work you respect but disagree with</h3>
+<p><em class="colophon">Honest research includes the positions you don&#x27;t share. Who do you think gets it wrong, and what does their wrongness teach you?</em></p>
+<p>[your entries here]</p>
+<hr>
+<h2>§ 3 · The technologies and infrastructures — what makes small dwelling work at scale</h2>
+<p><em class="colophon">Prompt: Small dwelling at population scale requires enabling infrastructure that the Anglosphere has largely failed to build. What specific systems have you observed that work?</em></p>
+<h3>Mobility and power infrastructure</h3>
+<p>[your entries here]</p>
+<ul>
+<li><strong>Thai battery-swap stations for scooters</strong> (you mentioned this — describe in detail):</li>
+<li>Other mobility infrastructure you&#x27;ve observed (transit density, micro-mobility, parking-as-public-good?):</li>
+<li>Power and charging infrastructure outside the Anglosphere:</li>
+<li>Solar, off-grid, alternative power patterns in different contexts:</li>
+</ul>
+<hr>
+<h3>Modular and capsule architecture</h3>
+<p>[your entries here]</p>
+<ul>
+<li>Japanese capsule hotels — what evolved well, what didn&#x27;t, what&#x27;s emerging:</li>
+<li>Pod hotels in Asia generally:</li>
+<li>Container architecture done well vs done badly:</li>
+<li>Pre-fab and modular building systems worth studying:</li>
+</ul>
+<hr>
+<h3>Mobile commerce and micro-retail</h3>
+<p>[your entries here]</p>
+<ul>
+<li>Street vendor infrastructures (Thai night markets, Vietnamese street food, Korean pojangmacha, etc.):</li>
+<li>Mobile kitchens, mobile shops, mobile clinics:</li>
+<li>Konbini (Japanese convenience stores) as quasi-public infrastructure:</li>
+<li>Vending machines as social-and-economic infrastructure:</li>
+</ul>
+<hr>
+<h3>Water, sanitation, climate</h3>
+<p>[your entries here]</p>
+<ul>
+<li>How different cultures handle bathroom infrastructure when dwellings are small (shared baths in Japan, public hammams, the kombini bathroom culture):</li>
+<li>Climate adaptation in hot climates (passive cooling, courtyard design, stilt construction):</li>
+<li>Water collection, greywater systems, composting solutions observed elsewhere:</li>
+</ul>
+<hr>
+<h3>Anything else infrastructural</h3>
+<p>[your entries here]</p>
+<hr>
+<h2>§ 4 · The dwelling patterns — specific architectural traditions</h2>
+<p><em class="colophon">Prompt: Beyond the technologies, there are specific named dwelling typologies worth studying. Which ones have you encountered and what do they teach?</em></p>
+<h3>Patterns observed firsthand</h3>
+<p>[your entries here]</p>
+<ul>
+<li><strong>Kyosho jutaku</strong> (Japanese narrow houses on tiny urban lots):</li>
+<li><strong>Machiya</strong> (traditional Japanese townhouses):</li>
+<li><strong>Tube houses</strong> (Vietnamese narrow deep houses):</li>
+<li><strong>Hutong courtyard houses</strong> (Chinese):</li>
+<li><strong>HDB units</strong> (Singapore public housing):</li>
+<li><strong>Hong Kong nano-flats</strong>:</li>
+<li><strong>Mediterranean courtyard houses</strong>:</li>
+<li><strong>European old-city apartments in 400-year-old buildings</strong>:</li>
+<li><strong>Specific Canadian/Toronto patterns that work (laneway houses, garden suites, etc.)</strong>:</li>
+</ul>
+<hr>
+<h3>Patterns studied from afar</h3>
+<p>[your entries here]</p>
+<ul>
+<li>Patterns you haven&#x27;t seen in person but find compelling:</li>
+</ul>
+<hr>
+<h3>Patterns that don&#x27;t work — failures worth naming</h3>
+<p>[your entries here]</p>
+<ul>
+<li>Where has small dwelling been done badly?</li>
+<li>What features make small dwelling uncomfortable or unsustainable?</li>
+<li>The pathologies of cramped housing (in Hong Kong, in Mumbai, in Tokyo&#x27;s worst examples, in failed Western micro-unit projects)?</li>
+</ul>
+<hr>
+<h2>§ 5 · The books, films, documentaries, and other media</h2>
+<p><em class="colophon">Prompt: What media shaped your thinking? Be specific — title, author, when you encountered it, what you took from it. Distinguish between things that are recommendable (still hold up, still relevant) and things that were formative even if dated.</em></p>
+<h3>Books</h3>
+<p>[your entries here]</p>
+<ul>
+<li><em>Life Nomadic</em> (Tynan)</li>
+<li>...</li>
+</ul>
+<hr>
+<h3>Films and documentaries</h3>
+<p>[your entries here]</p>
+<ul>
+<li>Any specific films about alternative dwelling? Documentaries about specific cities or cultures?</li>
+</ul>
+<hr>
+<h3>Online content that mattered</h3>
+<p>[your entries here]</p>
+<ul>
+<li>Blogs, YouTube channels, podcasts that genuinely influenced you (vs ones that were just entertainment):</li>
+</ul>
+<hr>
+<h3>The studio&#x27;s actual references</h3>
+<p><em class="colophon">The things you find yourself returning to. The bookshelf items that anchor the studio&#x27;s thinking.</em></p>
+<p>[your entries here]</p>
+<hr>
+<h2>§ 6 · The personal moments — when it clicked</h2>
+<p><em class="colophon">Prompt: Real essays come from real moments. What were the specific moments where something about small-scale or alternative dwelling clicked for you? Where were you? What did you see? What did you feel? What did you know afterward that you hadn&#x27;t before?</em></p>
+<h3>First exposure to the idea that small was possible</h3>
+<p>[your entries here]</p>
+<ul>
+<li>The first time small living looked good to you (or didn&#x27;t look bad):</li>
+<li>The first place you stayed that was genuinely small but worked beautifully:</li>
+<li>The first time you realized the suburban detached home wasn&#x27;t the only path:</li>
+</ul>
+<hr>
+<h3>The dwelling moments that became conviction</h3>
+<p>[your entries here]</p>
+<ul>
+<li>Specific apartments, rooms, capsule hotels, ryokan rooms, sailing berths, RV cabins, AirBnBs that taught you something:</li>
+<li>The moment Tynan&#x27;s writing clicked, if there was one:</li>
+<li>Moments traveling when a city&#x27;s whole infrastructure made sense to you:</li>
+</ul>
+<hr>
+<h3>The opposite — moments when the conventional path felt wrong</h3>
+<p>[your entries here]</p>
+<ul>
+<li>When did you first feel that the standard Toronto trajectory wasn&#x27;t going to work for you?</li>
+<li>When did you watch friends/family struggle with the conventional path?</li>
+<li>When did the math first stop adding up?</li>
+</ul>
+<hr>
+<h3>Family and lineage moments</h3>
+<p>[your entries here]</p>
+<ul>
+<li>What did your family teach you about dwelling, intentionally or not?</li>
+<li>Are there ancestors or older relatives who lived in ways that inform your thinking?</li>
+<li>Do your kids&#x27; dwelling expectations factor in? What do you want them to inherit?</li>
+</ul>
+<hr>
+<h3>The Steph factor</h3>
+<p>[your entries here]</p>
+<ul>
+<li>How does your partner inform or constrain the thinking?</li>
+<li>What does she see that you don&#x27;t?</li>
+<li>What experiments has she been willing or unwilling to entertain?</li>
+</ul>
+<hr>
+<h2>§ 7 · The Anglosphere assumptions you&#x27;ve shed</h2>
+<p><em class="colophon">Prompt: What beliefs about housing did you grow up with that you no longer hold? When did they fall? What replaced them?</em></p>
+<p>[your entries here]</p>
+<ul>
+<li>The &quot;starter home&quot; myth — when did you stop believing in it?</li>
+<li>The &quot;more space = more happiness&quot; assumption — when did you start questioning it?</li>
+<li>The &quot;ownership = security&quot; framing — does it still hold for you?</li>
+<li>Lawn maintenance, two-car garages, finished basements — which of the suburban defaults have you actively chosen against?</li>
+<li>What replaced these beliefs?</li>
+</ul>
+<hr>
+<h2>§ 8 · The studio&#x27;s specific work in this lineage</h2>
+<p><em class="colophon">Prompt: The studio is participating in this lineage, not just observing it. What&#x27;s the studio&#x27;s specific contribution? How does it differ from what already exists? What&#x27;s it adding to the conversation?</em></p>
+<p>[your entries here]</p>
+<ul>
+<li>The Hako specifically — what does it borrow from elsewhere, what does it add?</li>
+<li>The BXBX commodity-envelopes thesis — where does it sit in the broader lineage?</li>
+<li>The microsystem integration (BDRC + GROW + SPORE + STOCK) — what&#x27;s genuinely new here, what&#x27;s reframing of existing patterns?</li>
+<li>The Wowlive + 1646 cell catalogue — how does the catalogue-as-system approach compare to other tiny-dwelling thinking?</li>
+</ul>
+<hr>
+<h2>§ 9 · Free-form · things that don&#x27;t fit the categories above</h2>
+<p><em class="colophon">Prompt: Catch anything that surfaces but doesn&#x27;t have an obvious home. The unexpected often becomes the strongest material.</em></p>
+<p>[your entries here]</p>
+<ul>
+<li>Half-formed observations:</li>
+<li>Things you keep meaning to research more:</li>
+<li>Connections between domains (food + dwelling, design + housing, etc.):</li>
+<li>The studio&#x27;s quiet hunches that haven&#x27;t been stated publicly yet:</li>
+</ul>
+<hr>
+<h2>§ 10 · Working notes on T1NY.0001&#x27;s eventual structure</h2>
+<p><em class="colophon">As the inventory fills in, the essay&#x27;s structure becomes clearer. This section is a place to jot structural notes as they occur.</em></p>
+<p>[your entries here]</p>
+<p><strong>Working structure hypothesis (from T1NY-thread v0.2):</strong></p>
+<ol>
+<li><strong>The provocation</strong> — most of the world lives small; the Anglosphere is the outlier</li>
+<li><strong>The vantage point</strong> — Toronto in 2026, and why the question is urgent here even though it&#x27;s been answered elsewhere</li>
+<li><strong>The atlas</strong> — chapter per location/pattern observed, each making a specific argument about what works</li>
+<li><strong>The technologies</strong> — battery swap, capsule modularity, mobile infrastructure, etc. — the <em>enabling</em> systems that make small dwelling work at scale</li>
+<li><strong>The lineage</strong> — the writers/builders/travelers who saw this earlier (Tynan, others)</li>
+<li><strong>The synthesis</strong> — what the studio is doing, why it lives in this lineage, what&#x27;s next</li>
+</ol>
+<p>This is a hypothesis. Adjust as the genesis fills in.</p>
+<p><strong>Working title candidates</strong> (from T1NY-thread v0.2):</p>
+<ul>
+<li><em>The Anglosphere Anomaly</em></li>
+<li><em>Living Small Is Normal</em></li>
+<li><em>What the World Already Knows</em></li>
+<li><em>200 Square Feet: a Global Survey</em></li>
+<li><em>Out of One Bag, Out of One Container: a Lineage</em></li>
+<li><em>The Atlas of Living Small</em></li>
+</ul>
+<p>Add new candidates as they occur.</p>
+<hr>
+<h2>§ 11 · Status tracking</h2>
+<p>When sections feel meaningfully complete, mark them here. The essay becomes draftable when most sections are FULL or at least richly populated.</p>
+<p>| Section | Status | Last updated | |---|---|---| | § 1 Places — Japan | empty / sparse / partial / FULL | — | | § 1 Places — China | empty / sparse / partial / FULL | — | | § 1 Places — Thailand | empty / sparse / partial / FULL | — | | § 1 Places — Other Asia | empty / sparse / partial / FULL | — | | § 1 Places — Europe | empty / sparse / partial / FULL | — | | § 1 Places — North America | empty / sparse / partial / FULL | — | | § 2 People — the lineage | empty / sparse / partial / FULL | — | | § 3 Technologies &amp; infrastructures | empty / sparse / partial / FULL | — | | § 4 Dwelling patterns | empty / sparse / partial / FULL | — | | § 5 Books, films, media | empty / sparse / partial / FULL | — | | § 6 Personal moments | empty / sparse / partial / FULL | — | | § 7 Anglosphere assumptions shed | empty / sparse / partial / FULL | — | | § 8 Studio&#x27;s place in the lineage | empty / sparse / partial / FULL | — | | § 9 Free-form | empty / sparse / partial / FULL | — | | § 10 Structure notes | empty / sparse / partial / FULL | — |</p>
+<hr>
+<h2>Closing note</h2>
+<p>The point of this document is not to manufacture content. The point is to <strong>surface what&#x27;s already in your head</strong> so the synthesis essay can be drafted from a real inventory rather than a thin one. Most of what eventually goes into T1NY.0001 is already in your memory from years of travel, reading, observation, and design work. This document is the holding place where those raw materials accumulate until there&#x27;s enough to write from.</p>
+<p>When in doubt: jot the entry now, refine it later. A messy entry is infinitely better than a perfect entry that never gets captured.</p>
+<hr>
+<p><em class="colophon">T1NY.0001 Genesis Collection initiated 2026-05-18. Living document — add as memory surfaces, no pressure to complete. Companion to T1NY-thread-v0.2.md. When meaningfully complete, T1NY.0001 gets drafted from this inventory.</em></p>
+  </div>
+</article>
+
+<footer class="essay-footer">
+  <div>
+    <a href="index.html">← T1NY practice</a>
+  </div>
+  <div>T1NY.0001 · Genesis Collection · M1ND.studio · 2026</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sitemap · M1ND.studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+:root {
+  --paper: #F4F1E8; --paper-rule: #C8C2B5; --paper-faint: #E0DCD0; --paper-shade: #EAE6D9;
+  --ink: #1A1814; --ink-soft: #4A4640; --ink-faint: #8A8580;
+  --hanko: #B85540; --hanko-deep: #8A3F30; --hanko-bright: #B85540;
+  --display: 'Space Grotesk', system-ui, sans-serif;
+  --serif: 'Inter', Georgia, sans-serif;
+  --classical: 'EB Garamond', Georgia, 'Times New Roman', serif;
+  --mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: var(--hanko-bright); }
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+body { background: var(--paper); color: var(--ink); font-family: var(--serif); line-height: 1.55; }
+
+.studio-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--paper); border-bottom: 1px solid var(--paper-rule);
+  padding: 14px 32px; display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.studio-nav .nav-home { display: flex; align-items: center; gap: 10px; color: var(--ink); }
+.studio-nav .nav-mark { width: 22px; height: 22px; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 13px; font-weight: 500; }
+.studio-nav .nav-name { font-weight: 500; }
+.studio-nav .nav-name .dot { color: var(--hanko-bright); }
+.studio-nav .nav-links { display: flex; gap: 24px; }
+.studio-nav .nav-link { color: var(--ink-soft); }
+.studio-nav .nav-link:hover { color: var(--ink); }
+.studio-nav .nav-link.current { color: var(--hanko); }
+
+.breadcrumb {
+  max-width: 960px; margin: 0 auto; padding: 16px 32px 0;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  color: var(--ink-faint); text-transform: uppercase;
+}
+.breadcrumb a { color: var(--ink-faint); }
+.breadcrumb a:hover { color: var(--ink); }
+.breadcrumb .sep { margin: 0 8px; color: var(--paper-rule); }
+.breadcrumb .current { color: var(--ink); }
+
+.page { max-width: 960px; margin: 0 auto; padding: 32px 32px 96px; }
+
+.page-header { margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--paper-rule); }
+.page-eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; color: var(--hanko); text-transform: uppercase; margin-bottom: 14px; }
+.page-title { font-family: var(--display); font-size: 52px; font-weight: 400; line-height: 1.0; letter-spacing: -0.025em; margin-bottom: 18px; }
+.page-title em { font-style: italic; color: var(--ink-soft); }
+.page-lede { font-family: var(--serif); font-size: 16px; line-height: 1.55; color: var(--ink-soft); max-width: 64ch; }
+
+.sitemap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px 40px;
+  margin-bottom: 64px;
+}
+
+.sitemap-section h2 {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  letter-spacing: -0.005em;
+}
+
+.sitemap-section h2 a { color: var(--ink); }
+.sitemap-section h2 a:hover { color: var(--hanko-bright); }
+
+.sitemap-section .section-blurb {
+  font-family: var(--classical);
+  font-style: italic;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+
+.sitemap-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sitemap-section li {
+  font-family: var(--serif);
+  font-size: 13.5px;
+  line-height: 1.55;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--paper-rule);
+}
+
+.sitemap-section li:last-child {
+  border-bottom: none;
+}
+
+.sitemap-section li a {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ink);
+}
+
+.sitemap-section li a:hover {
+  color: var(--hanko-bright);
+}
+
+.sitemap-section .item-label {
+  font-weight: 500;
+}
+
+.sitemap-section .item-type {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.sitemap-section.spans-2 {
+  grid-column: span 2;
+}
+
+.summary {
+  background: var(--paper-shade);
+  border: 1px solid var(--paper-rule);
+  padding: 24px 28px;
+  margin: 48px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.summary .stat {
+  text-align: center;
+}
+
+.summary .stat-num {
+  font-family: var(--display);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--hanko-bright);
+  margin-bottom: 4px;
+}
+
+.summary .stat-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+}
+
+@media (max-width: 720px) {
+  .page-title { font-size: 36px; }
+  .sitemap-grid { grid-template-columns: 1fr; gap: 32px; }
+  .sitemap-section.spans-2 { grid-column: span 1; }
+  .page { padding: 24px 20px 64px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="studio-nav">
+  <a href="index.html" class="nav-home">
+    <span class="nav-mark">M</span>
+    <span class="nav-name">M1ND<span class="dot">.</span>studio</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Catalogue</a>
+    <a href="sitemap.html" class="nav-link current">Sitemap</a>
+  </div>
+</nav>
+
+<nav class="breadcrumb">
+  <a href="index.html">M1ND.studio</a>
+  <span class="sep">/</span>
+  <span class="current">Sitemap</span>
+</nav>
+
+<div class="page">
+
+  <header class="page-header">
+    <div class="page-eyebrow">All pages · catalogue v0.9</div>
+    <h1 class="page-title">Every page on the <em>studio's site</em></h1>
+    <p class="page-lede">A complete index of the catalogue, organized by practice. Published research reports, practice landing pages, product catalogues, and architectural deliverables. Roughly 50 pages across 12 practices. Bookmark this page if you want to come back to the work.</p>
+  </header>
+
+  <div class="summary">
+    <div class="stat">
+      <div class="stat-num">49</div>
+      <div class="stat-label">Pages</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">12</div>
+      <div class="stat-label">Practices</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Published reports</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">22</div>
+      <div class="stat-label">Product pages</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">v0.9</div>
+      <div class="stat-label">Catalogue</div>
+    </div>
+  </div>
+
+  <div class="sitemap-grid">
+
+    <div class="sitemap-section">
+      <h2><a href="index.html">M1ND.studio</a></h2>
+      <p class="section-blurb">The catalogue index and entry surface.</p>
+      <ul>
+        <li><a href="index.html"><span class="item-label">Catalogue home</span><span class="item-type">Landing</span></a></li>
+        <li><a href="sitemap.html"><span class="item-label">Sitemap (this page)</span><span class="item-type">Index</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sitemap-section">
+      <h2><a href="studio/index.html">.Studio</a></h2>
+      <p class="section-blurb">The substrate · typography, palette, format, labels.</p>
+      <ul>
+        <li><a href="studio/index.html"><span class="item-label">Practice landing</span><span class="item-type">Landing</span></a></li>
+        <li><a href="studio/booklets.html"><span class="item-label">Folded-card booklets</span><span class="item-type">Products</span></a></li>
+        <li><a href="studio/cell-comparison.html"><span class="item-label">The CELL · in context</span><span class="item-type">Essay</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sitemap-section">
+      <h2><a href="keep/index.html">KEEP</a></h2>
+      <p class="section-blurb">The 1646 cell envelope · archive infrastructure.</p>
+      <ul>
+        <li><a href="keep/index.html"><span class="item-label">Practice landing</span><span class="item-type">Landing</span></a></li>
+        <li><a href="keep/0001.html"><span class="item-label">KEEP.0001 · networked personal archives</span><span class="item-type">Report</span></a></li>
+        <li><a href="keep/1646-mods.html"><span class="item-label">1646 mods case study</span><span class="item-type">Case study</span></a></li>
+        <li><a href="keep/cell-catalogue.html"><span class="item-label">Cell catalogue</span><span class="item-type">Reference</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sitemap-section">
+      <h2><a href="codex/index.html">CODEX</a></h2>
+      <p class="section-blurb">Card-based publishing for the 1646 cell.</p>
+      <ul>
+        <li><a href="codex/index.html"><span class="item-label">Practice landing</span><span class="item-type">Landing</span></a></li>
+        <li><a href="codex/tao-te-ching.html"><span class="item-label">CODEX-001 · Tao Te Ching</span><span class="item-type">Product</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sitemap-section spans-2">
+      <h2><a href="stock/index.html">STOCK</a></h2>
+      <p class="section-blurb">The food build family · four sub-lines (COOK / BDRC / GROW / SPORE).</p>
+      <ul>
+        <li><a href="stock/index.html"><span class="item-label">Practice landing</span><span class="item-type">Landing</span></a></li>
+        <li><a href="stock/cook.html"><span class="item-label">COOK · single-meal kits</span><span class="item-type">Sub-line</span></a></li>
+        <li><a href="stock/cook-01-chicken-tagine.html"><span class="item-label">COOK-01 · Chicken Tagine</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc.html"><span class="item-label">BDRC · grain-cooker meals</span><span class="item-type">Sub-line</span></a></li>
+        <li><a href="stock/bdrc-01.html"><span class="item-label">BDRC-01</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-02.html"><span class="item-label">BDRC-02</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-03.html"><span class="item-label">BDRC-03</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-04.html"><span class="item-label">BDRC-04</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-05.html"><span class="item-label">BDRC-05</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-06.html"><span class="item-label">BDRC-06</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-07.html"><span class="item-label">BDRC-07</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-08.html"><span class="item-label">BDRC-08</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-09.html"><span class="item-label">BDRC-09</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-10.html"><span class="item-label">BDRC-10</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-11.html"><span class="item-label">BDRC-11</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-12.html"><span class="item-label">BDRC-12</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-13.html"><span class="item-label">BDRC-13</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-14.html"><span class="item-label">BDRC-14</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-15.html"><span class="item-label">BDRC-15</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/bdrc-16.html"><span class="item-label">BDRC-16</span><span class="item-type">Product</span></a></li>
+        <li><a href="stock/grow.html"><span class="item-label">GROW · hydroponic herbs</span><span class="item-type">Sub-line</span></a></li>
+        <li><a href="stock/spore.html"><span class="item-label">SPORE · mushroom cultivation</span><span class="item-type">Sub-line</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sitemap-section">
+      <h2><a href="meal/index.html">MEAL</a></h2>
+      <p class="section-blurb">Food research + curated subscription kits store.</p>
+      <ul>
+        <li><a href="meal/index.html"><span class="item-label">Practice landing</span><span class="item-type">Landing</span></a></li>
+        <li><a href="meal/0001.html"><span class="item-label">MEAL.0001 · the meal-kit category</span><span class="item-type">Report</span></a></li>
+        <li><a href="meal/kits/index.html"><span class="item-label">MEAL kits store</span><span class="item-type">Store</span></a></li>
+        <li><a href="meal/kits/subscription.html"><span class="item-label">Standard Kit · monthly subscription</span><span class="item-type">Product</span></a></li>
+        <li><a href="meal/kits/starter-box.html"><span class="item-label">Starter Box · $48</span><span class="item-type">Product</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sitemap-section">
+      <h2><a href="bxbx/index.html">BXBX</a></h2>
+      <p class="section-blurb">Industrial design firm · commodity envelopes as dwellings.</p>
+      <ul>
+        <li><a href="bxbx/index.html"><span class="item-label">Practice landing</span><span class="item-type">Landing</span></a></li>
+        <li><a href="bxbx/hako.html"><span class="item-label">Hako · the flagship dwelling</span><span class="item-type">Product</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sitemap-section">
+      <h2><a href="t1ny/index.html">T1NY</a></h2>
+      <p class="section-blurb">Tiny / micro / modular / conversion dwelling research.</p>
+      <ul>
+        <li><a href="t1ny/index.html"><span class="item-label">Practice landing</span><span class="item-type">Landing</span></a></li>
+        <li><a href="t1ny/0001-inventory.html"><span class="item-label">T1NY.0001 · genesis collection (in development)</span><span class="item-type">Inventory</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sitemap-section">
+      <h2><a href="mhyc/index.html">MHYC</a></h2>
+      <p class="section-blurb">My Hood Your City · neighborhood research.</p>
+      <ul>
+        <li><a href="mhyc/index.html"><span class="item-label">Practice landing</span><span class="item-type">Landing</span></a></li>
+        <li><a href="mhyc/trinity-bellwoods.html"><span class="item-label">MHYC.0002 · Trinity Bellwoods, Toronto</span><span class="item-type">Profile</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sitemap-section">
+      <h2><a href="mesh/index.html">MESH</a></h2>
+      <p class="section-blurb">Digital products and integration infrastructure.</p>
+      <ul>
+        <li><a href="mesh/index.html"><span class="item-label">Practice landing</span><span class="item-type">Landing</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sitemap-section">
+      <h2><a href="nolo/index.html">NOLO</a></h2>
+      <p class="section-blurb">Cultural production · DASH.Q420 and adjacent programming.</p>
+      <ul>
+        <li><a href="nolo/index.html"><span class="item-label">Practice landing</span><span class="item-type">Landing</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sitemap-section">
+      <h2><a href="b1ke/index.html">B1KE</a></h2>
+      <p class="section-blurb">Ryobi-powered electric mobility · skunkworks.</p>
+      <ul>
+        <li><a href="b1ke/index.html"><span class="item-label">Practice landing</span><span class="item-type">Landing</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sitemap-section">
+      <h2>Pending scope</h2>
+      <p class="section-blurb">Practices named but not yet scoped.</p>
+      <ul>
+        <li><a href="base/index.html"><span class="item-label">BASE</span><span class="item-type">Pending</span></a></li>
+        <li><a href="sqmx/index.html"><span class="item-label">SQMX</span><span class="item-type">Pending</span></a></li>
+        <li><a href="f1xr/index.html"><span class="item-label">F1XR</span><span class="item-type">Pending</span></a></li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>
+
+<footer style="max-width: 960px; margin: 0 auto; padding: 32px 32px 24px; border-top: 1px solid var(--paper-rule); font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; color: var(--ink-faint); text-transform: uppercase; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+  <div>
+    <a href="index.html" style="margin-right: 16px;">← Catalogue</a>
+  </div>
+  <div>M1ND.studio · sitemap · 2026</div>
+</footer>
+
+</body>
+</html>
